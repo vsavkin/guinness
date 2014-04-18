@@ -1,0 +1,4 @@
+name: jasmine_dart
+description: Port of the Jasmine testing framework to Dart.
+dependencies:
+  unittest: any
