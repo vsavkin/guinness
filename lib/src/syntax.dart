@@ -1,9 +1,29 @@
 part of jasmine;
 
-void it(String name, Function callback) =>
-    context.currentDescribe.addSpec(name, callback);
+void beforeEach(Function fn, {int priority:0}) =>
+    context.addBeforeEach(fn, priority: priority);
 
-void describe(String name, Function callback) =>
-    context.currentDescribe.addDescribe(name, callback);
+void afterEach(Function fn, {int priority:0}) =>
+    context.addAfterEach(fn, priority: priority);
+
+
+void it(String name, Function fn) =>
+    context.addIt(name, fn, excluded: false, exclusive: false);
+
+void xit(String name, Function fn) =>
+    context.addIt(name, fn, excluded: true, exclusive: false);
+
+void iit(String name, Function fn) =>
+    context.addIt(name, fn, excluded: false, exclusive: true);
+
+
+void describe(String name, Function fn) =>
+    context.addDescribe(name, fn, excluded: false, exclusive: false);
+
+void xdescribe(String name, Function fn) =>
+    context.addDescribe(name, fn, excluded: true, exclusive: false);
+
+void ddescribe(String name, Function fn) =>
+    context.addDescribe(name, fn, excluded: false, exclusive: true);
 
 Expect expect(actual) => new Expect(actual, context.matchers);

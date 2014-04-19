@@ -2,17 +2,35 @@ part of jasmine;
 
 class UnitTestVisitor implements SpecVisitor {
   void visitSuite(Suite suite){
-    suite.children.forEach((c) => c.visit(this));
+    _visitChildren(suite.children);
   }
 
   void visitDescribe(Describe describe){
-    unit.group(describe.name, (){
-      describe.children.forEach((c) => c.visit(this));
-    });
+    if(describe.excluded) return;
+
+    if(describe.exclusive) {
+      unit.solo_group(describe.name, () {
+        _visitChildren(describe.children);
+      });
+    } else {
+      unit.group(describe.name, () {
+        _visitChildren(describe.children);
+      });
+    }
   }
 
-  void visitSpec(Spec spec){
-    unit.test(spec.name, spec.callback);
+  void visitIt(It it){
+    if(it.excluded) return;
+
+    if(it.exclusive){
+      unit.solo_test(it.name, it.withSetupAndTeardown);
+    } else {
+      unit.test(it.name, it.withSetupAndTeardown);
+    }
+  }
+
+  _visitChildren(children){
+    children.forEach((c) => c.visit(this));
   }
 }
 
