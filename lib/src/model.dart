@@ -1,15 +1,5 @@
 part of jasmine;
 
-abstract class SpecVisitor {
-  void visitSuite(Suite describe);
-  void visitDescribe(Describe describe);
-  void visitSpec(Spec sped);
-}
-
-abstract class Matchers {
-  void expectToEqual(actual, expected);
-}
-
 class Context {
   final List<Describe> describes = [];
   final Matchers matchers;
@@ -30,39 +20,124 @@ class Context {
       describes.removeLast();
     }
   }
+
+  void addBeforeEach(Function fn, {int priority}){
+    currentDescribe.addBeforeEach(new BeforeEach(fn, priority: priority));
+  }
+
+  void addAfterEach(Function fn, {int priority}){
+    currentDescribe.addAfterEach(new AfterEach(fn, priority: priority));
+  }
+
+  void addIt(String name, Function fn, {bool excluded, bool exclusive}){
+    currentDescribe.add(new It(name, currentDescribe, fn, excluded: excluded, exclusive: exclusive));
+  }
+
+  void addDescribe(String name, Function fn, {bool excluded, bool exclusive}){
+    currentDescribe.add(new Describe(name, currentDescribe, this, fn, excluded: excluded, exclusive: exclusive));
+  }
 }
 
-class Spec {
-  final String name;
-  final Function callback;
+class BeforeEach {
+  final Function fn;
+  final int priority;
 
-  Spec(this.name, this.callback);
+  BeforeEach(this.fn, {this.priority});
 
-  void visit(SpecVisitor visitor) => visitor.visitSpec(this);
+  call() => fn();
 }
 
-class Describe {
+class AfterEach {
+  final Function fn;
+  final int priority;
+
+  AfterEach(this.fn, {this.priority});
+
+  call() => fn();
+}
+
+abstract class Spec {
   final String name;
+  final Describe parent;
+  final bool excluded;
+  final bool exclusive;
+
+  Spec(this.name, this.parent, {this.excluded, this.exclusive});
+}
+
+class It extends Spec {
+  final Function fn;
+
+  It(String name, Describe parent, this.fn, {bool excluded, bool exclusive}) :
+      super(name, parent, excluded: excluded, exclusive: exclusive);
+
+  Function get withSetupAndTeardown {
+    return () {
+      beforeEachFns.forEach((fn) => fn());
+      try {
+        return fn();
+      }
+      finally {
+        afterEachFns.forEach((fn) => fn());
+      }
+    };
+  }
+
+  Iterable<BeforeEach> get beforeEachFns {
+    final fns = [];
+    var c = parent;
+    while(c != null){
+      fns.insertAll(0, c.beforeEachFns);
+      c = c.parent;
+    }
+    fns.sort((a, b) => Comparable.compare(b.priority, a.priority));
+    return fns;
+  }
+
+  Iterable<AfterEach> get afterEachFns {
+    final fns = [];
+    var c = parent;
+    while(c != null){
+      fns.addAll(c.afterEachFns);
+      c = c.parent;
+    }
+    fns.sort((a, b) => Comparable.compare(b.priority, a.priority));
+    return fns;
+  }
+
+  void visit(SpecVisitor visitor) => visitor.visitIt(this);
+}
+
+class Describe extends Spec {
   final Context context;
-  final List children = [];
+  final List<BeforeEach> beforeEachFns = [];
+  final List<AfterEach> afterEachFns = [];
+  final List<Spec> children = [];
 
-  Describe(this.name, this.context, Function definition){
+  Describe(String name, Describe parent, this.context, Function definition, {bool excluded, bool exclusive}) :
+      super(name, parent, excluded: excluded, exclusive: exclusive) {
     context.withDescribe(this, definition);
   }
 
-  void addSpec(String name, Function callback){
-    children.add(new Spec(name, callback));
+  void addBeforeEach(BeforeEach beforeEach){
+    beforeEachFns.add(beforeEach);
   }
 
-  void addDescribe(String name, Function callback){
-    children.add(new Describe(name, context, callback));
+  void addAfterEach(AfterEach afterEach){
+    afterEachFns.add(afterEach);
   }
+
+  void add(child){
+    children.add(child);
+  }
+
+  String get name => exclusive ? 'DDESCRIBE: ${super.name}' : super.name;
 
   void visit(SpecVisitor visitor) => visitor.visitDescribe(this);
 }
 
 class Suite extends Describe {
-  Suite(Context context): super(null, context, (){});
+  Suite(Context context): super(null, null, context, (){});
 
   void visit(SpecVisitor visitor) => visitor.visitSuite(this);
 }
