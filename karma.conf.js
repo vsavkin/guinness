@@ -5,6 +5,7 @@ module.exports = function(config) {
 
     files: [
       'test/jasmine_test.dart',
+      'test/html_utils_test.dart',
       {pattern: '**/*.dart', watched: true, included: false, served: true}
     ],
 
