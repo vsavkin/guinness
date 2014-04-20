@@ -43,10 +43,10 @@ The library can be used as follows:
 It supporst `iit`, `xit`, `ddescribe`, `xdescribe`:
 
     iit("solo", (){});
-    xit("exlcude", (){});
+    xit("exclude", (){});
 
     ddescribe("solo", (){});
-    xdescribe("exlcude", (){});
+    xdescribe("exclude", (){});
 
 Spy functions work as well:
 
