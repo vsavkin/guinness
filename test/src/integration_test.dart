@@ -24,7 +24,7 @@ testIntegration(){
 
     setUp((){
       context = new jasmine.Context();
-      jasmine.resetJasmineContext(context);
+      jasmine.jasmine.resetContext(context);
     });
 
     test("runs specs once", (){

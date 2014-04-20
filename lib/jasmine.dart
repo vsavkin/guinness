@@ -15,9 +15,9 @@ part 'src/interfaces.dart';
 part 'src/jasmine_config.dart';
 part 'src/unittest_backend/unittest_backend.dart';
 
-JasmineConfig jasmineConfig = new JasmineConfig();
-
-Context _context = new Context();
-void resetJasmineContext([Context context]){
-  _context = context == null ? new Context() : context;
+class _Undefined{
+  const _Undefined();
 }
+const _u = const _Undefined();
+
+final Jasmine jasmine = new Jasmine();

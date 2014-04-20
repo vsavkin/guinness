@@ -1,15 +1,5 @@
 part of jasmine;
 
-class Jasmine {
-  createSpy([String name]) {
-    return new SpyFunction(name);
-  }
-
-  SpyFunction spyOn(receiver, methodName) {
-    throw ["spyOn not implemented"];
-  }
-}
-
 class SpyFunctionInvocationResult {
   final List args;
   SpyFunctionInvocationResult(this.args);
@@ -71,8 +61,4 @@ class SpyFunction {
   }
 }
 
-class _Undefined{
-  const _Undefined();
-}
-const _u = const _Undefined();
 List _takeDefined(List iter) => iter.takeWhile((_) => _ != _u).toList();

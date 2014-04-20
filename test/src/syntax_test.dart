@@ -6,7 +6,7 @@ testSyntax(){
 
     setUp((){
       context = new jasmine.Context();
-      jasmine.resetJasmineContext(context);
+      jasmine.jasmine.resetContext(context);
     });
 
     group("[describe]", (){
