@@ -28,8 +28,8 @@ class SpyFunction {
     return this;
   }
 
-  call([a0=_e, a1=_e, a2 =_e, a3=_e, a4=_e, a5=_e]) =>
-      _processCall(_takeNonEmpty([a0, a1, a2, a3, a4, a5]));
+  call([a0=_u, a1=_u, a2 =_u, a3=_u, a4=_u, a5=_u]) =>
+      _processCall(_takeDefined([a0, a1, a2, a3, a4, a5]));
 
   noSuchMethod(Invocation c){
     if(c.memberName == #call){
@@ -52,6 +52,16 @@ class SpyFunction {
     return new SpyFunctionInvocationResult(invocations.last);
   }
 
+  firstArgsMatch([a0=_u, a1=_u, a2 =_u, a3=_u, a4=_u, a5=_u]){
+    final toMatch = _takeDefined([a0, a1, a2, a3, a4, a5]);
+    if(invocations.isEmpty){
+      return false;
+    } else {
+      Function eq = const ListEquality().equals;
+      return eq(invocations.first, toMatch);
+    }
+  }
+
   _processCall(List posArgs){
     invocations.add(posArgs);
 
@@ -61,8 +71,8 @@ class SpyFunction {
   }
 }
 
-class _Empty{
-  const _Empty();
+class _Undefined{
+  const _Undefined();
 }
-const _e = const _Empty();
-List _takeNonEmpty(List iter) => iter.takeWhile((_) => _ != _e).toList();
+const _u = const _Undefined();
+List _takeDefined(List iter) => iter.takeWhile((_) => _ != _u).toList();

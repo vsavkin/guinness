@@ -1,4 +1,4 @@
-part of jasmine_syntax_test;
+part of jasmine_test;
 
 class DummyContext implements jasmine.Context {
   withDescribe(jasmine.Describe describe,Function definition){

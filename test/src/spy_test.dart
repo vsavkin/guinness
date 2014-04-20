@@ -1,4 +1,4 @@
-part of jasmine_syntax_test;
+part of jasmine_test;
 
 
 testSpy(){
@@ -41,6 +41,22 @@ testSpy(){
         s.andCallFake((a,b) => a + b);
 
         expect(s(100,2), equals(102));
+      });
+    });
+
+    group("[firstArgsMatch]", (){
+      test("retuns false when not calls were made", (){
+        expect(s.firstArgsMatch(1,2), isFalse);
+      });
+
+      test("retuns false when the args do not match", (){
+        s(3,4);
+        expect(s.firstArgsMatch(1,2), isFalse);
+      });
+
+      test("retuns true when the args match", (){
+        s(1,2);
+        expect(s.firstArgsMatch(1,2), isTrue);
       });
     });
   });
