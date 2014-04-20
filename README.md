@@ -1,48 +1,87 @@
-# JasmineDart Spike
+# JasmineDart
 
-This is a spike demonstrating a way to port the Jasmine library to Dart.
-
-## Key Ideas
-
-* The semantic model is separated from the syntax.
-* The library supports pluggable 'backends', and the unittest library is only one of them.
-* The parsing of a test file is separated from its execution.
-
-
-### Semantic Model is Separated from the Syntax
-
-It allows the creation of Spec/Describe/Suite objects, and their analysis without using the context-dependent
-nested Jasmine syntax.
-
-### Pluggable Backends
-
-It is mostly useful for testing the Jasmine Dart library itself. It also separates the Jasmine syntax from
-how Spec/Describe/Suite objects actually work.
-
-### Parsing != Execution
-
-The library first builds a tree of Describe/Spec objects, and only after that executes it. It enables all sorts of
-preprocessing (like filtering, reordering, etc.).
+This is a port of the Jasmine library to Dart. It is inspired by the AngularDart implementation of Jasmine.
 
 ## Example
 
 The library can be used as follows:
 
-
     import 'package:jasmine_dart/jasmine.dart';
 
     main(){
+      beforeEach((){
+        print("before");
+      });
+
+      afterEach((){
+        print("after");
+      });
+
       it("aaa", (){
-        expect(5).toEqual(3);
+        expect(5).toEqual(5);
       });
 
       describe("bbb", (){
+        beforeEach((){
+          print("inner before");
+        });
+
+        afterEach((){
+          print("inner after");
+        });
+
         it("ddd", (){
-          expect(5).toEqual(3);
+          expect(3).toBe(3);
         });
       });
 
       it("ccc", (){
-        expect(5).toEqual(4);
+        expect("hello").toContain("lo");
       });
     }
+
+It supporst `iit`, `xit`, `ddescribe`, `xdescribe`:
+
+    iit("solo", (){});
+    xit("exlcude", (){});
+
+    ddescribe("solo", (){});
+    xdescribe("exlcude", (){});
+
+Spy functions work as well:
+
+    final s = jasmine.createSpy();
+    s(1,2,3);
+    expect(s).toHaveBeenCalledWith(1,2,3);
+    ...
+
+Expectations work too:
+
+    expect(3).toBe(5);
+    expect(5).not.toEqual(4);
+    expect(()=> throw "Boom!").toThrow("Boom!");
+    expect((){}).not.toThrow();
+    expect(div).toHaveHtml("<div>hello</div>");
+    ...
+
+## Status
+
+There are a few things that are still not supported (e.g., handling named parameters in expectations).
+
+## Implementation Details
+
+### Key Ideas
+
+The main idea is to treat the Jasmine syntax as a domain specific language. Therefore, the implementation clearly separates such things as: syntax, semantic model, and execution model. Let's quickly look at the benefits this approach provices:
+
+#### The semantic model is separate from the syntax.
+
+The semantic model consists of It, Describe, Suite, BeforeEach, and AfterEach objects. You can create and analyse them without using the context-dependent nested Jasmine syntax.
+
+#### The parsing of specs is separate from the execution of specs.
+
+The library builds a tree of the It, Describe, Suite, BeforeEach, and AfterEach objects first. And after that, as a separate step, executes them. It enables all sorts of preprocessing (e.g., filtering, reordering).
+
+#### Pluggable backends.
+
+Since the library is a DSL, there can be multiple backend libraries actually executing the specs. By default, the library comes with the unittest backend.
