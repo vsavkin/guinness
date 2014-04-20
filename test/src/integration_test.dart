@@ -1,4 +1,4 @@
-part of jasmine_syntax_test;
+part of jasmine_test;
 
 class DummyVisitor implements jasmine.SpecVisitor {
   void visitSuite(jasmine.Suite suite){
