@@ -23,7 +23,8 @@ testIntegration(){
     var context;
 
     setUp((){
-      context = jasmine.context = new jasmine.Context(runner: (_){});
+      context = new jasmine.Context();
+      jasmine.resetJasmineContext(context);
     });
 
     test("runs specs once", (){

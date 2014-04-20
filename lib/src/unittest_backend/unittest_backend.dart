@@ -140,7 +140,7 @@ class ExceptionContains extends unit.Matcher {
       super.describeMismatch('$item', mismatchDescription, matchState, verbose);
 }
 
-void unitTestRunner(Suite suite){
+void asyncUnitTestRunner(Suite suite){
   var r = new UnitTestVisitor();
   async.scheduleMicrotask((){
     suite.visit(r);

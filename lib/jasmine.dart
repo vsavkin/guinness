@@ -7,12 +7,17 @@ import 'dart:html';
 import 'src/html_utils.dart' as htmlUtils;
 
 part 'src/model.dart';
+part 'src/context.dart';
 part 'src/syntax.dart';
 part 'src/matchers.dart';
 part 'src/spy.dart';
 part 'src/interfaces.dart';
-
-// use the unittest library to run the tests
+part 'src/jasmine_config.dart';
 part 'src/unittest_backend/unittest_backend.dart';
 
-Context context = new Context(runner: unitTestRunner, matchers: new UnitTestMatchers());
+JasmineConfig jasmineConfig = new JasmineConfig();
+
+Context _context = new Context();
+void resetJasmineContext([Context context]){
+  _context = context == null ? new Context() : context;
+}
