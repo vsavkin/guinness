@@ -92,25 +92,97 @@ testUnitTestBackend(){
     test("toHaveBeenCalledWith", (){
       final spy = new jasmine.SpyFunction("");
 
-      assertFalse(() => matchers.toHaveBeenCalledWith(spy, 1,2));
+      assertFalse(() => matchers.toHaveBeenCalledWith(spy, 1, 2));
 
       spy(1,2);
 
-      assertTrue(() => matchers.toHaveBeenCalledWith(spy, 1,2));
+      assertTrue(() => matchers.toHaveBeenCalledWith(spy, 1, 2));
+      assertFalse(() => matchers.toHaveBeenCalledWith(spy, 3, 4));
     });
 
     test("toHaveBeenCalledOnceWith", (){
       final spy = new jasmine.SpyFunction("");
 
-      assertFalse(() => matchers.toHaveBeenCalledOnceWith(spy, 1,2));
+      assertFalse(() => matchers.toHaveBeenCalledOnceWith(spy, 1, 2));
 
       spy(1,2);
 
-      assertTrue(() => matchers.toHaveBeenCalledOnceWith(spy, 1,2));
+      assertTrue(() => matchers.toHaveBeenCalledOnceWith(spy, 1, 2));
 
       spy(1,2);
 
-      assertFalse(() => matchers.toHaveBeenCalledOnceWith(spy, 1,2));
+      assertFalse(() => matchers.toHaveBeenCalledOnceWith(spy, 1, 2));
+    });
+
+    test("notToEqual", (){
+      assertTrue(() => matchers.notToEqual("one", "two"));
+      assertFalse(() => matchers.notToEqual("one", "one"));
+    });
+
+    test("notToContain", (){
+      assertTrue(() => matchers.notToContain("one", "z"));
+      assertFalse(() => matchers.notToContain("one", "o"));
+    });
+
+    test("notToBe", (){
+      var x = [1,2];
+      var y = [1,2];
+      assertTrue(() => matchers.notToBe(x, y));
+      assertFalse(() => matchers.notToBe(x, x));
+    });
+
+    test("toReturnNormally", (){
+      assertFalse(() => matchers.toReturnNormally(() => throw "Wow!"));
+      assertTrue(() => matchers.toReturnNormally((){}));
+    });
+
+    test("notToHaveHtml", (){
+      final div = new html.DivElement()..innerHtml = "<div>inner</div>";
+      assertFalse(() => matchers.notToHaveHtml(div, "<div>inner</div>"));
+      assertTrue(() => matchers.notToHaveHtml(div, "invalid"));
+    });
+
+    test("notToHaveText", (){
+      final div = new html.DivElement()..innerHtml = "expected";
+      assertFalse(() => matchers.notToHaveText(div, "expected"));
+      assertTrue(() => matchers.notToHaveText(div, "invalid"));
+    });
+
+    test("notToHaveClass", (){
+      final div = new html.DivElement();
+      div.classes.add("one");
+
+      assertFalse(() => matchers.notToHaveClass(div, "one"));
+      assertTrue(() => matchers.notToHaveClass(div, "two"));
+    });
+
+    test("notToHaveAttribute", (){
+      final div = new html.DivElement();
+      div.attributes["one"] = "value";
+
+      assertFalse(() => matchers.notToHaveAttribute(div, "one"));
+      assertTrue(() => matchers.notToHaveAttribute(div, "two"));
+    });
+
+    test("notToHaveBeenCalled", (){
+      final spy = new jasmine.SpyFunction("");
+
+      assertTrue(() => matchers.notToHaveBeenCalled(spy));
+
+      spy();
+
+      assertFalse(() => matchers.notToHaveBeenCalled(spy));
+    });
+
+    test("notToHaveBeenCalledWith", (){
+      final spy = new jasmine.SpyFunction("");
+
+      assertTrue(() => matchers.notToHaveBeenCalledWith(spy, 1, 2));
+
+      spy(1,2);
+
+      assertFalse(() => matchers.notToHaveBeenCalledWith(spy, 1, 2));
+      assertTrue(() => matchers.notToHaveBeenCalledWith(spy, 3, 4));
     });
   });
 }
