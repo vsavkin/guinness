@@ -1,5 +1,10 @@
-name: jasmine_dart
-description: Port of the Jasmine testing framework to Dart.
+name: jasmine
+version: 0.0.1
+author: Victor Savkin <vic.savkin@gmail.com>
+homepage: https://github.com/vsavkin/jasminedart
+description: A port of the Jasmine testing framework.
 dependencies:
-  collection: any
-  unittest: any
+  collection: ">=0.9.1 <2.0.0"
+  unittest: ">= 0.10.0 <2.0.0"
+environment:
+  sdk: ">=1.3.0 <2.0.0"
