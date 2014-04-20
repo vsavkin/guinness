@@ -25,4 +25,15 @@ abstract class Matchers {
   void toHaveBeenCalledOnce(actual);
   void toHaveBeenCalledWith(actual, [a,b,c,d,e,f]);
   void toHaveBeenCalledOnceWith(actual, [a,b,c,d,e,f]);
+  void notToEqual(actual, expected);
+  void notToContain(actual, expected);
+  void notToBe(actual, expected);
+  void toReturnNormally(actual);
+  void toBeUndefined(actual);
+  void notToHaveHtml(actual, expected);
+  void notToHaveText(actual, expected);
+  void notToHaveBeenCalled(actual);
+  void notToHaveBeenCalledWith(actual, [a,b,c,d,e,f]);
+  void notToHaveClass(actual, cls);
+  void notToHaveAttribute(actual, name);
 }
