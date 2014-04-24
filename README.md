@@ -2,6 +2,19 @@
 
 This is a port of the Jasmine library to Dart. It is inspired by the AngularDart implementation of Jasmine.
 
+## Installation
+
+Add the Guinness dependency to your project’s pubspec.yaml.
+
+    dependencies:
+      guinness: ">=0.0.1 <0.1.0"
+
+Then, run `pub install`.
+
+Finally, import the guinness library.
+
+    import 'package:guinness/guinness.dart';
+
 ## Example
 
 The library can be used as follows:
