@@ -1,20 +1,20 @@
-part of jasmine_test;
+part of guinness_test;
 
-class DummyVisitor implements jasmine.SpecVisitor {
-  void visitSuite(jasmine.Suite suite){
+class DummyVisitor implements guinness.SpecVisitor {
+  void visitSuite(guinness.Suite suite){
     suite.children.forEach((c) => c.visit(this));
   }
 
-  void visitDescribe(jasmine.Describe describe){
+  void visitDescribe(guinness.Describe describe){
     describe.children.forEach((c) => c.visit(this));
   }
 
-  void visitIt(jasmine.It it){
+  void visitIt(guinness.It it){
     it.withSetupAndTeardown();
   }
 }
 
-void runTests(jasmine.Context context){
+void runTests(guinness.Context context){
   context.suite.visit(new DummyVisitor());
 }
 
@@ -23,19 +23,19 @@ testIntegration(){
     var context;
 
     setUp((){
-      context = new jasmine.Context();
-      jasmine.jasmine.resetContext(context);
+      context = new guinness.Context();
+      guinness.guinness.resetContext(context);
     });
 
     test("runs specs once", (){
       var log = [];
-      jasmine.describe("outer describe", (){
-        jasmine.it("outer it", (){
+      guinness.describe("outer describe", (){
+        guinness.it("outer it", (){
           log.add("outer it");
         });
 
-        jasmine.describe("inner describe", (){
-          jasmine.it("inner it", (){
+        guinness.describe("inner describe", (){
+          guinness.it("inner it", (){
             log.add("inner it");
           });
         });
@@ -49,25 +49,25 @@ testIntegration(){
     test("runs beforeEach and afterEach blocks", (){
       var log = [];
 
-      jasmine.describe("outer describe", (){
-        jasmine.beforeEach((){
+      guinness.describe("outer describe", (){
+        guinness.beforeEach((){
           log.add("outer beforeEach");
         });
 
-        jasmine.afterEach((){
+        guinness.afterEach((){
           log.add("outer afterEach");
         });
 
-        jasmine.describe("inner describe", (){
-          jasmine.beforeEach((){
+        guinness.describe("inner describe", (){
+          guinness.beforeEach((){
             log.add("inner beforeEach");
           });
 
-          jasmine.afterEach((){
+          guinness.afterEach((){
             log.add("inner afterEach");
           });
 
-          jasmine.it("inner it", (){
+          guinness.it("inner it", (){
             log.add("inner it");
           });
         });

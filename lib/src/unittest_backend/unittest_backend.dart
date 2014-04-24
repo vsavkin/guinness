@@ -1,4 +1,4 @@
-part of jasmine;
+part of guinness;
 
 class UnitTestVisitor implements SpecVisitor {
   void visitSuite(Suite suite){

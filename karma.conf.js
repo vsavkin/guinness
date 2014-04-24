@@ -4,7 +4,7 @@ module.exports = function(config) {
     frameworks: ['dart-unittest'],
 
     files: [
-      'test/jasmine_test.dart',
+      'test/guinness_test.dart',
       'test/html_utils_test.dart',
       {pattern: '**/*.dart', watched: true, included: false, served: true}
     ],

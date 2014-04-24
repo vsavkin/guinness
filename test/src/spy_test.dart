@@ -1,12 +1,12 @@
-part of jasmine_test;
+part of guinness_test;
 
 
 testSpy(){
   group("[spy]", (){
-    jasmine.SpyFunction s;
+    guinness.SpyFunction s;
 
     setUp((){
-      s = new jasmine.SpyFunction("spy");
+      s = new guinness.SpyFunction("spy");
     });
 
     test("records the number of calls", (){

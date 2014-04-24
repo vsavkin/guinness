@@ -1,17 +1,17 @@
-part of jasmine_test;
+part of guinness_test;
 
 testSyntax(){
   group("[syntax]", (){
     var context;
 
     setUp((){
-      context = new jasmine.Context();
-      jasmine.jasmine.resetContext(context);
+      context = new guinness.Context();
+      guinness.guinness.resetContext(context);
     });
 
     group("[describe]", (){
       test("adds a describe to the current describe block", (){
-        jasmine.describe("new describe", (){});
+        guinness.describe("new describe", (){});
 
         final actualDescribe = context.suite.children.first;
 
@@ -21,7 +21,7 @@ testSyntax(){
 
     group("[xdescribe]", (){
       test("adds a describe to the current describe block with excluded set to true", (){
-        jasmine.xdescribe("new xdescribe", (){});
+        guinness.xdescribe("new xdescribe", (){});
 
         final actualDescribe = context.suite.children.first;
 
@@ -32,7 +32,7 @@ testSyntax(){
 
     group("[ddescribe]", (){
       test("adds a describe to the current describe block with exclusive set to true", (){
-        jasmine.ddescribe("new ddescribe", (){});
+        guinness.ddescribe("new ddescribe", (){});
 
         final actualDescribe = context.suite.children.first;
 
@@ -43,7 +43,7 @@ testSyntax(){
 
     group("[it]", (){
       test("adds an `it` to the current describe block", (){
-        jasmine.it("new it", (){});
+        guinness.it("new it", (){});
 
         final actualIt = context.suite.children.first;
 
@@ -55,7 +55,7 @@ testSyntax(){
 
     group("[xit]", (){
       test("adds an `it` to the current describe block with excluded set to true", (){
-        jasmine.xit("new xit", (){});
+        guinness.xit("new xit", (){});
 
         final actualIt = context.suite.children.first;
 
@@ -66,7 +66,7 @@ testSyntax(){
 
     group("[iit]", (){
       test("adds an `it` to the current describe block with exclusive set to true", (){
-        jasmine.iit("new iit", (){});
+        guinness.iit("new iit", (){});
 
         final actualIt = context.suite.children.first;
 
@@ -77,14 +77,14 @@ testSyntax(){
 
     group("[beforeEach]", (){
       test("adds a before each fn to the current describe block", (){
-        jasmine.beforeEach((){});
+        guinness.beforeEach((){});
 
         expect(context.suite.beforeEachFns.length, equals(1));
         expect(context.suite.beforeEachFns[0].priority, equals(0));
       });
 
       test("supports different priorities", (){
-        jasmine.beforeEach((){}, priority: 2);
+        guinness.beforeEach((){}, priority: 2);
 
         expect(context.suite.beforeEachFns[0].priority, equals(2));
       });
@@ -92,24 +92,24 @@ testSyntax(){
 
     group("[afterEach]", (){
       test("adds a after each fn to the current describe block", (){
-        jasmine.afterEach((){});
+        guinness.afterEach((){});
 
         expect(context.suite.afterEachFns.length, equals(1));
         expect(context.suite.afterEachFns[0].priority, equals(0));
       });
 
       test("supports different priorities", (){
-        jasmine.afterEach((){}, priority: 2);
+        guinness.afterEach((){}, priority: 2);
 
         expect(context.suite.afterEachFns[0].priority, equals(2));
       });
     });
 
     test("handles nested describes and its", (){
-      jasmine.describe("outer describe", (){
-        jasmine.it("outer it", (){});
-        jasmine.describe("inner describe", (){
-          jasmine.it("inner it", (){});
+      guinness.describe("outer describe", (){
+        guinness.it("outer it", (){});
+        guinness.describe("inner describe", (){
+          guinness.it("inner it", (){});
         });
       });
 

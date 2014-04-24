@@ -1,8 +1,8 @@
 name: example
 author: Victor Savkin <vic.savkin@gmail.com>
-homepage: https://github.com/vsavkin/jasminedart
+homepage: https://github.com/vsavkin/guinness
 dependencies:
-  jasmine:
+  guinness:
     path: ../
   browser: any
 environment:

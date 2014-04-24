@@ -1,4 +1,4 @@
-part of jasmine;
+part of guinness;
 
 class SpyFunctionInvocationResult {
   final List args;

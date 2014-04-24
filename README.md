@@ -1,4 +1,4 @@
-# JasmineDart
+# Guinness
 
 This is a port of the Jasmine library to Dart. It is inspired by the AngularDart implementation of Jasmine.
 
@@ -6,7 +6,7 @@ This is a port of the Jasmine library to Dart. It is inspired by the AngularDart
 
 The library can be used as follows:
 
-    import 'package:jasmine_dart/jasmine.dart';
+    import 'package:guinness/guinness.dart';
 
     main(){
       beforeEach((){

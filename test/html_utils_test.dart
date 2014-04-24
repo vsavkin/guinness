@@ -1,6 +1,6 @@
 library html_utils_test;
 
-import 'package:jasmine_dart/src/html_utils.dart' as utils;
+import 'package:guinness/src/html_utils.dart' as utils;
 import 'package:unittest/unittest.dart';
 import 'dart:html';
 
