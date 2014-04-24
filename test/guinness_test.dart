@@ -1,6 +1,6 @@
-library jasmine_test;
+library guinness_test;
 
-import 'package:jasmine_dart/jasmine.dart' as jasmine;
+import 'package:guinness/guinness.dart' as guinness;
 import 'package:unittest/unittest.dart';
 import 'dart:html' as html;
 

@@ -1,7 +1,7 @@
-name: jasmine
+name: guinness
 version: 0.0.1
 author: Victor Savkin <vic.savkin@gmail.com>
-homepage: https://github.com/vsavkin/jasminedart
+homepage: https://github.com/vsavkin/guinness
 description: A port of the Jasmine testing framework.
 dependencies:
   collection: ">=0.9.1 <2.0.0"

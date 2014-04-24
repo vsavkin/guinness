@@ -1,4 +1,4 @@
-part of jasmine;
+part of guinness;
 
 abstract class SpecVisitor {
   void visitSuite(Suite suite);

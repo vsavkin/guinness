@@ -1,11 +1,11 @@
-part of jasmine_test;
+part of guinness_test;
 
 assertTrue(Function fn) => expect(fn, returnsNormally);
 assertFalse(Function fn) => expect(fn, throws);
 
 testUnitTestBackend(){
   group("[UnitTestMatchers]", (){
-    final jasmine.Matchers matchers = new jasmine.UnitTestMatchers();
+    final guinness.Matchers matchers = new guinness.UnitTestMatchers();
 
     test("toBe", (){
       var x = [1,2];
@@ -66,7 +66,7 @@ testUnitTestBackend(){
     });
 
     test("toHaveBeenCalled", (){
-      final spy = new jasmine.SpyFunction("");
+      final spy = new guinness.SpyFunction("");
 
       assertFalse(() => matchers.toHaveBeenCalled(spy));
 
@@ -76,7 +76,7 @@ testUnitTestBackend(){
     });
 
     test("toHaveBeenCalledOnce", (){
-      final spy = new jasmine.SpyFunction("");
+      final spy = new guinness.SpyFunction("");
 
       assertFalse(() => matchers.toHaveBeenCalledOnce(spy));
 
@@ -90,7 +90,7 @@ testUnitTestBackend(){
     });
 
     test("toHaveBeenCalledWith", (){
-      final spy = new jasmine.SpyFunction("");
+      final spy = new guinness.SpyFunction("");
 
       assertFalse(() => matchers.toHaveBeenCalledWith(spy, 1, 2));
 
@@ -101,7 +101,7 @@ testUnitTestBackend(){
     });
 
     test("toHaveBeenCalledOnceWith", (){
-      final spy = new jasmine.SpyFunction("");
+      final spy = new guinness.SpyFunction("");
 
       assertFalse(() => matchers.toHaveBeenCalledOnceWith(spy, 1, 2));
 
@@ -165,7 +165,7 @@ testUnitTestBackend(){
     });
 
     test("notToHaveBeenCalled", (){
-      final spy = new jasmine.SpyFunction("");
+      final spy = new guinness.SpyFunction("");
 
       assertTrue(() => matchers.notToHaveBeenCalled(spy));
 
@@ -175,7 +175,7 @@ testUnitTestBackend(){
     });
 
     test("notToHaveBeenCalledWith", (){
-      final spy = new jasmine.SpyFunction("");
+      final spy = new guinness.SpyFunction("");
 
       assertTrue(() => matchers.notToHaveBeenCalledWith(spy, 1, 2));
 

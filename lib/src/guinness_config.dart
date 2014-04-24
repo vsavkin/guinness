@@ -1,7 +1,7 @@
-part of jasmine;
+part of guinness;
 
-class Jasmine {
-  final JasmineConfig config = new JasmineConfig();
+class Guinness {
+  final GuinnessConfig config = new GuinnessConfig();
   Context _context = new Context();
 
   void resetContext([Context context]){
@@ -19,7 +19,7 @@ class Jasmine {
   }
 }
 
-class JasmineConfig {
+class GuinnessConfig {
   Matchers matchers = new UnitTestMatchers();
   var runner = asyncUnitTestRunner;
 }

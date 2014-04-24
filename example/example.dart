@@ -1,10 +1,10 @@
 library example;
 
-import 'package:jasmine/jasmine.dart';
+import 'package:guinness/guinness.dart';
 import 'dart:html';
 
 main(){
-  describe("jasmine", (){
+  describe("guinness", (){
     it("has various built-in matchers", (){
       expect(2).toEqual(2);
       expect([1,2]).toContain(2);
@@ -53,7 +53,7 @@ main(){
 
     describe("spy", (){
       it("supports spy functions", (){
-        final s = jasmine.createSpy("my spy");
+        final s = guinness.createSpy("my spy");
         expect(s).not.toHaveBeenCalled();
 
         s(1);
@@ -116,5 +116,5 @@ main(){
     //also supports ddescribe, and iit
   });
 
-  jasmine.run();
+  guinness.run();
 }

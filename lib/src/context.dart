@@ -1,4 +1,4 @@
-part of jasmine;
+part of guinness;
 
 class Context {
   final List<Describe> describes = [];
