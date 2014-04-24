@@ -1,0 +1,9 @@
+name: example
+author: Victor Savkin <vic.savkin@gmail.com>
+homepage: https://github.com/vsavkin/jasminedart
+dependencies:
+  jasmine:
+    path: ../
+  browser: any
+environment:
+  sdk: ">=1.3.0 <2.0.0"
