@@ -7,7 +7,7 @@ abstract class SpecVisitor {
 }
 
 abstract class Matchers {
-  void expect(actual, matcher);
+  void expect(actual, matcher, {String reason});
   void toEqual(actual, expected);
   void toContain(actual, expected);
   void toBe(actual, expected);

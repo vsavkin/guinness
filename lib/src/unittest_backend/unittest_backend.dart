@@ -35,7 +35,7 @@ class UnitTestVisitor implements SpecVisitor {
 }
 
 class UnitTestMatchers implements Matchers {
-  expect(actual, matcher) => unit.expect(actual, matcher);
+  expect(actual, matcher, {String reason}) => unit.expect(actual, matcher, reason: reason);
 
   toEqual(actual, expected) => unit.expect(actual, unit.equals(expected));
 
@@ -140,9 +140,8 @@ class ExceptionContains extends unit.Matcher {
       super.describeMismatch('$item', mismatchDescription, matchState, verbose);
 }
 
-void asyncUnitTestRunner(Suite suite){
+void unitTestRunner(Suite suite){
   var r = new UnitTestVisitor();
-  async.scheduleMicrotask((){
-    suite.visit(r);
-  });
+  suite.visit(r);
+  unit.runTests();
 }
