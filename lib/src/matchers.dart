@@ -7,6 +7,7 @@ class Expect {
 
   NotExpect get not => new NotExpect(actual, matchers);
 
+  to(matcher) => matchers.expect(actual, matcher);
   toEqual(expected) => matchers.toEqual(actual, expected);
   toContain(expected) => matchers.toContain(actual, expected);
   toBe(expected) => matchers.toBe(actual, expected);
