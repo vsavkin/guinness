@@ -1,14 +1,44 @@
 part of guinness;
 
-class UnitTestVisitor implements SpecVisitor {
+class ExclusiveItVisitor implements SpecVisitor {
+  bool _containsExclusiveIt = false;
+
   void visitSuite(Suite suite){
+    _visitChildren(suite.children);
+  }
+
+  void visitDescribe(Describe describe){
+    _visitChildren(describe.children);
+  }
+
+  void visitIt(It it){
+    if(it.exclusive)
+      _containsExclusiveIt = true;
+  }
+
+  _visitChildren(children){
+    children.forEach((c) => c.visit(this));
+  }
+
+  static bool containsExclusiveIt(Suite suite){
+    final v = new ExclusiveItVisitor();
+    v.visitSuite(suite);
+    return v._containsExclusiveIt;
+  }
+}
+
+class UnitTestVisitor implements SpecVisitor {
+  bool containsExclusiveIt;
+
+  void visitSuite(Suite suite){
+    containsExclusiveIt = ExclusiveItVisitor.containsExclusiveIt(suite);
     _visitChildren(suite.children);
   }
 
   void visitDescribe(Describe describe){
     if(describe.excluded) return;
 
-    if(describe.exclusive) {
+    if(describe.exclusive && !containsExclusiveIt) {
       unit.solo_group(describe.name, () {
         _visitChildren(describe.children);
       });
