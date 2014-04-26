@@ -28,11 +28,23 @@ testSpy(){
       test("returns the most recent call", (){
         s(1,2,3);
 
-        expect(s.mostRecentCall.args, equals([1,2,3]));
+        expect(s.mostRecentCall.positionalArguments, equals([1,2,3]));
       });
 
       test("throws when no recent calls", (){
         expect(() => s.mostRecentCall, throws);
+      });
+    });
+
+    group("[calls]", (){
+      test("returns the list of all calls", (){
+        s(1,2,3);
+
+        expect(s.calls.first.positionalArguments, equals([1,2,3]));
+      });
+
+      test("returns an empty list when no calls", (){
+        expect(s.calls, equals([]));
       });
     });
 
