@@ -26,4 +26,10 @@ void xdescribe(String name, Function fn) =>
 void ddescribe(String name, Function fn) =>
     guinness._context.addDescribe(name, fn, excluded: false, exclusive: true);
 
-Expect expect(actual) => new Expect(actual);
+Expect expect(actual, [matcher]) {
+  final expect = new Expect(actual);
+  if (matcher != null) {
+    expect.to(matcher);
+  }
+  return expect;
+}

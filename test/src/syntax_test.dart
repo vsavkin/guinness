@@ -124,5 +124,19 @@ testSyntax(){
       expect(innerDescribe.children.length, equals(1));
       expect(innerDescribe.children[0].name, equals("inner it"));
     });
+
+    group("[expect]", (){
+      test("creates an Expect object", (){
+        final e = guinness.expect("actual");
+
+        expect(e.actual, equals("actual"));
+      });
+
+      test("executes the given matcher", (){
+        expect((){
+          guinness.expect(true, isFalse);
+        }, throws);
+      });
+    });
   });
 }
