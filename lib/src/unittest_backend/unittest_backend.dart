@@ -8,10 +8,12 @@ class ExclusiveItVisitor implements SpecVisitor {
   }
 
   void visitDescribe(Describe describe){
+    if(describe.excluded) return;
     _visitChildren(describe.children);
   }
 
   void visitIt(It it){
+    if(it.excluded) return;
     if(it.exclusive)
       _containsExclusiveIt = true;
   }
@@ -28,7 +30,7 @@ class ExclusiveItVisitor implements SpecVisitor {
 }
 
 class UnitTestVisitor implements SpecVisitor {
-  bool containsExclusiveIt;
+  bool containsExclusiveIt = false;
 
   void visitSuite(Suite suite){
     containsExclusiveIt = ExclusiveItVisitor.containsExclusiveIt(suite);
