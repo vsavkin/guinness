@@ -3,6 +3,7 @@ library guinness_test;
 import 'package:guinness/guinness.dart' as guinness;
 import 'package:unittest/unittest.dart';
 import 'dart:html' as html;
+import 'html_utils_test.dart' as htmlUtilsTest;
 
 part 'src/syntax_test.dart';
 part 'src/model_test.dart';
@@ -16,4 +17,6 @@ main(){
   testModel();
   testSpy();
   testUnitTestBackend();
+
+  htmlUtilsTest.main();
 }
