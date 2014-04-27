@@ -14,12 +14,12 @@ class Guinness {
     throw ["spyOn not implemented"];
   }
 
-  void run(){
+  void runTests(){
     config.runner(_context.suite);
   }
 }
 
 class GuinnessConfig {
   Matchers matchers = new UnitTestMatchers();
-  var runner = asyncUnitTestRunner;
+  var runner = unitTestRunner;
 }
