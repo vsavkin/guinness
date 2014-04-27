@@ -20,4 +20,6 @@ class _Undefined{
 }
 const _u = const _Undefined();
 
-final Guinness guinness = new Guinness();
+final Guinness guinness = new Guinness(
+    matchers: new UnitTestMatchers(),
+    runner: unitTestRunner);
