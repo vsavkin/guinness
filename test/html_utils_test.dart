@@ -29,17 +29,24 @@ main() {
 
     test('handles element when outer is false', () {
       var el = new DivElement()..innerHtml="content";
-      expect(utils.toHtml(el, false), equals("content"));
+      expect(utils.toHtml(el, outer: false), equals("content"));
     });
 
     test('handles element when outer is true', () {
       var el = new DivElement()..innerHtml="content";
-      expect(utils.toHtml(el, true), equals("<div>content</div>"));
+      expect(utils.toHtml(el, outer: true), equals("<div>content</div>"));
     });
 
     test('replaces all empty classes', () {
       final d = new DocumentFragment.html("<div class=\"\">content</div>");
       expect(utils.toHtml(d), equals("<div>content</div>"));
+    });
+
+    test('uses the given preprocessor', () {
+      final d = new DivElement()..text = "input";
+      final preprocessed = new DivElement()..text = "preprocessed";
+
+      expect(utils.toHtml(d, preprocess: (_) => preprocessed), equals("preprocessed"));
     });
   });
 
