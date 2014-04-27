@@ -1,5 +1,7 @@
 part of guinness;
 
+typedef void SpecRunner(Suite suite);
+
 abstract class SpecVisitor {
   void visitSuite(Suite suite);
   void visitDescribe(Describe describe);

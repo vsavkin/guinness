@@ -8,10 +8,12 @@ class ExclusiveItVisitor implements SpecVisitor {
   }
 
   void visitDescribe(Describe describe){
+    if(describe.excluded) return;
     _visitChildren(describe.children);
   }
 
   void visitIt(It it){
+    if(it.excluded) return;
     if(it.exclusive)
       _containsExclusiveIt = true;
   }
@@ -28,7 +30,7 @@ class ExclusiveItVisitor implements SpecVisitor {
 }
 
 class UnitTestVisitor implements SpecVisitor {
-  bool containsExclusiveIt;
+  bool containsExclusiveIt = false;
 
   void visitSuite(Suite suite){
     containsExclusiveIt = ExclusiveItVisitor.containsExclusiveIt(suite);
@@ -64,7 +66,13 @@ class UnitTestVisitor implements SpecVisitor {
   }
 }
 
+class UnitTestMatchersConfig {
+  Function preprocessHtml = (node) => node;
+}
+
 class UnitTestMatchers implements Matchers {
+  final UnitTestMatchersConfig config  = new UnitTestMatchersConfig();
+
   expect(actual, matcher, {String reason}) => unit.expect(actual, matcher, reason: reason);
 
   toEqual(actual, expected) => unit.expect(actual, unit.equals(expected));
@@ -87,7 +95,7 @@ class UnitTestMatchers implements Matchers {
 
   toBeNotNull(actual) => unit.expect(actual, unit.isNotNull);
 
-  toHaveHtml(actual, expected) => unit.expect(htmlUtils.toHtml(actual), unit.equals(expected));
+  toHaveHtml(actual, expected) => unit.expect(htmlUtils.toHtml(actual, preprocess: config.preprocessHtml), unit.equals(expected));
 
   toHaveText(actual, expected) => unit.expect(htmlUtils.elementText(actual), unit.equals(expected));
 
@@ -128,7 +136,7 @@ class UnitTestMatchers implements Matchers {
 
   toBeUndefined(actual) => unit.expect(actual, unit.isNull);
 
-  notToHaveHtml(actual, expected) => unit.expect(htmlUtils.toHtml(actual), unit.isNot(unit.equals(expected)));
+  notToHaveHtml(actual, expected) => unit.expect(htmlUtils.toHtml(actual, preprocess: config.preprocessHtml), unit.isNot(unit.equals(expected)));
 
   notToHaveText(actual, expected) => unit.expect(htmlUtils.elementText(actual), unit.isNot(unit.equals(expected)));
 
