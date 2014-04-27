@@ -69,7 +69,7 @@ class UnitTestMatchersConfig {
 }
 
 class UnitTestMatchers implements Matchers {
-  UnitTestMatchersConfig config  = new UnitTestMatchersConfig();
+  final UnitTestMatchersConfig config  = new UnitTestMatchersConfig();
 
   expect(actual, matcher, {String reason}) => unit.expect(actual, matcher, reason: reason);
 
