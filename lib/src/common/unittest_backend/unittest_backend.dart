@@ -66,13 +66,7 @@ class UnitTestVisitor implements SpecVisitor {
   }
 }
 
-class UnitTestMatchersConfig {
-  Function preprocessHtml = (node) => node;
-}
-
 class UnitTestMatchers implements Matchers {
-  final UnitTestMatchersConfig config  = new UnitTestMatchersConfig();
-
   expect(actual, matcher, {String reason}) => unit.expect(actual, matcher, reason: reason);
 
   toEqual(actual, expected) => unit.expect(actual, unit.equals(expected));
@@ -94,20 +88,6 @@ class UnitTestMatchers implements Matchers {
   toBeNull(actual) => unit.expect(actual, unit.isNull);
 
   toBeNotNull(actual) => unit.expect(actual, unit.isNotNull);
-
-  toHaveHtml(actual, expected) => unit.expect(htmlUtils.toHtml(actual, preprocess: config.preprocessHtml), unit.equals(expected));
-
-  toHaveText(actual, expected) => unit.expect(htmlUtils.elementText(actual), unit.equals(expected));
-
-  toHaveClass(actual, cls) =>
-      unit.expect(actual.classes.contains(cls), true,
-        reason: ' Expected ${actual} to have css class ${cls}');
-
-  toHaveAttribute(actual, name, [value = null]) {
-    unit.expect(actual.attributes.containsKey(name), true, reason: 'Epxected $actual to have attribute $name');
-    if (value != null)
-      unit.expect(actual.attributes[name], value, reason: 'Epxected $actual attribute "$name" to be "$value"');
-  }
 
   toHaveBeenCalled(actual) => unit.expect(actual.called, true, reason: 'method not called');
 
@@ -135,19 +115,6 @@ class UnitTestMatchers implements Matchers {
   toReturnNormally(actual) => unit.expect(actual, unit.returnsNormally);
 
   toBeUndefined(actual) => unit.expect(actual, unit.isNull);
-
-  notToHaveHtml(actual, expected) => unit.expect(htmlUtils.toHtml(actual, preprocess: config.preprocessHtml), unit.isNot(unit.equals(expected)));
-
-  notToHaveText(actual, expected) => unit.expect(htmlUtils.elementText(actual), unit.isNot(unit.equals(expected)));
-
-  notToHaveClass(actual, cls) =>
-      unit.expect(actual.classes.contains(cls), false,
-        reason: ' Expected ${actual} not to have css class ${cls}');
-
-  notToHaveAttribute(actual, name) =>
-      unit.expect(actual.attributes.containsKey(name),
-        false,
-        reason: 'Epxected $actual not to have attribute $name');
 
   notToHaveBeenCalled(actual) => unit.expect(actual.called, false, reason: 'method called');
 
