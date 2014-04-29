@@ -1,9 +1,11 @@
 library example;
 
-import 'package:guinness/guinness.dart';
+import 'package:guinness/guinness_html.dart';
 import 'dart:html';
 
 main(){
+  guinnessEnableHtmlMatchers();
+
   describe("guinness", (){
     it("has various built-in matchers", (){
       expect(2).toEqual(2);

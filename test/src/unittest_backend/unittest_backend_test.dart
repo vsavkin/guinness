@@ -5,7 +5,7 @@ assertFalse(Function fn) => expect(fn, throws);
 
 testUnitTestBackend(){
   group("[UnitTestMatchers]", (){
-    final guinness.Matchers matchers = new guinness.UnitTestMatchers();
+    final guinness.Matchers matchers = new guinness.UnitTestMatchersWithHtml();
 
     test("toBe", (){
       var x = [1,2];
