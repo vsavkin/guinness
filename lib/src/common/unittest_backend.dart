@@ -31,6 +31,9 @@ class ExclusiveItVisitor implements SpecVisitor {
 
 class UnitTestVisitor implements SpecVisitor {
   bool containsExclusiveIt = false;
+  Set initializedSpecs;
+
+  UnitTestVisitor(this.initializedSpecs);
 
   void visitSuite(Suite suite){
     containsExclusiveIt = ExclusiveItVisitor.containsExclusiveIt(suite);
@@ -38,31 +41,41 @@ class UnitTestVisitor implements SpecVisitor {
   }
 
   void visitDescribe(Describe describe){
-    if(describe.excluded) return;
+    _once(describe, () {
+      if (describe.excluded) return;
 
-    if(describe.exclusive && !containsExclusiveIt) {
-      unit.solo_group(describe.name, () {
-        _visitChildren(describe.children);
-      });
-    } else {
-      unit.group(describe.name, () {
-        _visitChildren(describe.children);
-      });
-    }
+      if (describe.exclusive && !containsExclusiveIt) {
+        unit.solo_group(describe.name, () {
+          _visitChildren(describe.children);
+        });
+      } else {
+        unit.group(describe.name, () {
+          _visitChildren(describe.children);
+        });
+      }
+    });
   }
 
   void visitIt(It it){
-    if(it.excluded) return;
+    _once(it, (){
+      if(it.excluded) return;
 
-    if(it.exclusive){
-      unit.solo_test(it.name, it.withSetupAndTeardown);
-    } else {
-      unit.test(it.name, it.withSetupAndTeardown);
-    }
+      if(it.exclusive){
+        unit.solo_test(it.name, it.withSetupAndTeardown);
+      } else {
+        unit.test(it.name, it.withSetupAndTeardown);
+      }
+    });
   }
 
   _visitChildren(children){
     children.forEach((c) => c.visit(this));
+  }
+
+  _once(spec, Function func){
+    if(initializedSpecs.contains(spec)) return;
+    func();
+    initializedSpecs.add(spec);
   }
 }
 
@@ -145,8 +158,10 @@ class ExceptionContains extends unit.Matcher {
       super.describeMismatch('$item', mismatchDescription, matchState, verbose);
 }
 
+Set _initializedSpecs = new Set();
+
 void unitTestInitSpecs(Suite suite){
-  var r = new UnitTestVisitor();
+  var r = new UnitTestVisitor(_initializedSpecs);
   suite.visit(r);
 }
 

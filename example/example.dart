@@ -118,5 +118,10 @@ main(){
     //also supports ddescribe, and iit
   });
 
+  //initSpecs can be called multiple times. Each spec is initialized only once.
+  guinness.initSpecs();
+
+  guinness.initSpecs();
+
   guinness.runSpecs();
 }
