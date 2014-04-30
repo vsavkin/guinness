@@ -5,9 +5,13 @@ class Guinness {
   Matchers matchers;
   SpecRunner _runner;
   SpecRunner _initSpecs;
+  bool autoInit = true;
 
   Guinness({this.matchers, SpecRunner runner, SpecRunner initSpecs})
-      : _runner = runner, _initSpecs = initSpecs;
+      : _runner = runner, _initSpecs = initSpecs {
+
+    _scheduleAutoInit();
+  }
 
   SpyFunction createSpy([String name]) => new SpyFunction(name);
 
@@ -21,5 +25,12 @@ class Guinness {
 
   void resetContext([Context context]){
     _context = context == null ? new Context() : context;
+  }
+
+  void _scheduleAutoInit(){
+    async.scheduleMicrotask((){
+      if(autoInit)
+        initSpecs();
+    });
   }
 }
