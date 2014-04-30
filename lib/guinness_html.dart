@@ -9,7 +9,7 @@ export 'guinness.dart';
 part 'src/html/interfaces.dart';
 part 'src/html/expect.dart';
 part 'src/html/syntax.dart';
-part 'src/html/unittest_backend/unittest_backend.dart';
+part 'src/html/unittest_html_matchers.dart';
 
 void guinnessEnableHtmlMatchers(){
   gns.guinness.matchers = new UnitTestMatchersWithHtml();

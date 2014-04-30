@@ -118,5 +118,5 @@ main(){
     //also supports ddescribe, and iit
   });
 
-  guinness.runTests();
+  guinness.runSpecs();
 }
