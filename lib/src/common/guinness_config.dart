@@ -11,7 +11,7 @@ class Guinness {
 
   SpyFunction createSpy([String name]) => new SpyFunction(name);
 
-  void runTests(){
+  void runSpecs(){
     _runner(_context.suite);
   }
 
