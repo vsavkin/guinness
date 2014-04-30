@@ -9,6 +9,7 @@ class Expect extends gns.Expect {
   toHaveText(expected) => _m.toHaveText(actual, expected);
   toHaveClass(cls) => _m.toHaveClass(actual, cls);
   toHaveAttribute(name, [value = null]) => _m.toHaveAttribute(actual, name, value);
+  toEqualSelect(options) => _m.toEqualSelect(actual, options);
 
   HtmlMatchers get _m => gns.guinness.matchers;
 }

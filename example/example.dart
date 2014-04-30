@@ -51,6 +51,14 @@ main(){
 
       expect(new DivElement()..attributes['attr'] = 'value')
           .not.toHaveAttribute("other-attr");
+
+      final select = new SelectElement();
+      select.children
+        ..add(new OptionElement(value: "1"))
+        ..add(new OptionElement(value: "2", selected: true))
+        ..add(new OptionElement(value: "3"));
+
+      expect(select).toEqualSelect(["1", ["2"], "3"]);
     });
 
     describe("spy", (){
@@ -117,11 +125,4 @@ main(){
 
     //also supports ddescribe, and iit
   });
-
-  //initSpecs can be called multiple times. Each spec is initialized only once.
-  guinness.initSpecs();
-
-  guinness.initSpecs();
-
-  guinness.runSpecs();
 }

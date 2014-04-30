@@ -5,7 +5,7 @@ assertFalse(Function fn) => expect(fn, throws);
 
 testUnitTestBackend(){
   group("[UnitTestMatchers]", (){
-    final guinness.Matchers matchers = new guinness.UnitTestMatchersWithHtml();
+    final matchers = new guinness.UnitTestMatchersWithHtml();
 
     test("toBe", (){
       var x = [1,2];
@@ -63,6 +63,16 @@ testUnitTestBackend(){
       assertTrue(() => matchers.toHaveAttribute(div, "one", "value"));
       assertFalse(() => matchers.toHaveAttribute(div, "two"));
       assertFalse(() => matchers.toHaveAttribute(div, "one", "invalid value"));
+    });
+
+    test("toEqualSelect", (){
+      final select = new html.SelectElement();
+      select.children.add(new html.OptionElement(value: "1"));
+      select.children.add(new html.OptionElement(value: "2", selected: true));
+      select.children.add(new html.OptionElement(value: "3"));
+
+      assertTrue(() => matchers.toEqualSelect(select, ["1", ["2"], "3"]));
+      assertFalse(() => matchers.toEqualSelect(select, ["1", "2", "3"]));
     });
 
     test("toHaveBeenCalled", (){

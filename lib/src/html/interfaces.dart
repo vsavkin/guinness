@@ -5,6 +5,7 @@ abstract class HtmlMatchers {
   void toHaveText(actual, expected);
   void toHaveClass(actual, cls);
   void toHaveAttribute(actual, name, [value]);
+  void toEqualSelect(actual, options);
 
   void notToHaveHtml(actual, expected);
   void notToHaveText(actual, expected);

@@ -21,6 +21,14 @@ class UnitTestMatchersWithHtml extends gns.UnitTestMatchers implements HtmlMatch
       unit.expect(actual.attributes[name], value, reason: 'Epxected $actual attribute "$name" to be "$value"');
   }
 
+  toEqualSelect(actual, options) {
+    var actualOptions = [];
+    for (var option in actual.querySelectorAll('option')) {
+      actualOptions.add(option.selected ? [option.value] : option.value);
+    }
+    return unit.expect(actualOptions, options);
+  }
+
   notToHaveHtml(actual, expected) => unit.expect(htmlUtils.toHtml(actual, preprocess: config.preprocessHtml), unit.isNot(unit.equals(expected)));
 
   notToHaveText(actual, expected) => unit.expect(htmlUtils.elementText(actual), unit.isNot(unit.equals(expected)));
