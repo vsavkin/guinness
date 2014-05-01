@@ -3,26 +3,26 @@ part of guinness;
 class ExclusiveItVisitor implements SpecVisitor {
   bool _containsExclusiveIt = false;
 
-  void visitSuite(Suite suite){
+  void visitSuite(Suite suite) {
     _visitChildren(suite.children);
   }
 
-  void visitDescribe(Describe describe){
-    if(describe.excluded) return;
+  void visitDescribe(Describe describe) {
+    if (describe.excluded) return;
     _visitChildren(describe.children);
   }
 
-  void visitIt(It it){
-    if(it.excluded) return;
-    if(it.exclusive)
+  void visitIt(It it) {
+    if (it.excluded) return;
+    if (it.exclusive)
       _containsExclusiveIt = true;
   }
 
-  _visitChildren(children){
+  _visitChildren(children) {
     children.forEach((c) => c.visit(this));
   }
 
-  static bool containsExclusiveIt(Suite suite){
+  static bool containsExclusiveIt(Suite suite) {
     final v = new ExclusiveItVisitor();
     v.visitSuite(suite);
     return v._containsExclusiveIt;
@@ -35,12 +35,12 @@ class UnitTestVisitor implements SpecVisitor {
 
   UnitTestVisitor(this.initializedSpecs);
 
-  void visitSuite(Suite suite){
+  void visitSuite(Suite suite) {
     containsExclusiveIt = ExclusiveItVisitor.containsExclusiveIt(suite);
     _visitChildren(suite.children);
   }
 
-  void visitDescribe(Describe describe){
+  void visitDescribe(Describe describe) {
     _once(describe, () {
       if (describe.excluded) return;
 
@@ -56,11 +56,11 @@ class UnitTestVisitor implements SpecVisitor {
     });
   }
 
-  void visitIt(It it){
-    _once(it, (){
-      if(it.excluded) return;
+  void visitIt(It it) {
+    _once(it, () {
+      if (it.excluded) return;
 
-      if(it.exclusive){
+      if (it.exclusive){
         unit.solo_test(it.name, it.withSetupAndTeardown);
       } else {
         unit.test(it.name, it.withSetupAndTeardown);
@@ -68,12 +68,12 @@ class UnitTestVisitor implements SpecVisitor {
     });
   }
 
-  _visitChildren(children){
+  _visitChildren(children) {
     children.forEach((c) => c.visit(this));
   }
 
-  _once(spec, Function func){
-    if(initializedSpecs.contains(spec)) return;
+  _once(spec, Function func) {
+    if (initializedSpecs.contains(spec)) return;
     func();
     initializedSpecs.add(spec);
   }
@@ -160,12 +160,12 @@ class ExceptionContains extends unit.Matcher {
 
 Set _initializedSpecs = new Set();
 
-void unitTestInitSpecs(Suite suite){
+void unitTestInitSpecs(Suite suite) {
   var r = new UnitTestVisitor(_initializedSpecs);
   suite.visit(r);
 }
 
-void unitTestRunner(Suite suite){
+void unitTestRunner(Suite suite) {
   unitTestInitSpecs(suite);
   unit.runTests();
 }

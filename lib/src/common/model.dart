@@ -30,8 +30,8 @@ abstract class Spec {
 class It extends Spec {
   final Function fn;
 
-  It(String name, Describe parent, this.fn, {bool excluded, bool exclusive}) :
-      super(name, parent, excluded: excluded, exclusive: exclusive);
+  It(String name, Describe parent, this.fn, {bool excluded, bool exclusive})
+      : super(name, parent, excluded: excluded, exclusive: exclusive);
 
   Function get withSetupAndTeardown {
     return () {
@@ -76,20 +76,20 @@ class Describe extends Spec {
   final List<AfterEach> afterEachFns = [];
   final List<Spec> children = [];
 
-  Describe(String name, Describe parent, this.context, Function definition, {bool excluded, bool exclusive}) :
-      super(name, parent, excluded: excluded, exclusive: exclusive) {
+  Describe(String name, Describe parent, this.context, Function definition, {bool excluded, bool exclusive})
+      : super(name, parent, excluded: excluded, exclusive: exclusive) {
     context.withDescribe(this, definition);
   }
 
-  void addBeforeEach(BeforeEach beforeEach){
+  void addBeforeEach(BeforeEach beforeEach) {
     beforeEachFns.add(beforeEach);
   }
 
-  void addAfterEach(AfterEach afterEach){
+  void addAfterEach(AfterEach afterEach) {
     afterEachFns.add(afterEach);
   }
 
-  void add(child){
+  void add(child) {
     children.add(child);
   }
 
@@ -99,7 +99,8 @@ class Describe extends Spec {
 }
 
 class Suite extends Describe {
-  Suite(Context context): super(null, null, context, (){});
+  Suite(Context context)
+      : super(null, null, context, (){});
 
   void visit(SpecVisitor visitor) => visitor.visitSuite(this);
 }

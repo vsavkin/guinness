@@ -3,7 +3,7 @@ library html_utils;
 import 'dart:html';
 
 String toHtml(node, {Function preprocess, bool outer: false}) {
-  if(preprocess != null) {
+  if (preprocess != null) {
     node = preprocess(node);
   }
 

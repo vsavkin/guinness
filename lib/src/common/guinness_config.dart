@@ -15,19 +15,19 @@ class Guinness {
 
   SpyFunction createSpy([String name]) => new SpyFunction(name);
 
-  void runSpecs(){
+  void runSpecs() {
     _runner(_context.suite);
   }
 
-  void initSpecs(){
+  void initSpecs() {
     _initSpecs(_context.suite);
   }
 
-  void resetContext([Context context]){
+  void resetContext([Context context]) {
     _context = context == null ? new Context() : context;
   }
 
-  void _scheduleAutoInit(){
+  void _scheduleAutoInit() {
     async.scheduleMicrotask((){
       if(autoInit)
         initSpecs();

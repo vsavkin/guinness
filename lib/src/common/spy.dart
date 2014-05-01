@@ -21,7 +21,7 @@ class SpyFunction {
   call([a0=_u, a1=_u, a2 =_u, a3=_u, a4=_u, a5=_u]) =>
       _processCall(_takeDefined([a0, a1, a2, a3, a4, a5]));
 
-  noSuchMethod(Invocation c){
+  noSuchMethod(Invocation c) {
     if(c.memberName == #call){
       return _processCall(c.positionalArguments);
     } else {
@@ -42,7 +42,7 @@ class SpyFunction {
     return calls.last;
   }
 
-  firstArgsMatch([a0=_u, a1=_u, a2 =_u, a3=_u, a4=_u, a5=_u]){
+  firstArgsMatch([a0=_u, a1=_u, a2 =_u, a3=_u, a4=_u, a5=_u]) {
     final toMatch = _takeDefined([a0, a1, a2, a3, a4, a5]);
     if(calls.isEmpty){
       return false;
@@ -52,7 +52,7 @@ class SpyFunction {
     }
   }
 
-  _processCall(List posArgs){
+  _processCall(List posArgs) {
     calls.add(new SpyFunctionCall(posArgs));
 
     if(_callFakeFn != null){
