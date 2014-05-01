@@ -152,7 +152,7 @@ While transitioning you can have both the unittest and guinness libraries import
     import 'package:guinness/guinness.dart';
 
 
-## Extend Guinness
+## Extending Guinness
 
 If you are using a lot of custom matchers, and using `expect(object).to(matcher)` is tedious,
 you can extend the library, as follows:
