@@ -29,11 +29,20 @@ class ExclusiveItVisitor implements SpecVisitor {
   }
 }
 
+class UnitTestAdapter {
+  const UnitTestAdapter();
+  void group(String name, Function fn) => unit.group(name, fn);
+  void solo_group(String name, Function fn) => unit.group(name, fn);
+  void test(String name, Function fn) => unit.test(name, fn);
+  void solo_test(String name, Function fn) => unit.solo_test(name, fn);
+}
+
 class UnitTestVisitor implements SpecVisitor {
   bool containsExclusiveIt = false;
   Set initializedSpecs;
+  dynamic unit;
 
-  UnitTestVisitor(this.initializedSpecs);
+  UnitTestVisitor(this.initializedSpecs, {this.unit: const UnitTestAdapter()});
 
   void visitSuite(Suite suite) {
     containsExclusiveIt = ExclusiveItVisitor.containsExclusiveIt(suite);

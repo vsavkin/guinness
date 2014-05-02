@@ -4,7 +4,122 @@ assertTrue(Function fn) => expect(fn, returnsNormally);
 assertFalse(Function fn) => expect(fn, throws);
 
 testUnitTestBackend(){
-  group("[UnitTestMatchers]", (){
+  group("[ExclusiveItVisitor]", () {
+    test("return true when a suite has an iit", () {
+      final suite = createSuite()
+                      ..add(createDescribe()
+                          ..add(createIt(exclusive: true)));
+
+      expect(guinness.ExclusiveItVisitor.containsExclusiveIt(suite), isTrue);
+    });
+
+    test("ignores iit inside xdescribe", () {
+      final suite = createSuite()
+                      ..add(createDescribe(excluded: true)
+                          ..add(createIt(exclusive: true)));
+
+      expect(guinness.ExclusiveItVisitor.containsExclusiveIt(suite), isFalse);
+    });
+
+    test("returns false otherwise", () {
+      final suite = createSuite()
+                      ..add(createDescribe()
+                          ..add(createIt(exclusive: false)));
+
+      expect(guinness.ExclusiveItVisitor.containsExclusiveIt(suite), isFalse);
+    });
+  });
+
+  group("[UnitTestVisitor]", () {
+    var visitor, unit;
+
+    setUp(() {
+      unit = mock();
+      visitor = new guinness.UnitTestVisitor(new Set(), unit: unit);
+    });
+
+    tearDown(currentTestRun.verify);
+
+    test('handles an empty suite', () {
+      visitor.visitSuite(createSuite());
+    });
+
+    test('uses group for describe', () {
+      final suite = createSuite()
+                    ..add(createDescribe());
+
+      unit.shouldReceive("group");
+
+      visitor.visitSuite(suite);
+    });
+
+    test('uses solo_group for exclusive describe', () {
+      final suite = createSuite()
+                    ..add(createDescribe(exclusive: true));
+
+      unit.shouldReceive("solo_group");
+
+      visitor.visitSuite(suite);
+    });
+
+    test('skips excluded describes', () {
+      final suite = createSuite()
+                    ..add(createDescribe(excluded: true));
+
+      visitor.visitSuite(suite);
+    });
+
+    test('uses test for it', () {
+      final suite = createSuite()
+                    ..add(createIt());
+
+      unit.shouldReceive("test");
+
+      visitor.visitSuite(suite);
+    });
+
+    test('uses solo_test for exclusive it', () {
+      final suite = createSuite()
+                    ..add(createIt(exclusive: true));
+
+      unit.shouldReceive("solo_test");
+
+      visitor.visitSuite(suite);
+    });
+
+    test('skips excluded its', () {
+      final suite = createSuite()
+                    ..add(createIt(excluded: true));
+
+      visitor.visitSuite(suite);
+    });
+
+    test('runs only exlusive its', () {
+      final suite = createSuite()
+                    ..add(createIt(exclusive: true))
+                    ..add(createDescribe(exclusive: true));
+
+      unit.shouldReceive("group");
+      unit.shouldReceive("solo_test");
+
+      visitor.visitSuite(suite);
+    });
+
+    test("initializes specs only once", () {
+      final suite = createSuite()
+                    ..add(createIt())
+                    ..add(createDescribe());
+
+      unit.shouldReceive("test").times(1);
+      unit.shouldReceive("group").times(1);
+
+      visitor.visitSuite(suite);
+
+      visitor.visitSuite(suite);
+    });
+  });
+
+  group("[UnitTestMatchers]", () {
     final matchers = new guinness.UnitTestMatchersWithHtml();
 
     test("toBe", (){
