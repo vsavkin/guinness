@@ -80,6 +80,8 @@ class UnitTestVisitor implements SpecVisitor {
 }
 
 class UnitTestMatchers implements Matchers {
+  get config => {};
+  
   expect(actual, matcher, {String reason}) => unit.expect(actual, matcher, reason: reason);
 
   toEqual(actual, expected) => unit.expect(actual, unit.equals(expected));

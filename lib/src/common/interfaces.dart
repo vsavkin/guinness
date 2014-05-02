@@ -9,6 +9,8 @@ abstract class SpecVisitor {
 }
 
 abstract class Matchers {
+  dynamic get config;
+
   void expect(actual, matcher, {String reason});
   void toEqual(actual, expected);
   void toContain(actual, expected);

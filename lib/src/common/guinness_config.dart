@@ -15,6 +15,10 @@ class Guinness {
 
   SpyFunction createSpy([String name]) => new SpyFunction(name);
 
+  SpyFunction spyOn(obj, String name) {
+    throw "Not implemented";
+  }
+
   void runSpecs() {
     _runner(_context.suite);
   }

@@ -11,7 +11,7 @@ class Expect extends gns.Expect {
   toHaveAttribute(name, [value = null]) => _m.toHaveAttribute(actual, name, value);
   toEqualSelect(options) => _m.toEqualSelect(actual, options);
 
-  HtmlMatchers get _m => gns.guinness.matchers;
+  get _m => gns.guinness.matchers;
 }
 
 
@@ -23,5 +23,5 @@ class NotExpect extends gns.NotExpect {
   toHaveClass(cls) => _m.notToHaveClass(actual, cls);
   toHaveAttribute(name) => _m.notToHaveAttribute(actual, name);
 
-  HtmlMatchers get _m => gns.guinness.matchers;
+  get _m => gns.guinness.matchers;
 }
