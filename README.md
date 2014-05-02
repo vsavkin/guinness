@@ -232,7 +232,7 @@ There are a few things that are still not supported (e.g., handling named parame
 
 The main idea is to treat the Jasmine syntax as a domain specific language. Therefore,
 the implementation clearly  separates such things as: syntax, semantic model, and execution model. Let's quickly look
-  at the benefits this approach provices:
+  at the benefits this approach provides:
 
 #### The semantic model is separate from the syntax.
 
