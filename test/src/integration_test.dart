@@ -1,6 +1,8 @@
 part of guinness_test;
 
 class DummyVisitor implements guinness.SpecVisitor {
+  List<Future> allFutures = [];
+
   void visitSuite(guinness.Suite suite){
     suite.children.forEach((c) => c.visit(this));
   }
@@ -10,17 +12,23 @@ class DummyVisitor implements guinness.SpecVisitor {
   }
 
   void visitIt(guinness.It it){
-    it.withSetupAndTeardown();
+    allFutures.add(it.withSetupAndTeardown());
   }
-}
 
-void runTests(guinness.Context context){
-  context.suite.visit(new DummyVisitor());
+  waitForAll() => Future.wait(allFutures);
 }
 
 testIntegration(){
   group("[integration]", (){
     var context;
+
+    void verify(Function fn){
+      final visitor = new DummyVisitor();
+      context.suite.visit(visitor);
+      visitor.waitForAll()
+          .then(expectAsync((_) => fn()))
+          .catchError((e) => print(e));
+    }
 
     setUp((){
       context = new guinness.Context();
@@ -29,6 +37,7 @@ testIntegration(){
 
     test("runs specs once", (){
       var log = [];
+
       guinness.describe("outer describe", (){
         guinness.it("outer it", (){
           log.add("outer it");
@@ -41,9 +50,9 @@ testIntegration(){
         });
       });
 
-      runTests(context);
-
-      expect(log, equals(["outer it", "inner it"]));
+      verify(() {
+        expect(log, equals(["outer it", "inner it"]));
+      });
     });
 
     test("runs beforeEach and afterEach blocks", (){
@@ -73,9 +82,39 @@ testIntegration(){
         });
       });
 
-      runTests(context);
+      verify(() {
+        expect(log, equals(["outer beforeEach", "inner beforeEach",
+                            "inner it",
+                            "inner afterEach", "outer afterEach"]));
+      });
+    });
 
-      expect(log, equals(["outer beforeEach", "inner beforeEach", "inner it", "inner afterEach", "outer afterEach"]));
+    group("when beforeEach, afterEach, and it return futures", () {
+      test("waits for them to be completed", () {
+        var log = [];
+
+        futurePrinting(message) => new Future.microtask(() {
+          log.add(message);
+        });
+
+        guinness.describe("outer describe", (){
+          guinness.beforeEach(() => futurePrinting("outer beforeEach"));
+          guinness.afterEach(() => futurePrinting("outer afterEach"));
+
+          guinness.describe("inner describe", (){
+            guinness.beforeEach(() => futurePrinting("inner beforeEach"));
+            guinness.afterEach(() => futurePrinting("inner afterEach"));
+
+            guinness.it("inner it", () => futurePrinting("inner it"));
+          });
+        });
+
+        verify(() {
+          expect(log, equals(["outer beforeEach", "inner beforeEach",
+                              "inner it",
+                              "inner afterEach", "outer afterEach"]));
+        });
+      });
     });
   });
 }

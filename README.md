@@ -76,6 +76,32 @@ This will print:
 
 If there is an `iit` in your spec files, Guinness will run only `iit`s. In this case `ddescribe`s will be ignored.
 
+
+## Async
+
+Since Dart has built-in futures, the Guinness framework makes a good use out of them. If you return a future from
+`beforeEach`, `afterEach`, or `it`, the framework will wait for that future to be resolved.
+
+For instance:
+
+    beforeEach(connectToTheDatabase);
+
+where `connectToTheDatabase` returns a future.
+
+Similarly, you can write:
+
+    afterEach(releaseConnection);
+
+You can also write async specs using the following technique:
+
+    it("should return an empty list when the database is empty", () {
+      return queryDatabase().then((results){
+        expect(results).toEqual([]);
+      });
+    });
+
+If a returned future gets rejected, the test fails.
+
 ## Expect
 
 They way you write assertions in Guinness is by using the `expect` function, as follows:
