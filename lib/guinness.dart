@@ -12,6 +12,7 @@ part 'src/common/spy.dart';
 part 'src/common/interfaces.dart';
 part 'src/common/guinness_config.dart';
 part 'src/common/unittest_backend.dart';
+part 'src/common/stats.dart';
 
 class _Undefined{
   const _Undefined();

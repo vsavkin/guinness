@@ -6,6 +6,7 @@ class Guinness {
   SpecRunner _runner;
   SpecRunner _initSpecs;
   bool autoInit = true;
+  bool showStats = false;
 
   Guinness({this.matchers, SpecRunner runner, SpecRunner initSpecs})
       : _runner = runner, _initSpecs = initSpecs {
@@ -24,6 +25,7 @@ class Guinness {
   }
 
   void initSpecs() {
+    if(showStats) _printStats(_context.suite);
     _initSpecs(_context.suite);
   }
 
