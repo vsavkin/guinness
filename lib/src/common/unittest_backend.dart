@@ -32,7 +32,7 @@ class ExclusiveItVisitor implements SpecVisitor {
 class UnitTestAdapter {
   const UnitTestAdapter();
   void group(String name, Function fn) => unit.group(name, fn);
-  void solo_group(String name, Function fn) => unit.group(name, fn);
+  void solo_group(String name, Function fn) => unit.solo_group(name, fn);
   void test(String name, Function fn) => unit.test(name, fn);
   void solo_test(String name, Function fn) => unit.solo_test(name, fn);
 }
