@@ -52,6 +52,67 @@ testModel(){
 
         expect(it.afterEachFns, equals([afterEach2, afterEach1]));
       });
+
+      test("runs async beforeEach callbacks in order", () {
+        final log = [];
+
+        createBeforeEach(delay, message) {
+          var func = () => new Future.delayed(new Duration(milliseconds: delay), () => log.add(message));
+          return new guinness.BeforeEach(func, priority: 1);
+        }
+
+        final beforeEach1 = createBeforeEach(2, "one");
+        final beforeEach2 = createBeforeEach(1, "two");
+
+        final describe = createDescribe()
+          ..addBeforeEach(beforeEach1)
+          ..addBeforeEach(beforeEach2);
+
+        final it = createIt(parent: describe);
+
+        it.withSetupAndTeardown().then(expectAsync((_) {
+          expect(log, equals(["one", "two"]));
+        }));
+      });
+
+      test("runs async afterEach callbacks in order", () {
+        final log = [];
+
+        createAfterEach(delay, message) {
+          var func = () => new Future.delayed(new Duration(milliseconds: delay), () => log.add(message));
+          return new guinness.AfterEach(func, priority: 1);
+        }
+
+        final afterEach1 = createAfterEach(2, "one");
+        final afterEach2 = createAfterEach(1, "two");
+
+        final describe = createDescribe()
+          ..addAfterEach(afterEach1)
+          ..addAfterEach(afterEach2);
+
+        final it = createIt(parent: describe);
+
+        it.withSetupAndTeardown().then(expectAsync((_) {
+          expect(log, equals(["one", "two"]));
+        }));
+      });
+
+      test("does not run afterEach callbacks if beforeEach callbacks errored", () {
+        final be = new guinness.BeforeEach(() => throw "BOOM", priority: 1);
+
+        var run = false;
+        final ae = new guinness.AfterEach(() => run = true, priority: 1);
+
+        final describe = createDescribe()
+          ..addBeforeEach(be)
+          ..addAfterEach(ae);
+
+        final it = createIt(parent: describe);
+
+        it.withSetupAndTeardown().catchError(expectAsync((_) {
+          expect(run, isFalse);
+        }));
+      });
     });
   });
 }

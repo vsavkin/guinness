@@ -4,6 +4,7 @@ import 'package:guinness/guinness_html.dart' as guinness;
 import 'package:unittest/unittest.dart';
 import 'package:dartmocks/dartmocks.dart';
 import 'dart:html' as html;
+import 'dart:async';
 import 'html_utils_test.dart' as htmlUtilsTest;
 
 part 'src/syntax_test.dart';
