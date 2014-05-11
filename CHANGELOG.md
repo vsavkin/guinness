@@ -1,3 +1,7 @@
+# v0.1.3 (N/A)
+
+- Add support for async `beforeEach`, `afterEach`, and `it` blocks.
+
 # v0.1.2 (2014-05-03)
 
 - Refactor the unittest backend.
