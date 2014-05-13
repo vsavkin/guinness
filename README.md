@@ -1,6 +1,6 @@
 # Guinness
 
-Guinness is a port of the Jasmine library to Dart. It is inspired by the AngularDart implementation of Jasmine.
+Guinness is a port of the Jasmine library to Dart. It is based on the AngularDart implementation of Jasmine.
 
 ## Installation
 
