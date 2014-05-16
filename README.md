@@ -274,3 +274,8 @@ as a  separate step, executes them. It enables all sorts of preprocessing (e.g.,
 
 Since the library is a DSL, there can be multiple backend libraries actually executing the specs. By default,
 the  library comes with the unittest backend.
+
+# Contributors
+
+* Google Inc
+* Victor Savkin
