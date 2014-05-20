@@ -1,3 +1,7 @@
+# v0.1.4 (2014-05-20)
+
+- License change
+
 # v0.1.3 (2014-05-11)
 
 - Add support for async `beforeEach`, `afterEach`, and `it` blocks.

@@ -1,5 +1,5 @@
 name: guinness
-version: 0.1.3
+version: 0.1.4
 author: Victor Savkin <vic.savkin@gmail.com>
 homepage: https://github.com/vsavkin/guinness
 description: A port of the Jasmine testing framework.
