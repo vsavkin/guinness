@@ -10,6 +10,7 @@ class Expect {
   toEqual(expected) => _m.toEqual(actual, expected);
   toContain(expected) => _m.toContain(actual, expected);
   toBe(expected) => _m.toBe(actual, expected);
+  toBeA(expected) => _m.toBeA(actual, expected);
   toThrow([exception]) => _m.toThrow(actual, exception);
   toBeFalsy() => _m.toBeFalsy(actual);
   toBeTruthy() => _m.toBeTruthy(actual);
@@ -32,6 +33,7 @@ class NotExpect {
   toEqual(expected) => _m.notToEqual(actual, expected);
   toContain(expected) => _m.notToContain(actual, expected);
   toBe(expected) => _m.notToBe(actual, expected);
+  toBeA(expected) => _m.notToBeA(actual, expected);
   toThrow() => _m.toReturnNormally(actual);
   toBeDefined() => _m.toBeUndefined(actual);
   toHaveBeenCalled() => _m.notToHaveBeenCalled(actual);
