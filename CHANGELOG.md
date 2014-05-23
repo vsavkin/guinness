@@ -1,3 +1,8 @@
+# Next Version
+
+- Update the list of contributors
+- Add toBeA matcher
+
 # v0.1.4 (2014-05-20)
 
 - License change
