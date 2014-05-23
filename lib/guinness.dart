@@ -3,6 +3,7 @@ library guinness;
 import 'package:unittest/unittest.dart' as unit;
 import 'package:collection/equality.dart';
 import 'dart:async' as async;
+import 'dart:mirrors' as mirrors;
 
 part 'src/common/model.dart';
 part 'src/common/context.dart';

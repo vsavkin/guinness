@@ -11,6 +11,7 @@ main(){
       expect(2).toEqual(2);
       expect([1,2]).toContain(2);
       expect(2).toBe(2);
+      expect(2).toBeA(num);
       expect(()=> throw "BOOM").toThrow();
       expect(()=> throw "BOOM").toThrow("BOOM");
       expect(false).toBeFalsy();

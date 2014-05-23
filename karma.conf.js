@@ -21,6 +21,6 @@ module.exports = function(config) {
       'karma-chrome-launcher'
     ],
 
-    browsers: []
+    browsers: ['Dartium']
   });
 };

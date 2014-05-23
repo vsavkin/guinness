@@ -8,7 +8,7 @@ testUnitTestBackend(){
     test("return true when a suite has an iit", () {
       final suite = createSuite()
                       ..add(createDescribe()
-                          ..add(createIt(exclusive: true)));
+                      ..add(createIt(exclusive: true)));
 
       expect(guinness.ExclusiveItVisitor.containsExclusiveIt(suite), isTrue);
     });
@@ -16,7 +16,7 @@ testUnitTestBackend(){
     test("ignores iit inside xdescribe", () {
       final suite = createSuite()
                       ..add(createDescribe(excluded: true)
-                          ..add(createIt(exclusive: true)));
+                      ..add(createIt(exclusive: true)));
 
       expect(guinness.ExclusiveItVisitor.containsExclusiveIt(suite), isFalse);
     });
@@ -24,7 +24,7 @@ testUnitTestBackend(){
     test("returns false otherwise", () {
       final suite = createSuite()
                       ..add(createDescribe()
-                          ..add(createIt(exclusive: false)));
+                      ..add(createIt(exclusive: false)));
 
       expect(guinness.ExclusiveItVisitor.containsExclusiveIt(suite), isFalse);
     });
@@ -127,6 +127,11 @@ testUnitTestBackend(){
       var y = [1,2];
       assertFalse(() => matchers.toBe(x, y));
       assertTrue(() => matchers.toBe(x, x));
+    });
+
+    test("toBeA", (){
+      assertFalse(() => matchers.toBeA(2, String));
+      assertTrue(() => matchers.toBeA(2, num));
     });
 
     test("toThrow", (){
@@ -254,6 +259,11 @@ testUnitTestBackend(){
       var y = [1,2];
       assertTrue(() => matchers.notToBe(x, y));
       assertFalse(() => matchers.notToBe(x, x));
+    });
+
+    test("notToBeA", (){
+      assertTrue(() => matchers.notToBeA(2, String));
+      assertFalse(() => matchers.notToBeA(2, num));
     });
 
     test("toReturnNormally", (){

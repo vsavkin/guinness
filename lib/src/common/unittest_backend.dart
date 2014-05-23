@@ -90,7 +90,7 @@ class UnitTestVisitor implements SpecVisitor {
 
 class UnitTestMatchers implements Matchers {
   get config => {};
-  
+
   expect(actual, matcher, {String reason}) => unit.expect(actual, matcher, reason: reason);
 
   toEqual(actual, expected) => unit.expect(actual, unit.equals(expected));
@@ -99,6 +99,8 @@ class UnitTestMatchers implements Matchers {
 
   toBe(actual, expected) =>
       unit.expect(actual, unit.predicate((actual) => identical(expected, actual), '$expected'));
+
+  toBeA(actual, expected) => unit.expect(actual, new IsInstanceOf(expected));
 
   toThrow(actual, [exception]) =>
       unit.expect(actual, exception == null ? unit.throws: unit.throwsA(new ExceptionContains(exception)));
@@ -136,6 +138,8 @@ class UnitTestMatchers implements Matchers {
   notToBe(actual, expected) =>
       unit.expect(actual, unit.predicate((actual) => !identical(expected, actual), 'not $expected'));
 
+  notToBeA(actual, expected) => unit.expect(actual, unit.isNot(new IsInstanceOf(expected)));
+
   toReturnNormally(actual) => unit.expect(actual, unit.returnsNormally);
 
   toBeUndefined(actual) => unit.expect(actual, unit.isNull);
@@ -167,6 +171,18 @@ class ExceptionContains extends unit.Matcher {
   unit.Description describeMismatch(item, unit.Description mismatchDescription,
                                     Map matchState, bool verbose) =>
       super.describeMismatch('$item', mismatchDescription, matchState, verbose);
+}
+
+class IsInstanceOf extends unit.Matcher {
+  final Type _type;
+
+  const IsInstanceOf(this._type);
+
+  bool matches(obj, Map matchState) =>
+      mirrors.reflect(obj).type.isSubtypeOf(mirrors.reflectClass(_type));
+
+  unit.Description describe(unit.Description description) =>
+      description.add('an instance of $_type');
 }
 
 Set _initializedSpecs = new Set();

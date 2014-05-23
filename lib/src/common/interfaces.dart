@@ -15,6 +15,7 @@ abstract class Matchers {
   void toEqual(actual, expected);
   void toContain(actual, expected);
   void toBe(actual, expected);
+  void toBeA(actual, expected);
   void toThrow(actual, [exception]);
   void toBeFalsy(actual);
   void toBeTruthy(actual);
@@ -28,6 +29,7 @@ abstract class Matchers {
   void notToEqual(actual, expected);
   void notToContain(actual, expected);
   void notToBe(actual, expected);
+  void notToBeA(actual, expected);
   void toReturnNormally(actual);
   void toBeUndefined(actual);
   void notToHaveBeenCalled(actual);
