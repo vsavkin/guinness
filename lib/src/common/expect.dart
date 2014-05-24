@@ -6,21 +6,25 @@ class Expect {
 
   NotExpect get not => new NotExpect(actual);
 
-  to(matcher) => _m.expect(actual, matcher);
-  toEqual(expected) => _m.toEqual(actual, expected);
-  toContain(expected) => _m.toContain(actual, expected);
-  toBe(expected) => _m.toBe(actual, expected);
-  toBeA(expected) => _m.toBeA(actual, expected);
-  toThrow([exception]) => _m.toThrow(actual, exception);
-  toBeFalsy() => _m.toBeFalsy(actual);
-  toBeTruthy() => _m.toBeTruthy(actual);
-  toBeDefined() => _m.toBeDefined(actual);
-  toBeNull() => _m.toBeNull(actual);
-  toBeNotNull() => _m.toBeNotNull(actual);
-  toHaveBeenCalled() => _m.toHaveBeenCalled(actual);
-  toHaveBeenCalledOnce() => _m.toHaveBeenCalledOnce(actual);
-  toHaveBeenCalledWith([a=_u,b=_u,c=_u,d=_u,e=_u,f=_u]) => _m.toHaveBeenCalledWith(actual, a, b, c, d, e, f);
-  toHaveBeenCalledOnceWith([a=_u,b=_u,c=_u,d=_u,e=_u,f=_u]) => _m.toHaveBeenCalledOnceWith(actual, a, b, c, d, e, f);
+  void to(matcher) => _m.expect(actual, matcher);
+  void toEqual(expected) => _m.toEqual(actual, expected);
+  void toContain(expected) => _m.toContain(actual, expected);
+  void toBe(expected) => _m.toBe(actual, expected);
+  void toBeA(expected) => _m.toBeA(actual, expected);
+  @Deprecated("toThrow() API is going to change to conform with toThrowWith()")
+  void toThrow([message]) => _m.toThrow(actual, message);
+  void toThrowWith({Type type, String message}) => _m.toThrowWith(type: type, message: message);
+  void toBeFalsy() => _m.toBeFalsy(actual);
+  void toBeTruthy() => _m.toBeTruthy(actual);
+  void toBeDefined() => _m.toBeDefined(actual);
+  void toBeNull() => _m.toBeNull(actual);
+  void toBeNotNull() => _m.toBeNotNull(actual);
+  void toHaveBeenCalled() => _m.toHaveBeenCalled(actual);
+  void toHaveBeenCalledOnce() => _m.toHaveBeenCalledOnce(actual);
+  void toHaveBeenCalledWith([a=_u,b=_u,c=_u,d=_u,e=_u,f=_u]) =>
+      _m.toHaveBeenCalledWith(actual, a, b, c, d, e, f);
+  void toHaveBeenCalledOnceWith([a=_u,b=_u,c=_u,d=_u,e=_u,f=_u]) =>
+      _m.toHaveBeenCalledOnceWith(actual, a, b, c, d, e, f);
 
   Matchers get _m => guinness.matchers;
 }
@@ -30,14 +34,15 @@ class NotExpect {
   final actual;
   NotExpect(this.actual);
 
-  toEqual(expected) => _m.notToEqual(actual, expected);
-  toContain(expected) => _m.notToContain(actual, expected);
-  toBe(expected) => _m.notToBe(actual, expected);
-  toBeA(expected) => _m.notToBeA(actual, expected);
-  toThrow() => _m.toReturnNormally(actual);
-  toBeDefined() => _m.toBeUndefined(actual);
-  toHaveBeenCalled() => _m.notToHaveBeenCalled(actual);
-  toHaveBeenCalledWith([a=_u,b=_u,c=_u,d=_u,e=_u,f=_u]) => _m.notToHaveBeenCalledWith(actual, a, b, c, d, e, f);
+  void toEqual(expected) => _m.notToEqual(actual, expected);
+  void toContain(expected) => _m.notToContain(actual, expected);
+  void toBe(expected) => _m.notToBe(actual, expected);
+  void toBeA(expected) => _m.notToBeA(actual, expected);
+  void toThrow() => _m.toReturnNormally(actual);
+  void toBeDefined() => _m.toBeUndefined(actual);
+  void toHaveBeenCalled() => _m.notToHaveBeenCalled(actual);
+  void toHaveBeenCalledWith([a=_u,b=_u,c=_u,d=_u,e=_u,f=_u]) =>
+      _m.notToHaveBeenCalledWith(actual, a, b, c, d, e, f);
 
   Matchers get _m => guinness.matchers;
 }
