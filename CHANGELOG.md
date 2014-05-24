@@ -1,7 +1,9 @@
 # Next Version
 
 - Update the list of contributors
-- Add toBeA matcher
+- Add a `toBeA(type)` matcher
+- Add a `toThrowWith({type, message})` matcher
+- Deprecate the `toThrow()` matcher (The API will change to conform with `toThrowWith()`)
 
 # v0.1.4 (2014-05-20)
 

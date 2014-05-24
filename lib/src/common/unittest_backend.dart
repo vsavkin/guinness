@@ -102,8 +102,12 @@ class UnitTestMatchers implements Matchers {
 
   toBeA(actual, expected) => unit.expect(actual, new IsInstanceOf(expected));
 
-  toThrow(actual, [exception]) =>
-      unit.expect(actual, exception == null ? unit.throws: unit.throwsA(new ExceptionContains(exception)));
+  toThrow(actual, [message]) => unit.expect(actual, message == null ?
+          unit.throws :
+          unit.throwsA(new ExceptionMatcher(message: message)));
+
+  toThrowWith(actual, {Type type, String message}) =>
+      unit.expect(actual, unit.throwsA(new ExceptionMatcher(type: type, message: message)));
 
   toBeFalsy(actual) => unit.expect(actual, _isFalsy, reason: '"$actual" is not Falsy');
 
@@ -154,25 +158,37 @@ class UnitTestMatchers implements Matchers {
 
 _isFalsy(v) => v == null ? true: v is bool ? v == false : false;
 
-class ExceptionContains extends unit.Matcher {
-  final _expected;
-  const ExceptionContains(this._expected);
+/// Matches exceptions against a [Type] and a message
+class ExceptionMatcher extends unit.Matcher {
+  final String _message;
+  final unit.Matcher _typeMatcher;
+
+  ExceptionMatcher({Type type, String message})
+      : _typeMatcher = type == null ? null : new IsInstanceOf(type),
+        _message = message;
 
   bool matches(item, Map matchState) {
-    if (item is String) {
-      return item.indexOf(_expected) >= 0;
+    if (_message != null) {
+      var strItem = item is String ? item : item.toString();
+      if (strItem.indexOf(_message) == -1) return false;
     }
-    return matches('$item', matchState);
+
+    if (_typeMatcher != null) if (!_typeMatcher.matches(item, matchState)) return false;
+
+    return true;
   }
 
-  unit.Description describe(unit.Description description) =>
-      description.add('exception contains ').addDescriptionOf(_expected);
-
-  unit.Description describeMismatch(item, unit.Description mismatchDescription,
-                                    Map matchState, bool verbose) =>
-      super.describeMismatch('$item', mismatchDescription, matchState, verbose);
+  unit.Description describe(unit.Description description) {
+    var join = '';
+    if (_typeMatcher != null) {
+      description.add('exception is ').addDescriptionOf(_typeMatcher);
+      join = ' and';
+    }
+    if (_message != null) description.add('$join message contains "$_message"');
+  }
 }
 
+/// Matches when the object is an instance of [_type]
 class IsInstanceOf extends unit.Matcher {
   final Type _type;
 

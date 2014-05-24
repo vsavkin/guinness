@@ -141,6 +141,27 @@ testUnitTestBackend(){
       assertFalse(() => matchers.toThrow(() => throw "Wow!", "Boom!"));
     });
 
+    test("toThrowWith", (){
+      assertTrue(() => matchers.toThrowWith(() => throw "Wow!"));
+      assertFalse(() => matchers.toThrowWith((){}));
+      assertTrue(() => matchers.toThrowWith(() => throw "Wow!", message: "Wow!"));
+      assertFalse(() => matchers.toThrowWith(() => throw "Wow!", message: "Boom!"));
+      assertTrue(() => matchers.toThrowWith(
+          () => throw new ArgumentError(),
+          type: ArgumentError));
+      assertFalse(() => matchers.toThrowWith(
+          () => throw new ArgumentError(),
+          type: UnsupportedError));
+      assertTrue(() => matchers.toThrowWith(
+          () => throw new ArgumentError("Wow!"),
+          type: ArgumentError,
+          message: "Wow"));
+      assertFalse(() => matchers.toThrowWith(
+          () => throw new ArgumentError("Wow!"),
+          type: ArgumentError,
+          message: "Boom"));
+    });
+
     test("toBeFalsy", (){
       assertTrue(() => matchers.toBeFalsy(null));
       assertTrue(() => matchers.toBeFalsy(false));
