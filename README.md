@@ -2,6 +2,8 @@
 
 Guinness is a port of the Jasmine library to Dart. It is based on the AngularDart implementation of Jasmine.
 
+[![Build Status](https://travis-ci.org/vsavkin/guinness.svg?branch=master)](https://travis-ci.org/vsavkin/guinness)
+
 ## Installation
 
 Add the Guinness dependency to your project’s pubspec.yaml.
