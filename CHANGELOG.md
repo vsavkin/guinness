@@ -1,4 +1,4 @@
-# Next Version
+# v0.1.5 (2014-05-27)
 
 - Update the list of contributors
 - Add a `toBeA(type)` matcher
