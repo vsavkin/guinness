@@ -1,4 +1,4 @@
-# v0.1.6 (2014-??)
+# v0.1.6 (2014-05-28)
 
 - fix the `toThrowWith` matcher,
 
