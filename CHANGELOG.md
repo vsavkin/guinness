@@ -1,3 +1,7 @@
+# v0.1.6 (2014-??)
+
+- fix the `toThrowWith` matcher,
+
 # v0.1.5 (2014-05-27)
 
 - Update the list of contributors
