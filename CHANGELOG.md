@@ -1,6 +1,10 @@
+# v0.1.7
+
+- Update the `toThrowWith` matcher to accept a pattern to match the message
+
 # v0.1.6 (2014-05-28)
 
-- fix the `toThrowWith` matcher,
+- Fix the `toThrowWith` matcher
 
 # v0.1.5 (2014-05-27)
 
