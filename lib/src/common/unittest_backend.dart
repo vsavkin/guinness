@@ -102,12 +102,12 @@ class UnitTestMatchers implements Matchers {
 
   toBeA(actual, expected) => unit.expect(actual, new IsInstanceOf(expected));
 
-  toThrow(actual, [message]) => unit.expect(actual, message == null ?
-          unit.throws :
-          unit.throwsA(new ExceptionMatcher(message: message)));
+  toThrow(actual, [Pattern pattern]) => unit.expect(actual, pattern == null ?
+          unit.throws : unit.throwsA(new ExceptionMatcher(message: pattern)));
 
-  toThrowWith(actual, {Type type, String message}) =>
-      unit.expect(actual, unit.throwsA(new ExceptionMatcher(type: type, message: message)));
+  toThrowWith(actual, {Type type, Pattern message}) =>
+      unit.expect(actual, unit.throwsA(
+          new ExceptionMatcher(type: type, message: message)));
 
   toBeFalsy(actual) => unit.expect(actual, _isFalsy, reason: '"$actual" is not Falsy');
 
@@ -160,23 +160,15 @@ _isFalsy(v) => v == null ? true: v is bool ? v == false : false;
 
 /// Matches exceptions against a [Type] and a message
 class ExceptionMatcher extends unit.Matcher {
-  final String _message;
+  final Pattern _message;
   final unit.Matcher _typeMatcher;
 
-  ExceptionMatcher({Type type, String message})
+  ExceptionMatcher({Type type, Pattern message})
       : _typeMatcher = type == null ? null : new IsInstanceOf(type),
-        _message = message;
+      _message = message;
 
-  bool matches(item, Map matchState) {
-    if (_message != null) {
-      var strItem = item is String ? item : item.toString();
-      if (strItem.indexOf(_message) == -1) return false;
-    }
-
-    if (_typeMatcher != null) if (!_typeMatcher.matches(item, matchState)) return false;
-
-    return true;
-  }
+  bool matches(item, Map matchState) =>
+      _messageMatches(item) && _typeMatches(item, matchState);
 
   unit.Description describe(unit.Description description) {
     var join = '';
@@ -185,6 +177,17 @@ class ExceptionMatcher extends unit.Matcher {
       join = ' and';
     }
     if (_message != null) description.add('$join message contains "$_message"');
+  }
+
+  bool _messageMatches(item) {
+    if (_message == null) return true;
+    var strItem = item is String ? item : item.toString();
+    return _message.allMatches(strItem).isNotEmpty;
+  }
+
+  bool _typeMatches(item, matchState) {
+    if (_typeMatcher == null) return true;
+    return _typeMatcher.matches(item, matchState);
   }
 }
 

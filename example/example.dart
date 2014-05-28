@@ -14,6 +14,7 @@ main(){
       expect(2).toBeA(num);
       expect(()=> throw "BOOM").toThrowWith();
       expect(()=> throw "BOOM").toThrowWith(message: "BOOM");
+      expect(()=> throw "BOOM").toThrowWith(message: new RegExp("B[O]{2}M"));
       expect(false).toBeFalsy();
       expect(null).toBeFalsy();
       expect(true).toBeTruthy();
