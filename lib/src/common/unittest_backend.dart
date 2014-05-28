@@ -160,23 +160,15 @@ _isFalsy(v) => v == null ? true: v is bool ? v == false : false;
 
 /// Matches exceptions against a [Type] and a message
 class ExceptionMatcher extends unit.Matcher {
-  final Pattern message;
+  final Pattern _message;
   final unit.Matcher _typeMatcher;
 
   ExceptionMatcher({Type type, Pattern message})
       : _typeMatcher = type == null ? null : new IsInstanceOf(type),
-      message = message;
+      _message = message;
 
-  bool matches(item, Map matchState) {
-    if (message != null) {
-      var strItem = item is String ? item : item.toString();
-      return message.allMatches(strItem).isNotEmpty;
-    }
-
-    if (_typeMatcher != null) if (!_typeMatcher.matches(item, matchState)) return false;
-
-    return true;
-  }
+  bool matches(item, Map matchState) =>
+      _messageMatches(item) && _typeMatches(item, matchState);
 
   unit.Description describe(unit.Description description) {
     var join = '';
@@ -184,7 +176,18 @@ class ExceptionMatcher extends unit.Matcher {
       description.add('exception is ').addDescriptionOf(_typeMatcher);
       join = ' and';
     }
-    if (message != null) description.add('$join message contains "$message"');
+    if (_message != null) description.add('$join message contains "$_message"');
+  }
+
+  bool _messageMatches(item) {
+    if (_message == null) return true;
+    var strItem = item is String ? item : item.toString();
+    return _message.allMatches(strItem).isNotEmpty;
+  }
+
+  bool _typeMatches(item, matchState) {
+    if (_typeMatcher == null) return true;
+    return _typeMatcher.matches(item, matchState);
   }
 }
 

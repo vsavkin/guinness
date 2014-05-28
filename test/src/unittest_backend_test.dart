@@ -168,6 +168,10 @@ testUnitTestBackend(){
           () => throw new ArgumentError("123"),
           type: ArgumentError,
           message: new RegExp(r"^.*[a-zA-Z]{3}$")));
+      assertFalse(() => matchers.toThrowWith(
+          () => throw new ArgumentError("123"),
+          type: UnsupportedError,
+          message: "123"));
     });
 
     test("toBeFalsy", (){
