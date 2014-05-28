@@ -13,7 +13,7 @@ class Expect {
   void toBeA(expected) => _m.toBeA(actual, expected);
   @Deprecated("toThrow() API is going to change to conform with toThrowWith()")
   void toThrow([message]) => _m.toThrow(actual, message);
-  void toThrowWith({Type type, String message}) => _m.toThrowWith(type: type, message: message);
+  void toThrowWith({Type type, String message}) => _m.toThrowWith(actual, type: type, message: message);
   void toBeFalsy() => _m.toBeFalsy(actual);
   void toBeTruthy() => _m.toBeTruthy(actual);
   void toBeDefined() => _m.toBeDefined(actual);

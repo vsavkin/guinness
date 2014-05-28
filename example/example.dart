@@ -12,8 +12,8 @@ main(){
       expect([1,2]).toContain(2);
       expect(2).toBe(2);
       expect(2).toBeA(num);
-      expect(()=> throw "BOOM").toThrow();
-      expect(()=> throw "BOOM").toThrow("BOOM");
+      expect(()=> throw "BOOM").toThrowWith();
+      expect(()=> throw "BOOM").toThrowWith(message: "BOOM");
       expect(false).toBeFalsy();
       expect(null).toBeFalsy();
       expect(true).toBeTruthy();
@@ -77,11 +77,11 @@ main(){
         s(2);
         expect((){
           expect(s).toHaveBeenCalledOnce();
-        }).toThrow();
+        }).toThrowWith();
 
         expect((){
           expect(s).toHaveBeenCalledOnceWith(1);
-        }).toThrow();
+        }).toThrowWith();
       });
     });
 
