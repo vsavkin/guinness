@@ -282,3 +282,4 @@ the  library comes with the unittest backend.
 * Google Inc
 * Victor Savkin
 * Victor Berchet
+* Marko Vuksanovic
