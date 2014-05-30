@@ -188,6 +188,20 @@ testUnitTestBackend(){
       assertTrue(() => matchers.toBeTruthy(true));
     });
 
+    test("toBeFalse", (){
+      assertTrue(() => matchers.toBeFalse(false));
+      assertFalse(() => matchers.toBeFalse(true));
+      assertFalse(() => matchers.toBeFalse(null));
+      assertFalse(() => matchers.toBeFalse("any object"));
+    });
+
+    test("toBeTrue", (){
+      assertTrue(() => matchers.toBeTrue(true));
+      assertFalse(() => matchers.toBeTrue(null));
+      assertFalse(() => matchers.toBeTrue(false));
+      assertFalse(() => matchers.toBeTrue("any object"));
+    });
+
     test("toHaveHtml", (){
       final div = new html.DivElement()..innerHtml = "<div>inner</div>";
       assertTrue(() => matchers.toHaveHtml(div, "<div>inner</div>"));

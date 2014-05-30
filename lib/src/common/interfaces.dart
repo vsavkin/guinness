@@ -21,6 +21,8 @@ abstract class Matchers {
   void toThrowWith(actual, {Type type, Pattern message});
   void toBeFalsy(actual);
   void toBeTruthy(actual);
+  void toBeFalse(actual);
+  void toBeTrue(actual);
   void toBeDefined(actual);
   void toBeNull(actual);
   void toBeNotNull(actual);
