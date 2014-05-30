@@ -16,6 +16,8 @@ class Expect {
   void toThrowWith({Type type, Pattern message}) => _m.toThrowWith(actual, type: type, message: message);
   void toBeFalsy() => _m.toBeFalsy(actual);
   void toBeTruthy() => _m.toBeTruthy(actual);
+  void toBeFalse() => _m.toBeFalse(actual);
+  void toBeTrue() => _m.toBeTrue(actual);
   void toBeDefined() => _m.toBeDefined(actual);
   void toBeNull() => _m.toBeNull(actual);
   void toBeNotNull() => _m.toBeNotNull(actual);

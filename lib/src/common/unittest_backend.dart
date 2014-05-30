@@ -113,6 +113,10 @@ class UnitTestMatchers implements Matchers {
 
   toBeTruthy(actual) => unit.expect(actual, (v) => !_isFalsy(v), reason: '"$actual" is not Truthy');
 
+  toBeFalse(actual) => unit.expect(actual, unit.isFalse);
+
+  toBeTrue(actual) => unit.expect(actual, unit.isTrue);
+
   toBeDefined(actual) => unit.expect(actual, unit.isNotNull);
 
   toBeNull(actual) => unit.expect(actual, unit.isNull);

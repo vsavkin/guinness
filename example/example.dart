@@ -19,6 +19,8 @@ main(){
       expect(null).toBeFalsy();
       expect(true).toBeTruthy();
       expect("any object").toBeTruthy();
+      expect(false).toBeFalse();
+      expect(true).toBeTrue();
       expect("any object").toBeDefined();
       expect(null).toBeNull();
       expect("not null").toBeNotNull();

@@ -1,6 +1,7 @@
 # v0.1.7
 
 - Update the `toThrowWith` matcher to accept a pattern to match the message
+- Add `toBeTrue` and `toBeFalse` matchers
 
 # v0.1.6 (2014-05-28)
 
