@@ -10,10 +10,48 @@ class Expect {
   void toEqual(expected) => _m.toEqual(actual, expected);
   void toContain(expected) => _m.toContain(actual, expected);
   void toBe(expected) => _m.toBe(actual, expected);
+
+  /**
+   * Checks that an object is a subtype of `expected`.
+   *
+   * # Examples
+   *
+   *    expect(new Employee()).toBeA(Employee);
+   *    expect(new Employee()).toBeA(Person);
+   */
   void toBeA(expected) => _m.toBeA(actual, expected);
+
+  /**
+   * Checks that an object is an instance of `expected`.
+   *
+   * # Examples
+   *
+   *    expect(new Employee()).toBeAnInstanceOf(Employee);
+   *    expect(new Employee()).not.toBeAnInstanceOf(Person);
+   */
+  void toBeAnInstanceOf(expected) => _m.toBeAnInstanceOf(actual, expected);
+
   @Deprecated("toThrow() API is going to change to conform with toThrowWith()")
   void toThrow([message]) => _m.toThrow(actual, message);
-  void toThrowWith({Type type, Pattern message}) => _m.toThrowWith(actual, type: type, message: message);
+
+  /**
+   * Checks that `actual` throws an exception.
+   *
+   * When given parameters, additionally checks that:
+   *
+   * - anInstanceOf: the thrown exception is an instance of `anInstanceOf`.
+   * - type: the thrown exception is a subtype of `type`.
+   * - message: the thrown exception's message matches the provided pattern.
+   *
+   * # Examples
+   *
+   *    expect(()=> throw "Invalid Argument").toThrowWith(message: "Invalid");
+   *    expect(()=> throw new InvalidArgument()).toThrowWith(anInstanceOf: InvalidArgument);
+   *    expect(()=> throw new InvalidArgument()).toThrowWith(type: ArgumentException);
+   */
+  void toThrowWith({Type anInstanceOf, Type type, Pattern message}) =>
+      _m.toThrowWith(actual, anInstanceOf: anInstanceOf, type: type, message: message);
+
   void toBeFalsy() => _m.toBeFalsy(actual);
   void toBeTruthy() => _m.toBeTruthy(actual);
   void toBeFalse() => _m.toBeFalse(actual);
@@ -40,6 +78,7 @@ class NotExpect {
   void toContain(expected) => _m.notToContain(actual, expected);
   void toBe(expected) => _m.notToBe(actual, expected);
   void toBeA(expected) => _m.notToBeA(actual, expected);
+  void toBeAnInstanceOf(expected) => _m.notToBeAnInstanceOf(actual, expected);
   void toThrow() => _m.toReturnNormally(actual);
   void toBeDefined() => _m.toBeUndefined(actual);
   void toHaveBeenCalled() => _m.notToHaveBeenCalled(actual);

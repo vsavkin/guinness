@@ -3,6 +3,9 @@ part of guinness_test;
 assertTrue(Function fn) => expect(fn, returnsNormally);
 assertFalse(Function fn) => expect(fn, throws);
 
+class TestClass {
+}
+
 testUnitTestBackend(){
   group("[ExclusiveItVisitor]", () {
     test("return true when a suite has an iit", () {
@@ -134,6 +137,11 @@ testUnitTestBackend(){
       assertTrue(() => matchers.toBeA(2, num));
     });
 
+    test("toBeAnInstanceOf", (){
+      assertFalse(() => matchers.toBeAnInstanceOf("blah", TestClass));
+      assertTrue(() => matchers.toBeAnInstanceOf(new TestClass(), TestClass));
+    });
+
     test("toThrow", (){
       assertTrue(() => matchers.toThrow(() => throw "Wow!"));
       assertFalse(() => matchers.toThrow((){}));
@@ -172,6 +180,12 @@ testUnitTestBackend(){
           () => throw new ArgumentError("123"),
           type: UnsupportedError,
           message: "123"));
+      assertFalse(() => matchers.toThrowWith(
+          () => throw new ArgumentError("123"),
+          anInstanceOf: UnsupportedError));
+      assertTrue(() => matchers.toThrowWith(
+          () => throw new ArgumentError("123"),
+          anInstanceOf: ArgumentError));
     });
 
     test("toBeFalsy", (){
@@ -311,6 +325,11 @@ testUnitTestBackend(){
     test("notToBeA", (){
       assertTrue(() => matchers.notToBeA(2, String));
       assertFalse(() => matchers.notToBeA(2, num));
+    });
+
+    test("notToBeAnInstanceOf", (){
+      assertTrue(() => matchers.notToBeAnInstanceOf(2, TestClass));
+      assertFalse(() => matchers.notToBeAnInstanceOf(new TestClass(), TestClass));
     });
 
     test("toReturnNormally", (){

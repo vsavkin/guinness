@@ -3,6 +3,9 @@ library example;
 import 'package:guinness/guinness_html.dart';
 import 'dart:html';
 
+class TestClass {
+}
+
 main(){
   guinnessEnableHtmlMatchers();
 
@@ -12,9 +15,13 @@ main(){
       expect([1,2]).toContain(2);
       expect(2).toBe(2);
       expect(2).toBeA(num);
+      expect(new TestClass()).toBeAnInstanceOf(TestClass);
+      expect("sfs").not.toBeAnInstanceOf(TestClass);
       expect(()=> throw "BOOM").toThrowWith();
       expect(()=> throw "BOOM").toThrowWith(message: "BOOM");
       expect(()=> throw "BOOM").toThrowWith(message: new RegExp("B[O]{2}M"));
+      expect(()=> throw new TestClass()).toThrowWith(anInstanceOf: TestClass);
+      expect(()=> throw new TestClass()).toThrowWith(type: TestClass);
       expect(false).toBeFalsy();
       expect(null).toBeFalsy();
       expect(true).toBeTruthy();
