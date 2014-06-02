@@ -5,7 +5,7 @@
 - Add a `toBeAnInstanceOf(type)` matcher
 - Add `toBeTrue` and `toBeFalse` matchers
 
-The `toBeAnInstanceOf` matcher and the `anInstanceOf` parameter have been added because Dart2JS does not fully implement mirrors (in particular, it does not support `isSubtypeOf`, which is used by `toBeA` and `toThrowWith(type:)`), the `toBeAnInstanceOf` matcher and the `anInstanceOf` parameter have been added. See API docs for more information.
+The `toBeAnInstanceOf` matcher and the `anInstanceOf` parameter have been added because Dart2JS does not fully implement mirrors (in particular, it does not support `isSubtypeOf`, which is used by `toBeA` and `toThrowWith(type:)`). See API docs for more information.
 
 # v0.1.6 (2014-05-28)
 
