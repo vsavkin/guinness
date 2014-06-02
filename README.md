@@ -117,6 +117,9 @@ These are a few examples:
     expect(2).toBe(2);
     expect(()=> throw "BOOM").toThrow();
     expect(()=> throw "BOOM").toThrow("BOOM");
+    expect(()=> throw "Invalid Argument").toThrowWith(message: "Invalid");
+    expect(()=> throw new InvalidArgument()).toThrowWith(anInstanceOf: InvalidArgument);
+    expect(()=> throw new InvalidArgument()).toThrowWith(type: ArgumentException);
     expect(false).toBeFalsy();
     expect(null).toBeFalsy();
     expect(true).toBeTruthy();

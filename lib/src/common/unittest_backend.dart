@@ -100,14 +100,16 @@ class UnitTestMatchers implements Matchers {
   toBe(actual, expected) =>
       unit.expect(actual, unit.predicate((actual) => identical(expected, actual), '$expected'));
 
-  toBeA(actual, expected) => unit.expect(actual, new IsInstanceOf(expected));
+  toBeA(actual, expected) => unit.expect(actual, new IsSubtypeOf(expected));
+
+  toBeAnInstanceOf(actual, expected) => unit.expect(actual, new IsInstanceOf(expected));
 
   toThrow(actual, [Pattern pattern]) => unit.expect(actual, pattern == null ?
           unit.throws : unit.throwsA(new ExceptionMatcher(message: pattern)));
 
-  toThrowWith(actual, {Type type, Pattern message}) =>
+  toThrowWith(actual, {Type anInstanceOf, Type type, Pattern message}) =>
       unit.expect(actual, unit.throwsA(
-          new ExceptionMatcher(type: type, message: message)));
+          new ExceptionMatcher(anInstanceOf: anInstanceOf, type: type, message: message)));
 
   toBeFalsy(actual) => unit.expect(actual, _isFalsy, reason: '"$actual" is not Falsy');
 
@@ -146,7 +148,9 @@ class UnitTestMatchers implements Matchers {
   notToBe(actual, expected) =>
       unit.expect(actual, unit.predicate((actual) => !identical(expected, actual), 'not $expected'));
 
-  notToBeA(actual, expected) => unit.expect(actual, unit.isNot(new IsInstanceOf(expected)));
+  notToBeA(actual, expected) => unit.expect(actual, unit.isNot(new IsSubtypeOf(expected)));
+
+  notToBeAnInstanceOf(actual, expected) => unit.expect(actual, unit.isNot(new IsInstanceOf(expected)));
 
   toReturnNormally(actual) => unit.expect(actual, unit.returnsNormally);
 
@@ -162,37 +166,70 @@ class UnitTestMatchers implements Matchers {
 
 _isFalsy(v) => v == null ? true: v is bool ? v == false : false;
 
-/// Matches exceptions against a [Type] and a message
-class ExceptionMatcher extends unit.Matcher {
-  final Pattern _message;
-  final unit.Matcher _typeMatcher;
 
-  ExceptionMatcher({Type type, Pattern message})
-      : _typeMatcher = type == null ? null : new IsInstanceOf(type),
-      _message = message;
+/// Matches an exception against its type, class, and message
+class ExceptionMatcher extends unit.Matcher {
+  final List<unit.Matcher> _matchers = [];
+
+  ExceptionMatcher({Type anInstanceOf, Type type, Pattern message}){
+    if(message != null) _matchers.add(new PatternMatcher(message));
+    if(type != null) _matchers.add(new IsSubtypeOf(type));
+    if(anInstanceOf != null) _matchers.add(new IsInstanceOf(anInstanceOf));
+  }
 
   bool matches(item, Map matchState) =>
-      _messageMatches(item) && _typeMatches(item, matchState);
+      _matchers.every((matcher) => matcher.matches(item, matchState));
+
 
   unit.Description describe(unit.Description description) {
-    var join = '';
-    if (_typeMatcher != null) {
-      description.add('exception is ').addDescriptionOf(_typeMatcher);
-      join = ' and';
+    if(_matchers.isEmpty) return description;
+
+    description.add('an exception, which ');
+
+    _matchers.first.describe(description);
+    _matchers.skip(1).forEach((matcher){
+      description.add(", and ");
+      matcher.describe(description);
+    });
+
+    return description;
+  }
+}
+
+class PatternMatcher extends unit.Matcher {
+  final Pattern _pattern;
+
+  const PatternMatcher(this._pattern);
+
+  bool matches(obj, Map matchState) =>
+      _pattern.allMatches(obj.toString()).isNotEmpty;
+
+  unit.Description describe(unit.Description description) =>
+      description.add('matches $_pattern');
+}
+
+
+/// Matches when the object is a subtype of [_type]
+class IsSubtypeOf extends unit.Matcher {
+  final Type _type;
+
+  const IsSubtypeOf(this._type);
+
+  bool matches(obj, Map matchState) {
+    //Delete the try-catch when Dart2JS supports `isSubtypeOf`.
+    try {
+      return mirrors.reflect(obj).type.isSubtypeOf(mirrors.reflectClass(_type));
+    } on UnimplementedError catch (e) {
+      if (_isDart2js) {
+        throw "The IsSubtypeOf matcher is not supported in Dart2JS";
+      } else {
+        rethrow;
+      }
     }
-    if (_message != null) description.add('$join message contains "$_message"');
   }
 
-  bool _messageMatches(item) {
-    if (_message == null) return true;
-    var strItem = item is String ? item : item.toString();
-    return _message.allMatches(strItem).isNotEmpty;
-  }
-
-  bool _typeMatches(item, matchState) {
-    if (_typeMatcher == null) return true;
-    return _typeMatcher.matches(item, matchState);
-  }
+  unit.Description describe(unit.Description description) =>
+      description.add('a subtype of $_type');
 }
 
 /// Matches when the object is an instance of [_type]
@@ -202,7 +239,7 @@ class IsInstanceOf extends unit.Matcher {
   const IsInstanceOf(this._type);
 
   bool matches(obj, Map matchState) =>
-      mirrors.reflect(obj).type.isSubtypeOf(mirrors.reflectClass(_type));
+      mirrors.reflect(obj).type.reflectedType  == _type;
 
   unit.Description describe(unit.Description description) =>
       description.add('an instance of $_type');
@@ -219,3 +256,5 @@ void unitTestRunner(Suite suite) {
   unitTestInitSpecs(suite);
   unit.runTests();
 }
+
+bool get _isDart2js => identical(1, 1.0);
