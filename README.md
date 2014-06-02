@@ -9,7 +9,7 @@ Guinness is a port of the Jasmine library to Dart. It is based on the AngularDar
 Add the Guinness dependency to your project’s pubspec.yaml.
 
     dev_dependencies:
-      guinness: ">=0.0.1 <1.0.0"
+      guinness: ">=0.1.7 <1.0.0"
 
 Then, run `pub install`.
 
