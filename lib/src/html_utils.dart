@@ -22,10 +22,9 @@ String toHtml(node, {Function preprocess, bool outer: false}) {
   } else if (node is Element) {
     var htmlString = outer ? node.outerHtml : node.innerHtml;
     return htmlString.replaceAll(' class=""', '').trim();
-
-  } else {
-    throw "JQuery._toHtml not implemented for node type [${node.nodeType}]";
   }
+
+  throw "toHtml not implemented for node type [${node.nodeType}]";
 }
 
 String elementText(n, [bool notShadow = false]) {
@@ -37,7 +36,7 @@ String elementText(n, [bool notShadow = false]) {
 
   if (!notShadow && n is Element && n.shadowRoot != null) {
     var cShadows = n.shadowRoot.nodes.map((n) => n.clone(true)).toList();
-    for (var i = 0, ii = cShadows.length; i < ii; i++) {
+    for (var i = 0; i < cShadows.length; i++) {
       var n = cShadows[i];
       if (n is Element) {
         var updateElement = (e) {
@@ -49,7 +48,7 @@ String elementText(n, [bool notShadow = false]) {
           }
           e.nodes = [];
         };
-        if (n is ContentElement) { updateElement(n); }
+        if (n is ContentElement) updateElement(n);
         n.querySelectorAll('content').forEach(updateElement);
       }
     };
@@ -59,7 +58,7 @@ String elementText(n, [bool notShadow = false]) {
     return shadowText.replaceFirst("SHADOW-CONTENT", domText);
   }
 
-  if (n.nodes == null || n.nodes.length == 0) return n.text;
+  if (n.nodes == null || n.nodes.isEmpty) return n.text;
 
   return n.nodes.map((cn) => elementText(cn)).join("");
 }

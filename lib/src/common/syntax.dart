@@ -6,7 +6,6 @@ void beforeEach(Function fn, {int priority:0}) =>
 void afterEach(Function fn, {int priority:0}) =>
     guinness._context.addAfterEach(fn, priority: priority);
 
-
 void it(String name, Function fn) =>
     guinness._context.addIt(name, fn, excluded: false, exclusive: false);
 
@@ -28,8 +27,6 @@ void ddescribe(String name, Function fn) =>
 
 Expect expect(actual, [matcher]) {
   final expect = new Expect(actual);
-  if (matcher != null) {
-    expect.to(matcher);
-  }
+  if (matcher != null) expect.to(matcher);
   return expect;
 }

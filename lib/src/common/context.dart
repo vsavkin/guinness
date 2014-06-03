@@ -6,13 +6,13 @@ class Context {
   Describe get currentDescribe => describes.last;
   Describe get suite => describes.first;
 
-  Context(){
+  Context() {
     describes.add(new Suite(this));
   }
 
-  void withDescribe(Describe describe, Function definition){
+  void withDescribe(Describe describe, Function definition) {
     describes.add(describe);
-    try{
+    try {
       definition();
     } finally {
       describes.removeLast();
