@@ -11,6 +11,6 @@ part 'src/html/expect.dart';
 part 'src/html/syntax.dart';
 part 'src/html/unittest_html_matchers.dart';
 
-void guinnessEnableHtmlMatchers(){
+void guinnessEnableHtmlMatchers() {
   gns.guinness.matchers = new UnitTestMatchersWithHtml();
 }

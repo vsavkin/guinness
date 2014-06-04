@@ -22,7 +22,7 @@ class SpyFunction {
       _processCall(_takeDefined([a0, a1, a2, a3, a4, a5]));
 
   noSuchMethod(Invocation c) {
-    if(c.memberName == #call){
+    if(c.memberName == #call) {
       return _processCall(c.positionalArguments);
     } else {
       return super.noSuchMethod(c);
@@ -36,15 +36,13 @@ class SpyFunction {
   bool get called => count > 0;
 
   SpyFunctionCall get mostRecentCall {
-    if (calls.isEmpty) {
-      throw ["No calls"];
-    }
+    if (calls.isEmpty) throw ["No calls"];
     return calls.last;
   }
 
   firstArgsMatch([a0=_u, a1=_u, a2 =_u, a3=_u, a4=_u, a5=_u]) {
     final toMatch = _takeDefined([a0, a1, a2, a3, a4, a5]);
-    if(calls.isEmpty){
+    if(calls.isEmpty) {
       return false;
     } else {
       Function eq = const ListEquality().equals;

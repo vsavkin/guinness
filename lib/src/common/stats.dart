@@ -21,11 +21,9 @@ class _StatsSpecVisitor implements SpecVisitor {
   }
 
   void visitDescribe(Describe describe) {
-    if (describe.excluded)
-      excludedDescribes.add(describe);
+    if (describe.excluded) excludedDescribes.add(describe);
 
-    if (describe.exclusive)
-      exclusiveDescribes.add(describe);
+    if (describe.exclusive) exclusiveDescribes.add(describe);
 
     numberOfDescribes += 1;
 
@@ -33,11 +31,9 @@ class _StatsSpecVisitor implements SpecVisitor {
   }
 
   void visitIt(It it) {
-    if (it.excluded)
-      excludedIts.add(it);
+    if (it.excluded) excludedIts.add(it);
 
-    if (it.exclusive)
-      exclusiveIts.add(it);
+    if (it.exclusive) exclusiveIts.add(it);
 
     numberOfIts += 1;
   }
@@ -51,7 +47,7 @@ class _StatsSpecVisitor implements SpecVisitor {
     print("Excluded: Describe (${excludedDescribes.length}), It (${excludedIts.length})");
     print("Exclusive: Describe (${exclusiveDescribes.length}), It (${exclusiveIts.length})");
 
-    if(exclusiveIts.length > 0 && exclusiveDescribes.length > 0) {
+    if(exclusiveIts.isNotEmpty && exclusiveDescribes.isNotEmpty) {
       print("WARNING: Exclusive It blocks have higher priority than exlusive Describe blocks");
     }
 
@@ -64,7 +60,7 @@ class _StatsSpecVisitor implements SpecVisitor {
     print("---- -------------- ----");
   }
 
-  _visitChildren(children) {
+  void _visitChildren(children) {
     children.forEach((c) => c.visit(this));
   }
 }

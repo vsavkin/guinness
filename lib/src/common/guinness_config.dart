@@ -34,9 +34,8 @@ class Guinness {
   }
 
   void _scheduleAutoInit() {
-    async.scheduleMicrotask((){
-      if(autoInit)
-        initSpecs();
+    async.scheduleMicrotask(() {
+      if(autoInit) initSpecs();
     });
   }
 }
