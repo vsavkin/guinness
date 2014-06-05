@@ -186,6 +186,16 @@ testUnitTestBackend(){
       assertTrue(() => matchers.toThrowWith(
           () => throw new ArgumentError("123"),
           anInstanceOf: ArgumentError));
+      assertTrue(() {
+        matchers.toThrowWith(() => throw new ArgumentError("123"), where: (e) {
+          expect(e.message, equals("123"));
+        });
+      });
+      assertFalse(() {
+        matchers.toThrowWith(() => throw new ArgumentError("123"), where: (e) {
+          expect(e.message, equals("456"));
+        });
+      });
     });
 
     test("toBeFalsy", (){

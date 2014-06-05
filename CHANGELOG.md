@@ -1,3 +1,9 @@
+# v0.1.8
+
+- Update the `toThrowWith` matcher to accept a callback to run custom matchers against the thrown exception
+- Cleanup
+
+
 # v0.1.7 (2014-06-02)
 
 - Update the `toThrowWith` matcher to accept a pattern to match the message

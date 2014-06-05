@@ -106,9 +106,10 @@ class UnitTestMatchers implements Matchers {
   void toThrow(actual, [Pattern pattern]) => unit.expect(actual, pattern == null ?
           unit.throws : unit.throwsA(new ExceptionMatcher(message: pattern)));
 
-  void toThrowWith(actual, {Type anInstanceOf, Type type, Pattern message}) =>
-      unit.expect(actual, unit.throwsA(
-          new ExceptionMatcher(anInstanceOf: anInstanceOf, type: type, message: message)));
+  void toThrowWith(actual, {Type anInstanceOf, Type type, Pattern message, Function where}) {
+    final matcher = new ExceptionMatcher(anInstanceOf: anInstanceOf, type: type, message: message, where: where);
+    unit.expect(actual, unit.throwsA(matcher), failureHandler: new NestedMatcherAwareFailureHandler());
+  }
 
   void toBeFalsy(actual) => unit.expect(actual, _isFalsy, reason: '"$actual" is not Falsy');
 
@@ -172,10 +173,11 @@ bool _isFalsy(v) => v == null ? true: v is bool ? v == false : false;
 class ExceptionMatcher extends unit.Matcher {
   final List<unit.Matcher> _matchers = [];
 
-  ExceptionMatcher({Type anInstanceOf, Type type, Pattern message}){
+  ExceptionMatcher({Type anInstanceOf, Type type, Pattern message, Function where}){
     if (message != null) _matchers.add(new PatternMatcher(message));
     if (type != null) _matchers.add(new IsSubtypeOf(type));
     if (anInstanceOf != null) _matchers.add(new IsInstanceOf(anInstanceOf));
+    if (where != null) _matchers.add(new WhereMatcher(where));
   }
 
   bool matches(item, Map matchState) =>
@@ -195,6 +197,48 @@ class ExceptionMatcher extends unit.Matcher {
 
     return description;
   }
+}
+
+/**
+ * Checks if there is a nested matcher failure recorded in [matchState],
+ * and includes it into an error message if it is the case.
+ */
+class NestedMatcherAwareFailureHandler implements unit.FailureHandler {
+  void fail(String reason) => _handler.fail(reason);
+
+  void failMatch(actual, unit.Matcher matcher, String reason, Map matchState, bool verbose) =>
+      _handler.failMatch(actual, matcher, _reason(matchState, reason), matchState, verbose);
+
+  _reason(matchState, reason) =>
+      _hasNestedMatcherFailure(matchState) ? _formatNestedMatcherFailure(matchState) : reason;
+
+  _hasNestedMatcherFailure(matchState) =>
+      matchState.containsKey("state") && matchState["state"].containsKey("nestedMatcherFailure");
+
+  _formatNestedMatcherFailure(matchState) =>
+      "\nFailed Assertion:\n${matchState["state"]["nestedMatcherFailure"].message}";
+
+  get _handler => unit.getOrCreateExpectFailureHandler();
+}
+
+/// Matches when the object is verified by [_where]
+class WhereMatcher extends unit.Matcher {
+  final Function _where;
+
+  const WhereMatcher(this._where);
+
+  bool matches(obj, Map matchState) {
+    try {
+      _where(obj);
+      return true;
+    } on unit.TestFailure catch (e) {
+      matchState["nestedMatcherFailure"] = e;
+      return false;
+    }
+  }
+
+  unit.Description describe(unit.Description description) =>
+      description.add("is verified by `where`");
 }
 
 class PatternMatcher extends unit.Matcher {

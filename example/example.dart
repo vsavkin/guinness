@@ -22,6 +22,9 @@ main(){
       expect(()=> throw "BOOM").toThrowWith(message: new RegExp("B[O]{2}M"));
       expect(()=> throw new TestClass()).toThrowWith(anInstanceOf: TestClass);
       expect(()=> throw new TestClass()).toThrowWith(type: TestClass);
+      expect(()=> throw new TestClass()).toThrowWith(where: (e) {
+        expect(e).toBeDefined();
+      });
       expect(false).toBeFalsy();
       expect(null).toBeFalsy();
       expect(true).toBeTruthy();
