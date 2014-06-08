@@ -2,7 +2,7 @@ part of guinness;
 
 class Guinness {
   Context _context = new Context();
-  Matchers matchers;
+  dynamic matchers;
   SpecRunner _runner;
   SpecRunner _initSpecs;
   bool autoInit = true;
