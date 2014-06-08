@@ -5,8 +5,8 @@ module.exports = function(config) {
 
     files: [
       'test/guinness_test.dart',
-      'test/html_utils_test.dart',
-      {pattern: '**/*.dart', watched: true, included: false, served: true}
+      {pattern: '**/*.dart', watched: true, included: false, served: true},
+      'packages/browser/dart.js'
     ],
 
     exclude: [
@@ -18,7 +18,8 @@ module.exports = function(config) {
 
     plugins: [
       'karma-dart',
-      'karma-chrome-launcher'
+      'karma-chrome-launcher',
+      'karma-phantomjs-launcher'
     ],
 
     browsers: ['Dartium']
