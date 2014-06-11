@@ -1,4 +1,4 @@
-# v0.1.8
+# v0.1.8 (2014-06-11)
 
 - Update the `toThrowWith` matcher to accept a callback to run custom matchers against the thrown exception
 - Cleanup
