@@ -50,7 +50,12 @@ fi
 
 
 echo -------------------
-echo Karma
+echo Karma-Dart
 echo -------------------
 sh -e /etc/init.d/xvfb start
 ./node_modules/karma/bin/karma start --single-run --browsers Dartium
+
+echo -------------------
+echo Karma-JS
+echo -------------------
+./node_modules/karma/bin/karma start --single-run --browsers PhantomJS
