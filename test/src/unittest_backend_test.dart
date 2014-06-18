@@ -7,32 +7,6 @@ class TestClass {
 }
 
 testUnitTestBackend(){
-  group("[ExclusiveItVisitor]", () {
-    test("return true when a suite has an iit", () {
-      final suite = createSuite()
-                      ..add(createDescribe()
-                      ..add(createIt(exclusive: true)));
-
-      expect(guinness.ExclusiveItVisitor.containsExclusiveIt(suite), isTrue);
-    });
-
-    test("ignores iit inside xdescribe", () {
-      final suite = createSuite()
-                      ..add(createDescribe(excluded: true)
-                      ..add(createIt(exclusive: true)));
-
-      expect(guinness.ExclusiveItVisitor.containsExclusiveIt(suite), isFalse);
-    });
-
-    test("returns false otherwise", () {
-      final suite = createSuite()
-                      ..add(createDescribe()
-                      ..add(createIt(exclusive: false)));
-
-      expect(guinness.ExclusiveItVisitor.containsExclusiveIt(suite), isFalse);
-    });
-  });
-
   group("[UnitTestVisitor]", () {
     var visitor, unit;
 
@@ -49,7 +23,7 @@ testUnitTestBackend(){
 
     test('uses group for describe', () {
       final suite = createSuite()
-                    ..add(createDescribe());
+        ..add(createDescribe());
 
       unit.shouldReceive("group");
 
@@ -58,7 +32,7 @@ testUnitTestBackend(){
 
     test('uses solo_group for exclusive describe', () {
       final suite = createSuite()
-                    ..add(createDescribe(exclusive: true));
+        ..add(createDescribe(exclusive: true));
 
       unit.shouldReceive("solo_group");
 
@@ -67,14 +41,14 @@ testUnitTestBackend(){
 
     test('skips excluded describes', () {
       final suite = createSuite()
-                    ..add(createDescribe(excluded: true));
+        ..add(createDescribe(excluded: true));
 
       visitor.visitSuite(suite);
     });
 
     test('uses test for it', () {
       final suite = createSuite()
-                    ..add(createIt());
+        ..add(createIt());
 
       unit.shouldReceive("test");
 
@@ -83,7 +57,7 @@ testUnitTestBackend(){
 
     test('uses solo_test for exclusive it', () {
       final suite = createSuite()
-                    ..add(createIt(exclusive: true));
+        ..add(createIt(exclusive: true));
 
       unit.shouldReceive("solo_test");
 
@@ -92,15 +66,15 @@ testUnitTestBackend(){
 
     test('skips excluded its', () {
       final suite = createSuite()
-                    ..add(createIt(excluded: true));
+        ..add(createIt(excluded: true));
 
       visitor.visitSuite(suite);
     });
 
     test('runs only exlusive its', () {
       final suite = createSuite()
-                    ..add(createIt(exclusive: true))
-                    ..add(createDescribe(exclusive: true));
+        ..add(createIt(exclusive: true))
+        ..add(createDescribe(exclusive: true));
 
       unit.shouldReceive("group");
       unit.shouldReceive("solo_test");
@@ -110,8 +84,8 @@ testUnitTestBackend(){
 
     test("initializes specs only once", () {
       final suite = createSuite()
-                    ..add(createIt())
-                    ..add(createDescribe());
+        ..add(createIt())
+        ..add(createDescribe());
 
       unit.shouldReceive("test").times(1);
       unit.shouldReceive("group").times(1);
@@ -155,16 +129,16 @@ testUnitTestBackend(){
       assertTrue(() => matchers.toThrowWith(() => throw "Wow!", message: "Wow!"));
       assertFalse(() => matchers.toThrowWith(() => throw "Wow!", message: "Boom!"));
       assertTrue(() => matchers.toThrowWith(
-          () => throw new ArgumentError("123"),
+              () => throw new ArgumentError("123"),
           message: new RegExp(r"^.*[1-9]{3}$")));
       assertFalse(() => matchers.toThrowWith(
-          () => throw new ArgumentError("123"),
+              () => throw new ArgumentError("123"),
           message: new RegExp(r"^.*[a-zA-Z]{3}$")));
       assertFalse(() => matchers.toThrowWith(
-          () => throw new ArgumentError("123"),
+              () => throw new ArgumentError("123"),
           anInstanceOf: UnsupportedError));
       assertTrue(() => matchers.toThrowWith(
-          () => throw new ArgumentError("123"),
+              () => throw new ArgumentError("123"),
           anInstanceOf: ArgumentError));
       assertTrue(() {
         matchers.toThrowWith(() => throw new ArgumentError("123"), where: (e) {
@@ -179,10 +153,10 @@ testUnitTestBackend(){
 
       skipDart2Js(() {
         assertTrue(() => matchers.toThrowWith(
-            () => throw new ArgumentError(),
+                () => throw new ArgumentError(),
             type: ArgumentError));
         assertFalse(() => matchers.toThrowWith(
-            () => throw new ArgumentError(),
+                () => throw new ArgumentError(),
             type: UnsupportedError));
       });
     });

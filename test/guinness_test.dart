@@ -11,7 +11,9 @@ part 'src/syntax_test.dart';
 part 'src/model_test.dart';
 part 'src/spy_test.dart';
 part 'src/integration_test.dart';
+part 'src/exclusive_visitor_test.dart';
 part 'src/unittest_backend_test.dart';
+part 'src/suite_info_test.dart';
 
 
 class DummyContext implements guinness.Context {
@@ -38,6 +40,8 @@ main(){
   guinness.guinness.autoInit = false;
 
   testIntegration();
+  testExclusiveVisitor();
+  testSuiteInfo();
   testSyntax();
   testModel();
   testSpy();
