@@ -6,14 +6,9 @@ Guinness is a port of the Jasmine library to Dart. It is based on the AngularDar
 
 ## Installation
 
-Add the Guinness dependency to your project’s pubspec.yaml.
+You can find the Guinness installation instructions [here](http://pub.dartlang.org/packages/guinness#installing).
 
-    dev_dependencies:
-      guinness: ">=0.1.7 <1.0.0"
-
-Then, run `pub install`.
-
-Finally, import the guinness library.
+## Importing the Library
 
     import 'package:guinness/guinness.dart';
 
@@ -21,7 +16,7 @@ Finally, import the guinness library.
       //you specs
     }
 
-Or if you are testing a client-side application, and you want to use html matchers, import the `guinness_html` library.
+If you are testing a client-side application, and you want to use html matchers, import the `guinness_html` library.
 
     import 'package:guinness/guinness_html.dart';
 
