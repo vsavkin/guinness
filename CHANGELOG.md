@@ -1,3 +1,13 @@
+# v0.1.9 (2014-06-18)
+
+Add extra information about the test suite.
+
+Example:
+
+  guinness.suiteInfo().activeItsPercent
+  guinness.suiteInfo().exclusiveIts
+
+
 # v0.1.8 (2014-06-11)
 
 - Update the `toThrowWith` matcher to accept a callback to run custom matchers against the thrown exception

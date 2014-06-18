@@ -1,33 +1,5 @@
 part of guinness;
 
-class ExclusiveItVisitor implements SpecVisitor {
-  bool _containsExclusiveIt = false;
-
-  void visitSuite(Suite suite) {
-    _visitChildren(suite.children);
-  }
-
-  void visitDescribe(Describe describe) {
-    if (describe.excluded) return;
-    _visitChildren(describe.children);
-  }
-
-  void visitIt(It it) {
-    if (it.excluded) return;
-    if (it.exclusive) _containsExclusiveIt = true;
-  }
-
-  _visitChildren(children) {
-    children.forEach((c) => c.visit(this));
-  }
-
-  static bool containsExclusiveIt(Suite suite) {
-    final v = new ExclusiveItVisitor();
-    v.visitSuite(suite);
-    return v._containsExclusiveIt;
-  }
-}
-
 class UnitTestAdapter {
   const UnitTestAdapter();
   void group(String name, Function fn) => unit.group(name, fn);
@@ -44,7 +16,10 @@ class UnitTestVisitor implements SpecVisitor {
   UnitTestVisitor(this.initializedSpecs, {this.unit: const UnitTestAdapter()});
 
   void visitSuite(Suite suite) {
-    containsExclusiveIt = ExclusiveItVisitor.containsExclusiveIt(suite);
+    final v = new ExclusiveVisitor();
+    v.visitSuite(suite);
+
+    containsExclusiveIt = v.containsExclusiveIt;
     _visitChildren(suite.children);
   }
 

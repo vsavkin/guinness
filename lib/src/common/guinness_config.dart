@@ -25,13 +25,15 @@ class Guinness {
   }
 
   void initSpecs() {
-    if(showStats) _printStats(_context.suite);
+    if(showStats) suiteInfo().printDetailedStats();
     _initSpecs(_context.suite);
   }
 
   void resetContext([Context context]) {
     _context = context == null ? new Context() : context;
   }
+
+  SuiteInfo suiteInfo() => _suiteInfo(_context.suite);
 
   void _scheduleAutoInit() {
     async.scheduleMicrotask(() {

@@ -1,0 +1,96 @@
+part of guinness_test;
+
+testSuiteInfo(){
+  group("[suiteInfo]", (){
+    setUp((){
+      final context = new guinness.Context();
+      guinness.guinness.resetContext(context);
+    });
+
+    test("describes", () {
+      guinness.describe("outer", (){
+        guinness.xdescribe("xdescribe", noop);
+        guinness.ddescribe("ddescribe", noop);
+        guinness.describe("inner describe", noop);
+      });
+
+      final suiteInfo = guinness.guinness.suiteInfo();
+      expect(suiteInfo.numberOfDescribes, equals(4));
+      expect(suiteInfo.exclusiveDescribes.length, equals(1));
+      expect(suiteInfo.excludedDescribes.length, equals(1));
+    });
+
+    test("its", () {
+      guinness.it("one", noop);
+      guinness.xit("two", noop);
+      guinness.iit("three", noop);
+
+      final suiteInfo = guinness.guinness.suiteInfo();
+      expect(suiteInfo.numberOfIts, equals(3));
+      expect(suiteInfo.exclusiveIts.length, equals(1));
+      expect(suiteInfo.excludedIts.length, equals(1));
+    });
+
+    group("[activeIts]", () {
+      test("ignores its in xdescribe", () {
+        guinness.it("one", noop);
+
+        guinness.xdescribe("xdescribe", () {
+          guinness.it("two", noop);
+        });
+
+        final suiteInfo = guinness.guinness.suiteInfo();
+        expect(suiteInfo.activeIts.length, equals(1));
+      });
+
+      test("counts only its in ddescribes", () {
+        guinness.it("one", noop);
+
+        guinness.ddescribe("ddescribe", () {
+          guinness.it("two", noop);
+        });
+
+        final suiteInfo = guinness.guinness.suiteInfo();
+        expect(suiteInfo.activeIts.length, equals(1));
+      });
+
+      test("counts only iits", () {
+        guinness.it("one", noop);
+
+        guinness.describe("describe", () {
+          guinness.iit("two", noop);
+        });
+
+        final suiteInfo = guinness.guinness.suiteInfo();
+        expect(suiteInfo.activeIts.length, equals(1));
+      });
+
+      test("ignores iits in xdescribe", () {
+        guinness.it("one", noop);
+
+        guinness.xdescribe("xdescribe", () {
+          guinness.iit("two", noop);
+          guinness.iit("three", noop);
+        });
+
+        final suiteInfo = guinness.guinness.suiteInfo();
+        expect(suiteInfo.activeIts.length, equals(1));
+      });
+
+      group('[activeItsPercent]', () {
+        test("is the percent of active tests in the suite", () {
+          guinness.it("one", noop);
+          guinness.iit("one", noop);
+
+          final suiteInfo = guinness.guinness.suiteInfo();
+          expect(suiteInfo.activeItsPercent, equals(50));
+        });
+
+        test("is zero when not specs", () {
+          final suiteInfo = guinness.guinness.suiteInfo();
+          expect(suiteInfo.activeItsPercent, equals(0));
+        });
+      });
+    });
+  });
+}
