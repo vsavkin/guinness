@@ -1,3 +1,10 @@
+# v0.1.10
+
+Handle afterEach blocks that throw.
+- When both an `it` and an `afterEach` throw, the original error thrown by the `it` block is returned.
+- When an `it` returns normally, and an `afterEach` throws, the error throw by the `afterEach` block is returned.
+
+
 # v0.1.9 (2014-06-18)
 
 Add extra information about the test suite.
