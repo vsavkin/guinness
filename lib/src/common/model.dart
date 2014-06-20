@@ -34,7 +34,7 @@ class It extends Spec {
       : super(name, parent, excluded: excluded, exclusive: exclusive);
 
   Function get withSetupAndTeardown {
-    return () => _runAll(beforeEachFns).then(_runItWithAfterEach);
+    return () => _runAllBeforeEach().then(_runItWithAfterEach);
   }
 
   Iterable<BeforeEach> get beforeEachFns {
@@ -61,10 +61,15 @@ class It extends Spec {
 
   void visit(SpecVisitor visitor) => visitor.visitIt(this);
 
-  _runItWithAfterEach(_) => _runIt().whenComplete(() => _runAll(afterEachFns));
+  _runItWithAfterEach(_) {
+    final success = (_) => _runAllAfterEach();
+    final failure = (errorThrownByIt) => _runAllAfterEach().whenComplete(() => throw errorThrownByIt);
+    return _runIt().then(success, onError: failure);
+  }
 
   _runIt() => new async.Future.sync(() => fn());
-
+  _runAllBeforeEach() =>_runAll(beforeEachFns);
+  _runAllAfterEach() =>_runAll(afterEachFns);
   _runAll(List fns) => async.Future.forEach(fns, (fn) => fn());
 }
 

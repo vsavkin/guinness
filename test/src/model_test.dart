@@ -97,21 +97,45 @@ testModel(){
         }));
       });
 
-      test("does not run afterEach callbacks if beforeEach callbacks errored", () {
-        final be = new guinness.BeforeEach(() => throw "BOOM", priority: 1);
+      group("[error handling]", () {
+        test("does not run afterEach callbacks if beforeEach callbacks errored", () {
+          final be = new guinness.BeforeEach(() => throw "BOOM", priority: 1);
 
-        var run = false;
-        final ae = new guinness.AfterEach(() => run = true, priority: 1);
+          var run = false;
+          final ae = new guinness.AfterEach(() => run = true, priority: 1);
 
-        final describe = createDescribe()
-          ..addBeforeEach(be)
-          ..addAfterEach(ae);
+          final describe = createDescribe()
+            ..addBeforeEach(be)
+            ..addAfterEach(ae);
 
-        final it = createIt(parent: describe);
+          final it = createIt(parent: describe);
 
-        it.withSetupAndTeardown().catchError(expectAsync((_) {
-          expect(run, isFalse);
-        }));
+          it.withSetupAndTeardown().catchError(expectAsync((_) {
+            expect(run, isFalse);
+          }));
+        });
+
+        test("returns the original error when both it and afterEach throw", () {
+          final ae = new guinness.AfterEach(() => throw "after", priority: 1);
+          final describe = createDescribe()..addAfterEach(ae);
+
+          final it = new guinness.It("it", describe, () => throw "it");
+
+          it.withSetupAndTeardown().catchError(expectAsync((err) {
+            expect(err, equals("it"));
+          }));
+        });
+
+        test("return the error thrown by `afterEach` if `it` returns normally", () {
+          final ae = new guinness.AfterEach(() => throw "after", priority: 1);
+          final describe = createDescribe()..addAfterEach(ae);
+
+          final it = new guinness.It("it", describe, noop);
+
+          it.withSetupAndTeardown().catchError(expectAsync((err) {
+            expect(err, equals("after"));
+          }));
+        });
       });
     });
   });
