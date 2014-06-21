@@ -242,11 +242,14 @@ Usually, you don't need to worry about it.
 
 ## Guinness and Karma
 
-Guinness works with Karma. Just configure `karmaDartImports`:
+Guinness works with Karma. Just include `initSpecs`, as follows:
 
-    karmaDartImports: {
-      guinness: 'package:guinness/guinness_html.dart'
-    }
+    files: [
+      "test/main1_test.dart",
+      "test/main2_test.dart",
+      "packages/guinness/init_specs.dart",
+      {pattern: '**/*.dart', watched: true, included: false, served: true}
+    ]
 
 ## Status
 
