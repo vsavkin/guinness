@@ -1,4 +1,4 @@
-# v0.1.10
+# v0.1.10 (2014-06-23)
 
 Handle afterEach blocks that throw.
 - When both an `it` and an `afterEach` throw, the original error thrown by the `it` block is returned.
@@ -6,7 +6,7 @@ Handle afterEach blocks that throw.
 
 
 Add `init_specs.dart` to improve Karma integration. Since the standard auto initialization of specs does not work with Karma, you had to call `guinness.initSpecs()` manually.
-Now, you can just include the init file, as follows:
+Now you can just include the init file as follows:
 
     files: [
       "test/main1_test.dart",
