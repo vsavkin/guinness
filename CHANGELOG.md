@@ -22,8 +22,8 @@ Add extra information about the test suite.
 
 Example:
 
-  guinness.suiteInfo().activeItsPercent
-  guinness.suiteInfo().exclusiveIts
+    guinness.suiteInfo().activeItsPercent
+    guinness.suiteInfo().exclusiveIts
 
 
 # v0.1.8 (2014-06-11)
