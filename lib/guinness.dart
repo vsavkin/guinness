@@ -4,6 +4,7 @@ import 'package:unittest/unittest.dart' as unit;
 import 'package:collection/equality.dart';
 import 'dart:async' as async;
 import 'dart:mirrors' as mirrors;
+import 'dart:math' as math;
 
 part 'src/common/model.dart';
 part 'src/common/context.dart';

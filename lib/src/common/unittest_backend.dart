@@ -74,6 +74,13 @@ class UnitTestMatchers implements Matchers {
   void toBe(actual, expected) =>
       unit.expect(actual, unit.predicate((actual) => identical(expected, actual), '$expected'));
 
+  void toBeLessThan(num actual, num expected) => unit.expect(actual, unit.lessThan(expected));
+
+  void toBeGreaterThan(num actual, num expected) => unit.expect(actual, unit.greaterThan(expected));
+
+  void toBeCloseTo(num actual, num expected, num precision) =>
+      unit.expect(actual, unit.closeTo(expected, math.pow(10, -precision) / 2));
+
   void toBeA(actual, expected) => unit.expect(actual, new IsSubtypeOf(expected));
 
   void toBeAnInstanceOf(actual, expected) => unit.expect(actual, new IsInstanceOf(expected));
@@ -123,6 +130,15 @@ class UnitTestMatchers implements Matchers {
 
   void notToBe(actual, expected) =>
       unit.expect(actual, unit.predicate((actual) => !identical(expected, actual), 'not $expected'));
+
+  void notToBeLessThan(num actual, num expected) =>
+      unit.expect(actual, unit.isNot(unit.lessThan(expected)));
+
+  void notToBeGreaterThan(num actual, num expected) =>
+      unit.expect(actual, unit.isNot(unit.greaterThan(expected)));
+
+  void notToBeCloseTo(num actual, num expected, num precision) =>
+      unit.expect(actual, unit.isNot(unit.closeTo(expected, math.pow(10, -precision) / 2)));
 
   void notToBeA(actual, expected) => unit.expect(actual, unit.isNot(new IsSubtypeOf(expected)));
 
