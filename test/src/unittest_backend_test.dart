@@ -106,6 +106,24 @@ testUnitTestBackend(){
       assertTrue(() => matchers.toBe(x, x));
     });
 
+    test("toBeLessThan", () {
+      assertFalse(() => matchers.toBeLessThan(9, 9));
+      assertTrue(() => matchers.toBeLessThan(-4, 9));
+      assertFalse(() => matchers.toBeLessThan(9, -4));
+    });
+
+    test("toBeGreaterThan", () {
+      assertFalse(() => matchers.toBeGreaterThan(9, 9));
+      assertFalse(() => matchers.toBeGreaterThan(-4, 9));
+      assertTrue(() => matchers.toBeGreaterThan(9, -4));
+    });
+
+    test("toBeCloseTo", () {
+      assertTrue(() => matchers.toBeCloseTo(9, 9, 0));
+      assertTrue(() => matchers.toBeCloseTo(9.123, 9.12, 2));
+      assertFalse(() => matchers.toBeCloseTo(9.123, 9.12, 3));;
+    });
+
     test("toBeA", skipDart2Js((){
       assertFalse(() => matchers.toBeA(2, String));
       assertTrue(() => matchers.toBeA(2, num));
@@ -293,6 +311,24 @@ testUnitTestBackend(){
       var y = [1,2];
       assertTrue(() => matchers.notToBe(x, y));
       assertFalse(() => matchers.notToBe(x, x));
+    });
+
+    test("notToBeLessThan", () {
+      assertTrue(() => matchers.notToBeLessThan(9, 9));
+      assertFalse(() => matchers.notToBeLessThan(-4, 9));
+      assertTrue(() => matchers.notToBeLessThan(9, -4));
+    });
+
+    test("notToBeGreaterThan", () {
+      assertTrue(() => matchers.notToBeGreaterThan(9, 9));
+      assertTrue(() => matchers.notToBeGreaterThan(-4, 9));
+      assertFalse(() => matchers.notToBeGreaterThan(9, -4));
+    });
+
+    test("notToBeCloseTo", () {
+      assertFalse(() => matchers.notToBeCloseTo(9, 9, 0));
+      assertFalse(() => matchers.notToBeCloseTo(9.123, 9.12, 2));
+      assertTrue(() => matchers.notToBeCloseTo(9.123, 9.12, 3));;
     });
 
     test("notToBeA", skipDart2Js((){

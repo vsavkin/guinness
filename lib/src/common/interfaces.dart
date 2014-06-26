@@ -15,6 +15,9 @@ abstract class Matchers {
   void toEqual(actual, expected);
   void toContain(actual, expected);
   void toBe(actual, expected);
+  void toBeLessThan(num actual, num expected);
+  void toBeGreaterThan(num actual, num expected);
+  void toBeCloseTo(num actual, num expected, num precision);
   void toBeA(actual, expected);
   void toBeAnInstanceOf(actual, expected);
   @Deprecated("toThrow() API is going to change to conform with toThrowWith()")
@@ -34,6 +37,9 @@ abstract class Matchers {
   void notToEqual(actual, expected);
   void notToContain(actual, expected);
   void notToBe(actual, expected);
+  void notToBeLessThan(num actual, num expected);
+  void notToBeGreaterThan(num actual, num expected);
+  void notToBeCloseTo(num actual, num expected, num precision);
   void notToBeA(actual, expected);
   void notToBeAnInstanceOf(actual, expected);
   void toReturnNormally(actual);

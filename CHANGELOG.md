@@ -1,3 +1,10 @@
+# v0.1.10-dev
+
+- Add numeric matchers:
+  - `toBeLessThan(expected)`,
+  - `toBeGreatherThan(expected)`,
+  - `toBeCloseTo(expected, precision)` - assert than the value is within `expected ± (10^-precision)/2` 
+
 # v0.1.10 (2014-06-23)
 
 Handle afterEach blocks that throw.

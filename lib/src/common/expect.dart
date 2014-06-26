@@ -10,6 +10,9 @@ class Expect {
   void toEqual(expected) => _m.toEqual(actual, expected);
   void toContain(expected) => _m.toContain(actual, expected);
   void toBe(expected) => _m.toBe(actual, expected);
+  void toBeLessThan(num expected) => _m.toBeLessThan(actual, expected);
+  void toBeGreaterThan(num expected) => _m.toBeGreaterThan(actual, expected);
+  void toBeCloseTo(num expected, num precision) => _m.toBeCloseTo(actual, expected, precision);
 
   /**
    * Checks that an object is a subtype of `expected`.
@@ -81,6 +84,9 @@ class NotExpect {
   void toEqual(expected) => _m.notToEqual(actual, expected);
   void toContain(expected) => _m.notToContain(actual, expected);
   void toBe(expected) => _m.notToBe(actual, expected);
+  void toBeLessThan(num expected) => _m.notToBeLessThan(actual, expected);
+  void toBeGreaterThan(num expected) => _m.notToBeGreaterThan(actual, expected);
+  void toBeCloseTo(num expected, num precision) => _m.notToBeCloseTo(actual, expected, precision);
   void toBeA(expected) => _m.notToBeA(actual, expected);
   void toBeAnInstanceOf(expected) => _m.notToBeAnInstanceOf(actual, expected);
   void toThrow() => _m.toReturnNormally(actual);
