@@ -1,4 +1,4 @@
-# v0.1.10-dev
+# v0.1.11 (2014-06-27)
 
 - Add numeric matchers:
   - `toBeLessThan(expected)`,
