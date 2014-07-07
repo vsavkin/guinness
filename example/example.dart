@@ -152,6 +152,9 @@ main(){
       throw "Won't Run!";
     });
 
+    it("pending spec");
+    describe("pending describe");
+
     //also supports ddescribe, and iit
   });
 }

@@ -23,18 +23,26 @@ abstract class Spec {
   final Describe parent;
   final bool excluded;
   final bool exclusive;
+  final bool pending;
 
-  Spec(this.name, this.parent, {this.excluded, this.exclusive});
+  Spec(this.name, this.parent, {this.excluded, this.exclusive, this.pending});
 }
 
 class It extends Spec {
   final Function fn;
 
-  It(String name, Describe parent, this.fn, {bool excluded, bool exclusive})
-      : super(name, parent, excluded: excluded, exclusive: exclusive);
+  It(String name, Describe parent, Function fn, {bool excluded, bool exclusive})
+      : super(name, parent, excluded: excluded, exclusive: exclusive, pending: fn == null),
+        this.fn = fn;
+
+  String get name => pending ? 'PENDING: ${super.name}' : super.name;
 
   Function get withSetupAndTeardown {
-    return () => _runAllBeforeEach().then(_runItWithAfterEach);
+    if (pending) {
+      return () => new async.Future.value(true);
+    } else {
+      return () => _runAllBeforeEach().then(_runItWithAfterEach);
+    }
   }
 
   Iterable<BeforeEach> get beforeEachFns {
@@ -67,7 +75,7 @@ class It extends Spec {
     return _runIt().then(success, onError: failure);
   }
 
-  _runIt() => new async.Future.sync(() => fn());
+  _runIt() => new async.Future.sync(fn);
   _runAllBeforeEach() =>_runAll(beforeEachFns);
   _runAllAfterEach() =>_runAll(afterEachFns);
   _runAll(List fns) => async.Future.forEach(fns, (fn) => fn());
@@ -80,8 +88,8 @@ class Describe extends Spec {
   final List<Spec> children = [];
 
   Describe(String name, Describe parent, this.context, Function definition, {bool excluded, bool exclusive})
-      : super(name, parent, excluded: excluded, exclusive: exclusive) {
-    context.withDescribe(this, definition);
+      : super(name, parent, excluded: excluded, exclusive: exclusive, pending: definition == null) {
+    if (definition != null) context.withDescribe(this, definition);
   }
 
   void addBeforeEach(BeforeEach beforeEach) {

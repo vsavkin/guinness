@@ -116,5 +116,16 @@ testIntegration(){
         });
       });
     });
+
+    test("pending describes and its", () {
+      guinness.describe("pending describe");
+      guinness.xdescribe("pending excluded describe");
+      guinness.ddescribe("pending exclusive describe");
+
+      guinness.it("pending it");
+      guinness.xit("pending exlcluded it");
+      guinness.iit("pending exclusive it");
+      verify((){});
+    });
   });
 }

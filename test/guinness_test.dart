@@ -22,16 +22,16 @@ class DummyContext implements guinness.Context {
 }
 
 final context = new DummyContext();
-final noop = (){};
+noop(){}
 
 
 createSuite() => new guinness.Suite(context);
 
-createDescribe({bool exclusive: false, bool excluded: false, parent}) =>
-    new guinness.Describe("", parent, context, noop, exclusive: exclusive, excluded: excluded);
+createDescribe({bool exclusive: false, bool excluded: false, parent, Function func: noop, String name: ""}) =>
+    new guinness.Describe(name, parent, context, func, exclusive: exclusive, excluded: excluded);
 
-createIt({bool exclusive: false, bool excluded: false, parent}) =>
-    new guinness.It("", parent, noop, exclusive: exclusive, excluded: excluded);
+createIt({bool exclusive: false, bool excluded: false, parent, Function func: noop, String name: ""}) =>
+    new guinness.It(name, parent, func, exclusive: exclusive, excluded: excluded);
 
 
 
