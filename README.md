@@ -80,6 +80,20 @@ This will print:
 If there is an `iit` in your spec files, Guinness will run only `iit`s. In this case `ddescribe`s will be ignored.
 
 
+### Pending Specs
+
+Guinness supports pending describe and it blocks.
+
+```dart
+describe("pending describe");
+xdescribe("pending xdescribe");
+ddescribe("pending ddescribe");
+
+it("pending it");
+xit("pending xit");
+iit("pending iit");
+```
+
 ## Async
 
 Since Dart has built-in futures, the Guinness framework makes a good use out of them. If you return a future from
