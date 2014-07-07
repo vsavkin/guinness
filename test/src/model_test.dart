@@ -97,6 +97,31 @@ testModel(){
         }));
       });
 
+      test("does not run any callbacks when pending", () {
+        final log = [];
+
+        final be = new guinness.BeforeEach(() => log.add("before"), priority: 0);
+        final ae = new guinness.AfterEach(() => log.add("after"), priority: 0);
+
+        final describe = createDescribe()
+          ..addBeforeEach(be)
+          ..addAfterEach(ae);
+
+        final it = createIt(parent: describe, func: null);
+
+        it.withSetupAndTeardown().then(expectAsync((_) {
+          expect(log, isEmpty);
+        }));
+      });
+
+      group("[name]", () {
+        test("indicates that the spec is pending", () {
+          final it = createIt(name: "name", func: null);
+
+          expect(it.name, equals("PENDING: name"));
+        });
+      });
+
       group("[error handling]", () {
         test("does not run afterEach callbacks if beforeEach callbacks errored", () {
           final be = new guinness.BeforeEach(() => throw "BOOM", priority: 1);
