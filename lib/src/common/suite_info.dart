@@ -9,10 +9,12 @@ _suiteInfo(Suite suite){
 class SuiteInfo {
   final List<Describe> exclusiveDescribes = [];
   final List<Describe> excludedDescribes = [];
+  final List<Describe> pendingDescribes = [];
 
   final List<It> exclusiveIts = [];
   final List<It> excludedIts = [];
   final List<It> activeIts = [];
+  final List<It> pendingIts = [];
 
   int numberOfIts = 0;
   int numberOfDescribes = 0;
@@ -63,6 +65,7 @@ class _SuiteInfoVisitor implements SpecVisitor {
   void visitDescribe(Describe describe) {
     if (describe.excluded) info.excludedDescribes.add(describe);
     if (describe.exclusive) info.exclusiveDescribes.add(describe);
+    if (describe.pending) info.pendingDescribes.add(describe);
 
     info.numberOfDescribes += 1;
 
@@ -72,6 +75,7 @@ class _SuiteInfoVisitor implements SpecVisitor {
   void visitIt(It it) {
     if (it.excluded) info.excludedIts.add(it);
     if (it.exclusive) info.exclusiveIts.add(it);
+    if (it.pending) info.pendingIts.add(it);
 
     info.numberOfIts += 1;
 
@@ -79,7 +83,9 @@ class _SuiteInfoVisitor implements SpecVisitor {
   }
 
   bool _isActive(it) {
-    if (containsExclusiveIt) {
+    if (it.pending) {
+      return false;
+    } else if (containsExclusiveIt) {
       return it.exclusive;
     } else if (containsExclusiveDescribe) {
       return _exclusiveParent(it.parent);
