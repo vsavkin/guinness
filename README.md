@@ -10,56 +10,62 @@ You can find the Guinness installation instructions [here](http://pub.dartlang.o
 
 ## Importing the Library
 
-    import 'package:guinness/guinness.dart';
+```dart
+import 'package:guinness/guinness.dart';
 
-    main() {
-      //you specs
-    }
+main() {
+  //you specs
+}
+```
 
 If you are testing a client-side application, and you want to use html matchers, import the `guinness_html` library.
 
-    import 'package:guinness/guinness_html.dart';
+```dart
+import 'package:guinness/guinness_html.dart';
 
-    main() {
-      guinnessEnableHtmlMatchers();
-      //you specs
-    }
+main() {
+  guinnessEnableHtmlMatchers();
+  //you specs
+}
+```
 
 ## Syntax
 
 Guinness specs are comprised of `describe`, `it`, `beforeEach`, and `afterEach` blocks.
 
-    import 'package:guinness/guinness.dart';
+```dart
+import 'package:guinness/guinness.dart';
 
-    main(){
-      describe("syntax", () {
-        beforeEach(() {
-          print("outer before");
-        });
+main(){
+  describe("syntax", () {
+    beforeEach(() {
+      print("outer before");
+    });
 
-        afterEach(() {
-          print("outer after");
-        });
+    afterEach(() {
+      print("outer after");
+    });
 
-        it("runs first", () {
-          print("first");
-        });
+    it("runs first", () {
+      print("first");
+    });
 
-        describe("nested describe", () {
-          beforeEach(() {
-            print("inner before");
-          });
-
-          afterEach(() {
-            print("inner after");
-          });
-
-          it("runs second", () {
-            print("second");
-          });
-        });
+    describe("nested describe", () {
+      beforeEach(() {
+        print("inner before");
       });
-    }
+
+      afterEach(() {
+        print("inner after");
+      });
+
+      it("runs second", () {
+        print("second");
+      });
+    });
+  });
+}
+```
 
 This will print:
 
@@ -81,21 +87,27 @@ Since Dart has built-in futures, the Guinness framework makes a good use out of 
 
 For instance:
 
-    beforeEach(connectToTheDatabase);
+```dart
+beforeEach(connectToTheDatabase);
+```
 
 where `connectToTheDatabase` returns a future.
 
 Similarly, you can write:
 
-    afterEach(releaseConnection);
+```dart
+afterEach(releaseConnection);
+```
 
 You can also write async specs using the following technique:
 
-    it("should return an empty list when the database is empty", () {
-      return queryDatabase().then((results){
-        expect(results).toEqual([]);
-      });
-    });
+```dart
+it("should return an empty list when the database is empty", () {
+  return queryDatabase().then((results){
+    expect(results).toEqual([]);
+  });
+});
+```
 
 If a returned future gets rejected, the test fails.
 
@@ -103,124 +115,136 @@ If a returned future gets rejected, the test fails.
 
 They way you write assertions in Guinness is by using the `expect` function, as follows:
 
-    expect(2).toEqual(2);
+```dart
+expect(2).toEqual(2);
+```
 
 These are a few examples:
 
-    expect(2).toEqual(2);
-    expect([1,2]).toContain(2);
-    expect(2).toBe(2);
-    expect(()=> throw "BOOM").toThrow();
-    expect(()=> throw "BOOM").toThrow("BOOM");
-    expect(()=> throw "Invalid Argument").toThrowWith(message: "Invalid");
-    expect(()=> throw new InvalidArgument()).toThrowWith(anInstanceOf: InvalidArgument);
-    expect(()=> throw new InvalidArgument()).toThrowWith(type: ArgumentException);
-    expect(false).toBeFalsy();
-    expect(null).toBeFalsy();
-    expect(true).toBeTruthy();
-    expect("any object").toBeTruthy();
-    expect("any object").toBeDefined();
-    expect(null).toBeNull();
-    expect("not null").toBeNotNull();
+```dart
+expect(2).toEqual(2);
+expect([1,2]).toContain(2);
+expect(2).toBe(2);
+expect(()=> throw "BOOM").toThrow();
+expect(()=> throw "BOOM").toThrow("BOOM");
+expect(()=> throw "Invalid Argument").toThrowWith(message: "Invalid");
+expect(()=> throw new InvalidArgument()).toThrowWith(anInstanceOf: InvalidArgument);
+expect(()=> throw new InvalidArgument()).toThrowWith(type: ArgumentException);
+expect(false).toBeFalsy();
+expect(null).toBeFalsy();
+expect(true).toBeTruthy();
+expect("any object").toBeTruthy();
+expect("any object").toBeDefined();
+expect(null).toBeNull();
+expect("not null").toBeNotNull();
 
-    expect(2).not.toEqual(1);
-    expect([1,2]).not.toContain(3);
-    expect([1,2]).not.toBe([1,2]);
-    expect((){}).not.toThrow();
-    expect(null).not.toBeDefined();
+expect(2).not.toEqual(1);
+expect([1,2]).not.toContain(3);
+expect([1,2]).not.toBe([1,2]);
+expect((){}).not.toThrow();
+expect(null).not.toBeDefined();
 
-    expect(new DocumentFragment.html("<div>some html</div>"))
-        .toHaveHtml("<div>some html</div>");
+expect(new DocumentFragment.html("<div>some html</div>"))
+    .toHaveHtml("<div>some html</div>");
 
-    expect(new DocumentFragment.html("<div>some text</div>"))
-        .toHaveText("some text");
+expect(new DocumentFragment.html("<div>some text</div>"))
+    .toHaveText("some text");
 
-    expect(new DivElement()..classes.add('abc'))
-        .toHaveClass("abc");
+expect(new DivElement()..classes.add('abc'))
+    .toHaveClass("abc");
 
-    expect(new DivElement()..attributes['attr'] = 'value')
-        .toHaveAttribute("attr");
+expect(new DivElement()..attributes['attr'] = 'value')
+    .toHaveAttribute("attr");
 
-    expect(new DocumentFragment.html("<div>some html</div>"))
-        .not.toHaveHtml("<div>some other html</div>");
+expect(new DocumentFragment.html("<div>some html</div>"))
+    .not.toHaveHtml("<div>some other html</div>");
 
-    expect(new DocumentFragment.html("<div>some text</div>"))
-        .not.toHaveText("some other text");
+expect(new DocumentFragment.html("<div>some text</div>"))
+    .not.toHaveText("some other text");
 
-    expect(new DivElement()..classes.add('abc'))
-        .not.toHaveClass("def");
+expect(new DivElement()..classes.add('abc'))
+    .not.toHaveClass("def");
 
-    expect(new DivElement()..attributes['attr'] = 'value')
-        .not.toHaveAttribute("other-attr");
+expect(new DivElement()..attributes['attr'] = 'value')
+    .not.toHaveAttribute("other-attr");
 
-    final select = new SelectElement();
-    select.children
-      ..add(new OptionElement(value: "1"))
-      ..add(new OptionElement(value: "2", selected: true))
-      ..add(new OptionElement(value: "3"));
-    expect(select).toEqualSelect(["1", ["2"], "3"]);
+final select = new SelectElement();
+select.children
+  ..add(new OptionElement(value: "1"))
+  ..add(new OptionElement(value: "2", selected: true))
+  ..add(new OptionElement(value: "3"));
+expect(select).toEqualSelect(["1", ["2"], "3"]);
+```
 
 You can also use unittest matchers, like this:
 
-    expect(myObject).to(beValid); //where beValid is a unittest matcher
+```dart
+expect(myObject).to(beValid); //where beValid is a unittest matcher
+```
 
 ## Migrating from Unittest
 
 To make migration from the unittest library to Guinness easier, `expect` supports an optional second argument.
 
-    expect(myObject, beValid); //same as expect(myObject).to(beValid);
+```dart
+expect(myObject, beValid); //same as expect(myObject).to(beValid);
+```
 
 This keeps your unittest assertions working, so you can change them one by one.
 
 While transitioning you can have both the unittest and guinness libraries imported:
 
-    import 'package:unittest/unittest.dart' hide expect;
-    import 'package:guinness/guinness.dart';
-
+```dart
+import 'package:unittest/unittest.dart' hide expect;
+import 'package:guinness/guinness.dart';
+```
 
 ## Extending Guinness
 
 If you are using a lot of custom matchers, and using `expect(object).to(matcher)` is tedious,
 you can extend the library, as follows:
 
-    library test_helper;
+```dart
+library test_helper;
 
-    import 'guinness.dart' as gns;
-    export 'guinness.dart';
+import 'guinness.dart' as gns;
+export 'guinness.dart';
 
-    final _m = gns.guinness.matchers;
+final _m = gns.guinness.matchers;
 
-    class CustomExpect extends gns.Expect {
-      CustomExpect(actual) : super(actual);
+class CustomExpect extends gns.Expect {
+  CustomExpect(actual) : super(actual);
 
-      toBePositive() => _m.expect(actual > 0, true, reason: 'is not positive');
-    }
+  toBePositive() => _m.expect(actual > 0, true, reason: 'is not positive');
+}
 
-    CustomExpect expect(actual) => new CustomExpect(actual);
-
+CustomExpect expect(actual) => new CustomExpect(actual);
+```
 
 ## Spy
 
 Guinness supports Jasmine-like spy functions:
 
-    final s = guinness.createSpy("my spy");
-    expect(s).not.toHaveBeenCalled();
+```dart
+final s = guinness.createSpy("my spy");
+expect(s).not.toHaveBeenCalled();
 
-    s(1);
-    expect(s).toHaveBeenCalled();
-    expect(s).toHaveBeenCalledOnce();
-    expect(s).toHaveBeenCalledWith(1);
-    expect(s).toHaveBeenCalledOnceWith(1);
-    expect(s).not.toHaveBeenCalledWith(2);
+s(1);
+expect(s).toHaveBeenCalled();
+expect(s).toHaveBeenCalledOnce();
+expect(s).toHaveBeenCalledWith(1);
+expect(s).toHaveBeenCalledOnceWith(1);
+expect(s).not.toHaveBeenCalledWith(2);
 
-    s(2);
-    expect((){
-      expect(s).toHaveBeenCalledOnce();
-    }).toThrow();
+s(2);
+expect((){
+  expect(s).toHaveBeenCalledOnce();
+}).toThrow();
 
-    expect((){
-      expect(s).toHaveBeenCalledOnceWith(1);
-    }).toThrow();
+expect((){
+  expect(s).toHaveBeenCalledOnceWith(1);
+}).toThrow();
+```
 
 You can also use the `mock` and `dart_mocks` libraries with it.
 
@@ -232,11 +256,15 @@ unittest.autoStart is set to true, your specs will run automatically.
 
 You can always initialize specs manually:
 
-    guinness.initSpecs();
+```dart
+guinness.initSpecs();
+```
 
 You can also run the specs, like this:
 
-    guinness.runSpecs();
+```dart
+guinness.runSpecs();
+```
 
 Usually, you don't need to worry about it.
 
@@ -244,12 +272,14 @@ Usually, you don't need to worry about it.
 
 Guinness works with Karma. Just include `initSpecs`, as follows:
 
-    files: [
-      "test/main1_test.dart",
-      "test/main2_test.dart",
-      "packages/guinness/init_specs.dart",
-      {pattern: '**/*.dart', watched: true, included: false, served: true}
-    ]
+```dart
+files: [
+  "test/main1_test.dart",
+  "test/main2_test.dart",
+  "packages/guinness/init_specs.dart",
+  {pattern: '**/*.dart', watched: true, included: false, served: true}
+]
+```
 
 ## Status
 
