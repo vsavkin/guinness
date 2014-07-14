@@ -1,3 +1,7 @@
+# v0.1.13 - dev
+
+- Make the syntax more flexible by allowing passing any object as a name (e.g., `describe(MyClass, (){}`).
+
 # v0.1.12 (2014-07-07)
 
 - Add support for pending specs.
