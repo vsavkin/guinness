@@ -82,7 +82,7 @@ If there is an `iit` in your spec files, Guinness will run only `iit`s. In this 
 
 ### Pending Specs
 
-Guinness supports pending describe and it blocks.
+Guinness supports pending describe and it blocks (blocks without a callback).
 
 ```dart
 describe("pending describe");
