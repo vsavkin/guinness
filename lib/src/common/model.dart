@@ -71,7 +71,8 @@ class It extends Spec {
 
   _runItWithAfterEach(_) {
     final success = (_) => _runAllAfterEach();
-    final failure = (errorThrownByIt) => _runAllAfterEach().whenComplete(() => throw errorThrownByIt);
+    final failure = (errorThrownByIt, stackTrace) => _runAllAfterEach()
+        .whenComplete(() => new async.Future.error(errorThrownByIt, stackTrace));
     return _runIt().then(success, onError: failure);
   }
 
