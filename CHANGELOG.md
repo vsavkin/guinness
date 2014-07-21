@@ -1,4 +1,4 @@
-# v0.1.13 - dev
+# v0.1.13 (2014-07-21)
 
 - Make the syntax more flexible by allowing passing any object as a name (e.g., `describe(MyClass, (){}`).
 - Fixes a bug that caused some stack traces not to be preserved.
