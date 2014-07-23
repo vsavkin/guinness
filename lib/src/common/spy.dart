@@ -21,14 +21,6 @@ class SpyFunction {
   call([a0=_u, a1=_u, a2 =_u, a3=_u, a4=_u, a5=_u]) =>
       _processCall(_takeDefined([a0, a1, a2, a3, a4, a5]));
 
-  noSuchMethod(Invocation c) {
-    if(c.memberName == #call) {
-      return _processCall(c.positionalArguments);
-    } else {
-      return super.noSuchMethod(c);
-    }
-  }
-
   void reset() => calls.clear();
 
   num get count => calls.length;
