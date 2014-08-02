@@ -27,38 +27,15 @@ String toHtml(node, {Function preprocess, bool outer: false}) {
   throw "toHtml not implemented for node type [${node.nodeType}]";
 }
 
-String elementText(n, [bool notShadow = false]) {
-  if (n is Iterable) {
-    return n.map((nn) => elementText(nn)).join("");
-  }
+String elementText(n) {
+  hasShadowRoot(n) => n is Element && n.shadowRoot != null;
+  hasNodes(n) => n.nodes != null && n.nodes.isNotEmpty;
 
-  if (n is Comment) return '';
+  if (n is Iterable)        return n.map((nn) => elementText(nn)).join("");
+  if (n is Comment)         return '';
+  if (n is ContentElement)  return elementText(n.getDistributedNodes());
+  if (hasShadowRoot(n))     return elementText(n.shadowRoot.nodes);
+  if (hasNodes(n))          return elementText(n.nodes);;
 
-  if (!notShadow && n is Element && n.shadowRoot != null) {
-    var cShadows = n.shadowRoot.nodes.map((n) => n.clone(true)).toList();
-    for (var i = 0; i < cShadows.length; i++) {
-      var n = cShadows[i];
-      if (n is Element) {
-        var updateElement = (e) {
-          var text = new Text('SHADOW-CONTENT');
-          if (e.parent == null) {
-            cShadows[i] = text;
-          } else {
-            e.parent.insertBefore(text, e);
-          }
-          e.nodes = [];
-        };
-        if (n is ContentElement) updateElement(n);
-        n.querySelectorAll('content').forEach(updateElement);
-      }
-    };
-    var shadowText = elementText(cShadows, true);
-    var domText = elementText(n, true);
-
-    return shadowText.replaceFirst("SHADOW-CONTENT", domText);
-  }
-
-  if (n.nodes == null || n.nodes.isEmpty) return n.text;
-
-  return n.nodes.map((cn) => elementText(cn)).join("");
+  return n.text;
 }
