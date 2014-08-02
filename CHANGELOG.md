@@ -1,4 +1,4 @@
-# v0.1.14 - DEV
+# v0.1.14 (2014-08-02)
 
 - Improve the handling of Shadow DOM. The `toHaveText` matcher now handles Shadow DOM with multiple insertion points.
 
