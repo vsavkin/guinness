@@ -57,11 +57,11 @@ main() {
     });
 
     test('handles shadow dom', () {
-      var el = new DivElement();
-      var shadow = el.createShadowRoot();
-      shadow.innerHtml = 'content';
+      final d = new DocumentFragment.html("<div><a>A</a><b>B</b></div>");
+      final root = d.children[0].createShadowRoot();
+      root.innerHtml = "(<content select='a'></content>, <content select='b'></content>)";
 
-      expect(utils.elementText(el), equals('content'));
+      expect(utils.elementText(d), equals("(A, B)"));
     });
 
     test('handles elements without children', () {
