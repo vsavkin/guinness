@@ -45,7 +45,9 @@ class Expect {
    * - anInstanceOf: the thrown exception is an instance of `anInstanceOf`.
    * - type: the thrown exception is a subtype of `type`.
    * - message: the thrown exception's message matches the provided pattern.
-   * - where: the thrown exception matches all the expectations in the provided `where`.
+   * - where:
+   *   - the thrown exception matches all the expectations in the provided `where`,
+   *   - the expectation fails when `where()` returns false
    *
    * # Examples
    *
@@ -55,6 +57,7 @@ class Expect {
    *    expect(()=> throw new InvalidArgument()).toThrowWith(where: (e) {
    *      expect(e).toBeAnInstanceOf(InvalidArgument)
    *    });
+   *   expect(()=> throw new InvalidArgument()).toThrowWith(where: (e) => e is InvalidArgument);
    */
   void toThrowWith({Type anInstanceOf, Type type, Pattern message, Function where}) =>
       _m.toThrowWith(actual, anInstanceOf: anInstanceOf, type: type, message: message, where: where);
