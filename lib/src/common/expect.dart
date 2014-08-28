@@ -21,6 +21,8 @@ class Expect {
    *
    *    expect(new Employee()).toBeA(Employee);
    *    expect(new Employee()).toBeA(Person);
+   *
+   * Note: this matcher can not be used on compiled code (JS).
    */
   void toBeA(expected) => _m.toBeA(actual, expected);
 
@@ -43,7 +45,7 @@ class Expect {
    * When given parameters, additionally checks that:
    *
    * - anInstanceOf: the thrown exception is an instance of `anInstanceOf`.
-   * - type: the thrown exception is a subtype of `type`.
+   * - type: the thrown exception is a subtype of `type` - can not be used in compiled code (JS)
    * - message: the thrown exception's message matches the provided pattern.
    * - where: the thrown exception matches all the expectations in the provided `where`.
    *
@@ -54,6 +56,13 @@ class Expect {
    *    expect(()=> throw new InvalidArgument()).toThrowWith(type: ArgumentException);
    *    expect(()=> throw new InvalidArgument()).toThrowWith(where: (e) {
    *      expect(e).toBeAnInstanceOf(InvalidArgument)
+   *    });
+   *
+   *  Note: `type` does not work in compiled code, however it is possible to use `where` to check
+   *  if an object is a subtype:
+   *
+   *    expect(()=> throw new InvalidArgument()).toThrowWith(where: (e) {
+   *      expect(e is ParentType).toBeTrue()
    *    });
    */
   void toThrowWith({Type anInstanceOf, Type type, Pattern message, Function where}) =>
