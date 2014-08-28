@@ -220,8 +220,7 @@ class WhereMatcher extends unit.Matcher {
 
   bool matches(obj, Map matchState) {
     try {
-      _where(obj);
-      return true;
+      return _where(obj) != false;
     } on unit.TestFailure catch (e) {
       matchState["nestedMatcherFailure"] = e;
       return false;

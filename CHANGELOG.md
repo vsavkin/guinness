@@ -1,3 +1,11 @@
+# v0.1.15
+
+- The `where` argument to `toThrowWith` could be a function returning a boolean:
+
+    `expect(testedClosure).toThrowWith(where: (e) => e is NoSuchMethodError);`
+
+  will pass iff executing the `testClosure` throws a `NoSuchMethodError` exception.
+
 # v0.1.14 (2014-08-02)
 
 - Improve the handling of Shadow DOM. The `toHaveText` matcher now handles Shadow DOM with multiple insertion points.
@@ -16,7 +24,7 @@
 - Add numeric matchers:
   - `toBeLessThan(expected)`,
   - `toBeGreaterThan(expected)`,
-  - `toBeCloseTo(expected, precision)` - assert than the value is within `expected ± (10^-precision)/2` 
+  - `toBeCloseTo(expected, precision)` - assert than the value is within `expected ± (10^-precision)/2`
 
 # v0.1.10 (2014-06-23)
 

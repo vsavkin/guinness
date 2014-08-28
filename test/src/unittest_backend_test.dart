@@ -168,13 +168,23 @@ testUnitTestBackend(){
           expect(e.message, equals("456"));
         });
       });
+      assertTrue(() {
+        matchers.toThrowWith(
+            () => throw new ArgumentError("123"),
+            where: (e) => e.message == "123");
+      });
+      assertFalse(() {
+        matchers.toThrowWith(
+            () => throw new ArgumentError("123"),
+            where: (e) => e.message == "456");
+      });
 
       skipDart2Js(() {
         assertTrue(() => matchers.toThrowWith(
-                () => throw new ArgumentError(),
+            () => throw new ArgumentError(),
             type: ArgumentError));
         assertFalse(() => matchers.toThrowWith(
-                () => throw new ArgumentError(),
+            () => throw new ArgumentError(),
             type: UnsupportedError));
       });
     });
