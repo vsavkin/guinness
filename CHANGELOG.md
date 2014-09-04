@@ -16,7 +16,6 @@
 
 - Support for spy objects has been added:
 
-    ```
     class SomeSpy extends SpyObject implements SomeInterface {}
     ...
     final s = new SomeSpy();
@@ -27,7 +26,6 @@
     expect(s.spy("invoke")).toHaveBeenCalled();
     expect(s.spy("get:name")).toHaveBeenCalled();
     expect(s.spy("set:name")).toHaveBeenCalled();
-    ```
 
 # v0.1.14 (2014-08-02)
 
