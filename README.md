@@ -260,6 +260,32 @@ expect((){
 }).toThrow();
 ```
 
+In addition, Guinness support spy objects:
+
+```dart
+class SomeSpy extends SpyObject implements SomeInterface {}
+
+...
+
+final s = new SomeSpy();
+s.invoke(1,2);
+s.name;
+s.name = 'some name';
+
+expect(s.spy("invoke")).toHaveBeenCalled();
+expect(s.spy("get:name")).toHaveBeenCalled();
+expect(s.spy("set:name")).toHaveBeenCalled();
+```
+
+And:
+
+```dart
+final s = new SomeSpy();
+s.spy("invoke").andCallFake((a,b) => a + b);
+
+expect(s.invoke(1,2)).toEqual(3);
+```
+
 You can also use the `mock` and `dart_mocks` libraries with it.
 
 
