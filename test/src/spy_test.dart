@@ -1,8 +1,45 @@
 part of guinness_test;
 
+class _SpyObject extends guinness.SpyObject {}
 
 testSpy(){
-  group("[spy]", (){
+  group("[SpyObject]", (){
+    test("records all the calls", () {
+      final obj = new _SpyObject();
+      obj.someFunc(3);
+
+      expect(obj.spy("someFunc").count, equals(1));
+      expect(obj.spy("someFunc").mostRecentCall.positionalArguments, equals([3]));
+    });
+
+    test("returns a new spy function when no calls", () {
+      final obj = new _SpyObject();
+      expect(obj.spy("someFunc").count, equals(0));
+    });
+
+    test("handles getters", () {
+      final obj = new _SpyObject();
+      obj.someFunc;
+      expect(obj.spy("get:someFunc").count, equals(1));
+    });
+
+    test("handles setters", () {
+      final obj = new _SpyObject();
+      obj.someFunc = 10;
+      expect(obj.spy("set:someFunc").count, equals(1));
+      expect(obj.spy("set:someFunc").mostRecentCall.positionalArguments, equals([10]));
+    });
+
+    test("stubs function calls", () {
+      final obj = new _SpyObject();
+      obj.spy("someFunc").andCallFake((a,b) => a + b);
+
+      expect(obj.someFunc(1,2), equals(3));
+      expect(obj.spy("someFunc").count, equals(1));
+    });
+  });
+
+  group("[SpyFunction]", (){
     guinness.SpyFunction s;
 
     setUp((){

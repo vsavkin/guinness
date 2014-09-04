@@ -44,10 +44,29 @@ class SpyFunction {
 
   _processCall(List posArgs) {
     calls.add(new SpyFunctionCall(posArgs));
-
     if(_callFakeFn != null){
       return Function.apply(_callFakeFn, posArgs);
     }
+  }
+}
+
+@proxy
+class SpyObject {
+  final Map<String, SpyFunction> _spyFuncs = {};
+
+  noSuchMethod(Invocation inv) {
+    final s = spy(_spyName(inv));
+    return s._processCall(inv.positionalArguments);
+  }
+
+  SpyFunction spy(String funcName) =>
+      _spyFuncs.putIfAbsent(funcName, () => new SpyFunction(funcName));
+
+  _spyName(Invocation inv) {
+    final invName = mirrors.MirrorSystem.getName(inv.memberName);
+    if (inv.isGetter) return "get:${invName}";
+    if (inv.isSetter) return "set:${invName.substring(0, invName.length - 1)}";
+    return invName;
   }
 }
 
