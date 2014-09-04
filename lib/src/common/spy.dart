@@ -19,7 +19,8 @@ class SpyFunction {
     return this;
   }
 
-  call() => _processCall([], {});
+  call([a0=_u, a1=_u, a2 =_u, a3=_u, a4=_u, a5=_u]) =>
+      _processCall(_takeDefined([a0, a1, a2, a3, a4, a5]), {});
 
   void reset() => calls.clear();
 
