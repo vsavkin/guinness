@@ -2,7 +2,8 @@ part of guinness;
 
 class SpyFunctionCall {
   final List positionalArguments;
-  SpyFunctionCall(this.positionalArguments);
+  final Map namedArguments;
+  SpyFunctionCall(this.positionalArguments, this.namedArguments);
 }
 
 @proxy
@@ -18,8 +19,7 @@ class SpyFunction {
     return this;
   }
 
-  call([a0=_u, a1=_u, a2 =_u, a3=_u, a4=_u, a5=_u]) =>
-      _processCall(_takeDefined([a0, a1, a2, a3, a4, a5]));
+  call() => _processCall([], {});
 
   void reset() => calls.clear();
 
@@ -42,12 +42,17 @@ class SpyFunction {
     }
   }
 
-  _processCall(List posArgs) {
-    calls.add(new SpyFunctionCall(posArgs));
+  _processCall(List posArgs, Map namedArgs) {
+    calls.add(new SpyFunctionCall(posArgs, namedArgs));
     if(_callFakeFn != null){
-      return Function.apply(_callFakeFn, posArgs);
+      return Function.apply(_callFakeFn, posArgs, namedArgs);
     }
   }
+
+  noSuchMethod(Invocation inv) =>
+      inv.memberName == #call ?
+        _processCall(inv.positionalArguments, _stringifyMap(inv.namedArguments)) :
+        super.noSuchMethod(inv);
 }
 
 @proxy
@@ -56,7 +61,7 @@ class SpyObject {
 
   noSuchMethod(Invocation inv) {
     final s = spy(_spyName(inv));
-    return s._processCall(inv.positionalArguments);
+    return s._processCall(inv.positionalArguments, _stringifyMap(inv.namedArguments));
   }
 
   SpyFunction spy(String funcName) =>
@@ -69,5 +74,11 @@ class SpyObject {
     return invName;
   }
 }
+
+_stringifyMap(Map map) =>
+    map.keys.fold({}, (res, c){
+      res.putIfAbsent(mirrors.MirrorSystem.getName(c), () => map[c]);
+      return res;
+    });
 
 List _takeDefined(List iter) => iter.takeWhile((_) => _ != _u).toList();
