@@ -6,10 +6,11 @@ testSpy(){
   group("[SpyObject]", (){
     test("records all the calls", () {
       final obj = new _SpyObject();
-      obj.someFunc(3);
+      obj.someFunc(3, named: "named");
 
       expect(obj.spy("someFunc").count, equals(1));
       expect(obj.spy("someFunc").mostRecentCall.positionalArguments, equals([3]));
+      expect(obj.spy("someFunc").mostRecentCall.namedArguments, equals({"named": "named"}));
     });
 
     test("returns a new spy function when no calls", () {
@@ -52,6 +53,18 @@ testSpy(){
       s(1,2,3,4,5);
 
       expect(s.count, equals(3));
+    });
+
+    test("records positional arguments", (){
+      s(1,2);
+
+      expect(s.mostRecentCall.positionalArguments, equals([1,2]));
+    });
+
+    test("records named arguments", (){
+      s(named1: 1, named2: 2);
+
+      expect(s.mostRecentCall.namedArguments, equals({"named1": 1, "named2": 2}));
     });
 
     test("resets invocations", (){
