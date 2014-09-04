@@ -1,10 +1,33 @@
-# v0.1.15
+# v0.1.15 (2014-09-04)
 
 - The `where` argument to `toThrowWith` could be a function returning a boolean:
 
     `expect(testedClosure).toThrowWith(where: (e) => e is NoSuchMethodError);`
 
   will pass iff executing the `testClosure` throws a `NoSuchMethodError` exception.
+
+- Spy functions now record named arguments:
+
+    ```
+    final spy = guinness.createSpy();
+    spy(named: 1);
+    expect(spy.mostRecentCall.namedArguments).toEqual({"named": 1});
+    ```
+
+- Support for spy objects has been added:
+
+    ```
+    class SomeSpy extends SpyObject implements SomeInterface {}
+    ...
+    final s = new SomeSpy();
+    s.invoke(1,2);
+    s.name;
+    s.name = 'some name';
+
+    expect(s.spy("invoke")).toHaveBeenCalled();
+    expect(s.spy("get:name")).toHaveBeenCalled();
+    expect(s.spy("set:name")).toHaveBeenCalled();
+    ```
 
 # v0.1.14 (2014-08-02)
 
