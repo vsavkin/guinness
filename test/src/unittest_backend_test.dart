@@ -229,6 +229,12 @@ testUnitTestBackend(){
       assertFalse(() => matchers.toHaveText(div, "invalid"));
     });
 
+    test("toContainText", (){
+      final div = new html.DivElement()..innerHtml = "some expected text";
+      assertTrue(() => matchers.toContainText(div, "expected"));
+      assertFalse(() => matchers.toContainText(div, "invalid"));
+    });
+
     test("toHaveClass", (){
       final div = new html.DivElement();
       div.classes.add("one");
@@ -366,6 +372,12 @@ testUnitTestBackend(){
       final div = new html.DivElement()..innerHtml = "expected";
       assertFalse(() => matchers.notToHaveText(div, "expected"));
       assertTrue(() => matchers.notToHaveText(div, "invalid"));
+    });
+
+    test("notToContainText", (){
+      final div = new html.DivElement()..innerHtml = "some expected test";
+      assertFalse(() => matchers.notToContainText(div, "expected"));
+      assertTrue(() => matchers.notToContainText(div, "invalid"));
     });
 
     test("notToHaveClass", (){
