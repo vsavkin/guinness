@@ -124,6 +124,9 @@ class UnitTestMatchers implements Matchers {
                   reason: 'method invoked once with correct arguments.'
                   '(Called ${actual.count} times)');
 
+  void toHaveSameProps(actual, expected) => unit.expect(actual, new SamePropsMatcher(expected));
+
+
   void notToEqual(actual, expected) => unit.expect(actual, unit.isNot(unit.equals(expected)));
 
   void notToContain(actual, expected) => unit.expect(actual, unit.isNot(unit.contains(expected)));
@@ -155,6 +158,9 @@ class UnitTestMatchers implements Matchers {
       unit.expect(actual.firstArgsMatch(a,b,c,d,e,f),
                   false,
                   reason: 'method invoked with correct arguments');
+
+  void notToHaveSameProps(actual, expected) =>
+      unit.expect(actual, unit.isNot(new SamePropsMatcher(expected)));
 }
 
 bool _isFalsy(v) => v == null ? true: v is bool ? v == false : false;
@@ -266,6 +272,65 @@ class IsSubtypeOf extends unit.Matcher {
   unit.Description describe(unit.Description description) =>
       description.add('a subtype of $_type');
 }
+
+/// Matches when objects have the same properties
+class SamePropsMatcher extends unit.Matcher {
+  final Object _expected;
+
+  const SamePropsMatcher(this._expected);
+
+  bool matches(actual, Map matchState) {
+    return compare(toData(_expected), toData(actual));
+  }
+
+  unit.Description describeMismatch(item, unit.Description mismatchDescription,
+      Map matchState, bool verbose) =>
+      mismatchDescription.add('is equal to ${toData(item)}. Expected: ${toData(_expected)}');
+
+  unit.Description describe(unit.Description description) =>
+      description.add('has different properties');
+
+  toData(obj) => new _ObjToData().call(obj);
+  compare(d1, d2) => new DeepCollectionEquality().equals(d1, d2);
+}
+
+
+class _ObjToData {
+  final visitedObjects = new Set();
+
+  call(obj) {
+    if (visitedObjects.contains(obj)) return null;
+    visitedObjects.add(obj);
+
+    if (obj is num || obj is String || obj is bool) return obj;
+    if (obj is Iterable) return obj.map(call).toList();
+    if (obj is Map) return mapToData(obj);
+    return toDataUsingReflection(obj);
+  }
+
+  mapToData(obj) {
+    var res = {};
+    obj.forEach((k,v) {
+      res[call(k)] = call(v);
+    });
+    return res;
+  }
+
+  toDataUsingReflection(obj) {
+    final clazz = mirrors.reflectClass(obj.runtimeType);
+    final instance = mirrors.reflect(obj);
+
+    return clazz.declarations.values.fold({}, (map, decl) {
+      if (decl is! mirrors.MethodMirror) {
+        final field = instance.getField(decl.simpleName);
+        final name = mirrors.MirrorSystem.getName(decl.simpleName);
+        map[name] = call(field.reflectee);
+      }
+      return map;
+    });
+  }
+}
+
 
 /// Matches when the object is an instance of [_type]
 class IsInstanceOf extends unit.Matcher {

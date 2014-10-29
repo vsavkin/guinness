@@ -85,6 +85,7 @@ class Expect {
   void toHaveBeenCalledOnceWith([a=_u,b=_u,c=_u,d=_u,e=_u,f=_u]) =>
       _m.toHaveBeenCalledOnceWith(actual, a, b, c, d, e, f);
 
+  void toHaveSameProps(expected) => _m.toHaveSameProps(actual, expected);
   Matchers get _m => guinness.matchers;
 }
 
@@ -106,6 +107,6 @@ class NotExpect {
   void toHaveBeenCalled() => _m.notToHaveBeenCalled(actual);
   void toHaveBeenCalledWith([a=_u,b=_u,c=_u,d=_u,e=_u,f=_u]) =>
       _m.notToHaveBeenCalledWith(actual, a, b, c, d, e, f);
-
+  void toHaveSameProps(expected) => _m.notToHaveSameProps(actual, expected);
   Matchers get _m => guinness.matchers;
 }

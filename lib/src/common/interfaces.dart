@@ -34,6 +34,7 @@ abstract class Matchers {
   void toHaveBeenCalledOnce(actual);
   void toHaveBeenCalledWith(actual, [a,b,c,d,e,f]);
   void toHaveBeenCalledOnceWith(actual, [a,b,c,d,e,f]);
+  void toHaveSameProps(actual, expected);
   void notToEqual(actual, expected);
   void notToContain(actual, expected);
   void notToBe(actual, expected);
@@ -46,4 +47,5 @@ abstract class Matchers {
   void toBeUndefined(actual);
   void notToHaveBeenCalled(actual);
   void notToHaveBeenCalledWith(actual, [a,b,c,d,e,f]);
+  void notToHaveSameProps(actual, expected);
 }
