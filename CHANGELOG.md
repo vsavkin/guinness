@@ -1,3 +1,16 @@
+# v0.1.16 (2014-10-29)
+
+- Add `toHaveSameProps` matcher.
+
+    ```
+    final p1 = new Person("Jim", 25);
+    final p2 = new Person("Jim", 25);
+
+    expect(p1).not.toEqual(p2);
+    expect(p1).toHaveSameProps(p2);
+    ```
+
+
 # v0.1.15 (2014-09-04)
 
 - The `where` argument to `toThrowWith` could be a function returning a boolean:
