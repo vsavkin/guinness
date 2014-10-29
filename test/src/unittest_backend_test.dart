@@ -4,6 +4,9 @@ assertTrue(Function fn) => expect(fn, returnsNormally);
 assertFalse(Function fn) => expect(fn, throws);
 
 class TestClass {
+  var prop;
+
+  TestClass([this.prop]);
 }
 
 testUnitTestBackend(){
@@ -121,7 +124,7 @@ testUnitTestBackend(){
     test("toBeCloseTo", () {
       assertTrue(() => matchers.toBeCloseTo(9, 9, 0));
       assertTrue(() => matchers.toBeCloseTo(9.123, 9.12, 2));
-      assertFalse(() => matchers.toBeCloseTo(9.123, 9.12, 3));;
+      assertFalse(() => matchers.toBeCloseTo(9.123, 9.12, 3));
     });
 
     test("toBeA", skipDart2Js((){
@@ -338,7 +341,7 @@ testUnitTestBackend(){
     test("notToBeCloseTo", () {
       assertFalse(() => matchers.notToBeCloseTo(9, 9, 0));
       assertFalse(() => matchers.notToBeCloseTo(9.123, 9.12, 2));
-      assertTrue(() => matchers.notToBeCloseTo(9.123, 9.12, 3));;
+      assertTrue(() => matchers.notToBeCloseTo(9.123, 9.12, 3));
     });
 
     test("notToBeA", skipDart2Js((){
@@ -403,6 +406,45 @@ testUnitTestBackend(){
 
       assertFalse(() => matchers.notToHaveBeenCalledWith(spy, 1, 2));
       assertTrue(() => matchers.notToHaveBeenCalledWith(spy, 3, 4));
+    });
+
+    group("toHaveSameProps", (){
+      test("should work for primitives", () {
+        assertTrue(() => matchers.toHaveSameProps(1, 1));
+        assertFalse(() => matchers.toHaveSameProps(1, 2));
+      });
+
+      test("should work for lists", () {
+        assertTrue(() => matchers.toHaveSameProps([1,2], [1,2]));
+        assertFalse(() => matchers.toHaveSameProps([1,2], [1,3]));
+      });
+
+      test("should work for maps", () {
+        assertTrue(() => matchers.toHaveSameProps({1: 100, 2:200}, {1: 100, 2:200}));
+        assertFalse(() => matchers.toHaveSameProps({1: 100, 2:200}, {1: 100, 2:300}));
+      });
+
+      test("should work for custom objects", () {
+        final expected = new TestClass(new TestClass([1,2]));
+        final actual = new TestClass(new TestClass([1,2]));
+        assertTrue(() => matchers.toHaveSameProps(actual, expected));
+
+        final falseActual = new TestClass(new TestClass([1,2,3]));
+        assertFalse(() => matchers.toHaveSameProps(falseActual, expected));
+      });
+
+      test("should skip recursive properties", () {
+        final expected = new TestClass("");
+        expected.prop = expected;
+        assertTrue(() => matchers.toHaveSameProps(expected, expected));
+      });
+    });
+
+    group("toHaveSameProps", () {
+      test("should work", () {
+        assertFalse(() => matchers.notToHaveSameProps(1, 1));
+        assertTrue(() => matchers.notToHaveSameProps(1, 2));
+      });
     });
   });
 }
