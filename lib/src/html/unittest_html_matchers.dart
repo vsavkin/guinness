@@ -15,6 +15,10 @@ class UnitTestMatchersWithHtml extends gns.UnitTestMatchers implements HtmlMatch
       unit.expect(htmlUtils.elementText(actual),
                   unit.equals(expected));
 
+  void toContainText(actual, expected) =>
+      unit.expect(htmlUtils.elementText(actual),
+                  unit.contains(expected));
+
   void toHaveClass(actual, cls) =>
       unit.expect(actual.classes.contains(cls),
                   true,
@@ -49,6 +53,11 @@ class UnitTestMatchersWithHtml extends gns.UnitTestMatchers implements HtmlMatch
   void notToHaveText(actual, expected) =>
       unit.expect(htmlUtils.elementText(actual),
                   unit.isNot(unit.equals(expected)));
+
+  void notToContainText(actual, expected) =>
+      unit.expect(htmlUtils.elementText(actual),
+                  unit.isNot(unit.contains(expected)));
+
 
   void notToHaveClass(actual, cls) =>
       unit.expect(actual.classes.contains(cls),
