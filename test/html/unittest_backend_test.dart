@@ -1,4 +1,12 @@
-part of guinness_test;
+library guinness.test.unittest_backend_test;
+
+import 'dart:html' as html;
+
+import 'package:dartmocks/dartmocks.dart';
+import 'package:guinness/guinness_html.dart' as guinness;
+import 'package:unittest/unittest.dart';
+
+import '../test_utils.dart';
 
 assertTrue(Function fn) => expect(fn, returnsNormally);
 assertFalse(Function fn) => expect(fn, throws);
@@ -16,7 +24,7 @@ class TestClassWithPrivateField {
   TestClassWithPrivateField([this.prop, this._private]);
 }
 
-testUnitTestBackend(){
+void main() {
   group("[UnitTestVisitor]", () {
     var visitor, unit;
 

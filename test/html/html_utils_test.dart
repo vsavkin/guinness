@@ -1,10 +1,11 @@
-library html_utils_test;
+library guinness.test.html_utils_test;
+
+import 'dart:html';
 
 import 'package:guinness/src/html_utils.dart' as utils;
 import 'package:unittest/unittest.dart';
-import 'dart:html';
 
-main() {
+void main() {
   group("[toHtml]", () {
     test('handles comments', () {
       final c = new Comment("some data");
