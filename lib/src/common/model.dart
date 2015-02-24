@@ -32,7 +32,8 @@ class It extends Spec {
   final Function fn;
 
   It(String name, Describe parent, Function fn, {bool excluded, bool exclusive})
-      : super(name, parent, excluded: excluded, exclusive: exclusive, pending: fn == null),
+      : super(name, parent,
+          excluded: excluded, exclusive: exclusive, pending: fn == null),
         this.fn = fn;
 
   String get name => pending ? 'PENDING: ${super.name}' : super.name;
@@ -48,7 +49,7 @@ class It extends Spec {
   Iterable<BeforeEach> get beforeEachFns {
     final fns = [];
     var c = parent;
-    while(c != null){
+    while (c != null) {
       fns.insertAll(0, c.beforeEachFns);
       c = c.parent;
     }
@@ -59,7 +60,7 @@ class It extends Spec {
   Iterable<AfterEach> get afterEachFns {
     final fns = [];
     var c = parent;
-    while(c != null){
+    while (c != null) {
       fns.addAll(c.afterEachFns);
       c = c.parent;
     }
@@ -72,13 +73,14 @@ class It extends Spec {
   _runItWithAfterEach(_) {
     final success = (_) => _runAllAfterEach();
     final failure = (errorThrownByIt, stackTrace) => _runAllAfterEach()
-        .whenComplete(() => new async.Future.error(errorThrownByIt, stackTrace));
+        .whenComplete(
+            () => new async.Future.error(errorThrownByIt, stackTrace));
     return _runIt().then(success, onError: failure);
   }
 
   _runIt() => new async.Future.sync(fn);
-  _runAllBeforeEach() =>_runAll(beforeEachFns);
-  _runAllAfterEach() =>_runAll(afterEachFns);
+  _runAllBeforeEach() => _runAll(beforeEachFns);
+  _runAllAfterEach() => _runAll(afterEachFns);
   _runAll(List fns) => async.Future.forEach(fns, (fn) => fn());
 }
 
@@ -88,8 +90,12 @@ class Describe extends Spec {
   final List<AfterEach> afterEachFns = [];
   final List<Spec> children = [];
 
-  Describe(String name, Describe parent, this.context, Function definition, {bool excluded, bool exclusive})
-      : super(name, parent, excluded: excluded, exclusive: exclusive, pending: definition == null) {
+  Describe(String name, Describe parent, this.context, Function definition,
+      {bool excluded, bool exclusive})
+      : super(name, parent,
+          excluded: excluded,
+          exclusive: exclusive,
+          pending: definition == null) {
     if (definition != null) context.withDescribe(this, definition);
   }
 
@@ -111,8 +117,7 @@ class Describe extends Spec {
 }
 
 class Suite extends Describe {
-  Suite(Context context)
-      : super(null, null, context, (){});
+  Suite(Context context) : super(null, null, context, () {});
 
   void visit(SpecVisitor visitor) => visitor.visitSuite(this);
 }

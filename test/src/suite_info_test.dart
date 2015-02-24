@@ -1,14 +1,14 @@
 part of guinness_test;
 
-testSuiteInfo(){
-  group("[suiteInfo]", (){
-    setUp((){
+testSuiteInfo() {
+  group("[suiteInfo]", () {
+    setUp(() {
       final context = new guinness.Context();
       guinness.guinness.resetContext(context);
     });
 
     test("describes", () {
-      guinness.describe("outer", (){
+      guinness.describe("outer", () {
         guinness.xdescribe("xdescribe", noop);
         guinness.ddescribe("ddescribe", noop);
         guinness.describe("inner describe", noop);

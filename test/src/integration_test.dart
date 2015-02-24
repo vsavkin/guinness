@@ -3,48 +3,49 @@ part of guinness_test;
 class DummyVisitor implements guinness.SpecVisitor {
   List<Future> allFutures = [];
 
-  void visitSuite(guinness.Suite suite){
+  void visitSuite(guinness.Suite suite) {
     suite.children.forEach((c) => c.visit(this));
   }
 
-  void visitDescribe(guinness.Describe describe){
+  void visitDescribe(guinness.Describe describe) {
     describe.children.forEach((c) => c.visit(this));
   }
 
-  void visitIt(guinness.It it){
+  void visitIt(guinness.It it) {
     allFutures.add(it.withSetupAndTeardown());
   }
 
   waitForAll() => Future.wait(allFutures);
 }
 
-testIntegration(){
-  group("[integration]", (){
+testIntegration() {
+  group("[integration]", () {
     var context;
 
-    void verify(Function fn){
+    void verify(Function fn) {
       final visitor = new DummyVisitor();
       context.suite.visit(visitor);
-      visitor.waitForAll()
+      visitor
+          .waitForAll()
           .then(expectAsync((_) => fn()))
           .catchError((e) => print(e));
     }
 
-    setUp((){
+    setUp(() {
       context = new guinness.Context();
       guinness.guinness.resetContext(context);
     });
 
-    test("runs specs once", (){
+    test("runs specs once", () {
       var log = [];
 
-      guinness.describe("outer describe", (){
-        guinness.it("outer it", (){
+      guinness.describe("outer describe", () {
+        guinness.it("outer it", () {
           log.add("outer it");
         });
 
-        guinness.describe("inner describe", (){
-          guinness.it("inner it", (){
+        guinness.describe("inner describe", () {
+          guinness.it("inner it", () {
             log.add("inner it");
           });
         });
@@ -55,37 +56,41 @@ testIntegration(){
       });
     });
 
-    test("runs beforeEach and afterEach blocks", (){
+    test("runs beforeEach and afterEach blocks", () {
       var log = [];
 
-      guinness.describe("outer describe", (){
-        guinness.beforeEach((){
+      guinness.describe("outer describe", () {
+        guinness.beforeEach(() {
           log.add("outer beforeEach");
         });
 
-        guinness.afterEach((){
+        guinness.afterEach(() {
           log.add("outer afterEach");
         });
 
-        guinness.describe("inner describe", (){
-          guinness.beforeEach((){
+        guinness.describe("inner describe", () {
+          guinness.beforeEach(() {
             log.add("inner beforeEach");
           });
 
-          guinness.afterEach((){
+          guinness.afterEach(() {
             log.add("inner afterEach");
           });
 
-          guinness.it("inner it", (){
+          guinness.it("inner it", () {
             log.add("inner it");
           });
         });
       });
 
       verify(() {
-        expect(log, equals(["outer beforeEach", "inner beforeEach",
-                            "inner it",
-                            "inner afterEach", "outer afterEach"]));
+        expect(log, equals([
+          "outer beforeEach",
+          "inner beforeEach",
+          "inner it",
+          "inner afterEach",
+          "outer afterEach"
+        ]));
       });
     });
 
@@ -97,11 +102,11 @@ testIntegration(){
           log.add(message);
         });
 
-        guinness.describe("outer describe", (){
+        guinness.describe("outer describe", () {
           guinness.beforeEach(() => futurePrinting("outer beforeEach"));
           guinness.afterEach(() => futurePrinting("outer afterEach"));
 
-          guinness.describe("inner describe", (){
+          guinness.describe("inner describe", () {
             guinness.beforeEach(() => futurePrinting("inner beforeEach"));
             guinness.afterEach(() => futurePrinting("inner afterEach"));
 
@@ -110,9 +115,13 @@ testIntegration(){
         });
 
         verify(() {
-          expect(log, equals(["outer beforeEach", "inner beforeEach",
-                              "inner it",
-                              "inner afterEach", "outer afterEach"]));
+          expect(log, equals([
+            "outer beforeEach",
+            "inner beforeEach",
+            "inner it",
+            "inner afterEach",
+            "outer afterEach"
+          ]));
         });
       });
     });
@@ -125,7 +134,7 @@ testIntegration(){
       guinness.it("pending it");
       guinness.xit("pending exlcluded it");
       guinness.iit("pending exclusive it");
-      verify((){});
+      verify(() {});
     });
   });
 }

@@ -1,33 +1,35 @@
 part of guinness_test;
 
-testModel(){
-  group("[model]", (){
-    group("[It]", (){
-      test("returns all before each functions", (){
+testModel() {
+  group("[model]", () {
+    group("[It]", () {
+      test("returns all before each functions", () {
         final outerBeforeEach = new guinness.BeforeEach(noop, priority: 0);
         final outer = createDescribe()..addBeforeEach(outerBeforeEach);
 
         final innerBeforeEach = new guinness.BeforeEach(noop, priority: 0);
-        final inner = createDescribe(parent: outer)..addBeforeEach(innerBeforeEach);
+        final inner = createDescribe(parent: outer)
+          ..addBeforeEach(innerBeforeEach);
 
         final it = createIt(parent: inner);
 
         expect(it.beforeEachFns, equals([outerBeforeEach, innerBeforeEach]));
       });
 
-      test("returns all after each functions", (){
+      test("returns all after each functions", () {
         final outerAfterEach = new guinness.AfterEach(noop, priority: 0);
         final outer = createDescribe()..addAfterEach(outerAfterEach);
 
         final innerAfterEach = new guinness.AfterEach(noop, priority: 0);
-        final inner = createDescribe(parent: outer)..addAfterEach(innerAfterEach);
+        final inner = createDescribe(parent: outer)
+          ..addAfterEach(innerAfterEach);
 
         final it = createIt(parent: inner);
 
         expect(it.afterEachFns, equals([innerAfterEach, outerAfterEach]));
       });
 
-      test("sorts all beforeEach fns by priority", (){
+      test("sorts all beforeEach fns by priority", () {
         final beforeEach1 = new guinness.BeforeEach(noop, priority: 0);
         final beforeEach2 = new guinness.BeforeEach(noop, priority: 1);
 
@@ -40,7 +42,7 @@ testModel(){
         expect(it.beforeEachFns, equals([beforeEach2, beforeEach1]));
       });
 
-      test("sorts all afterEach fns by priority", (){
+      test("sorts all afterEach fns by priority", () {
         final afterEach1 = new guinness.AfterEach(noop, priority: 0);
         final afterEach2 = new guinness.AfterEach(noop, priority: 1);
 
@@ -57,7 +59,8 @@ testModel(){
         final log = [];
 
         createBeforeEach(delay, message) {
-          var func = () => new Future.delayed(new Duration(milliseconds: delay), () => log.add(message));
+          var func = () => new Future.delayed(
+              new Duration(milliseconds: delay), () => log.add(message));
           return new guinness.BeforeEach(func, priority: 1);
         }
 
@@ -79,7 +82,8 @@ testModel(){
         final log = [];
 
         createAfterEach(delay, message) {
-          var func = () => new Future.delayed(new Duration(milliseconds: delay), () => log.add(message));
+          var func = () => new Future.delayed(
+              new Duration(milliseconds: delay), () => log.add(message));
           return new guinness.AfterEach(func, priority: 1);
         }
 
@@ -100,7 +104,8 @@ testModel(){
       test("does not run any callbacks when pending", () {
         final log = [];
 
-        final be = new guinness.BeforeEach(() => log.add("before"), priority: 0);
+        final be =
+            new guinness.BeforeEach(() => log.add("before"), priority: 0);
         final ae = new guinness.AfterEach(() => log.add("after"), priority: 0);
 
         final describe = createDescribe()
@@ -123,7 +128,8 @@ testModel(){
       });
 
       group("[error handling]", () {
-        test("does not run afterEach callbacks if beforeEach callbacks errored", () {
+        test("does not run afterEach callbacks if beforeEach callbacks errored",
+            () {
           final be = new guinness.BeforeEach(() => throw "BOOM", priority: 1);
 
           var run = false;
@@ -151,7 +157,8 @@ testModel(){
           }));
         });
 
-        test("return the error thrown by `afterEach` if `it` returns normally", () {
+        test("return the error thrown by `afterEach` if `it` returns normally",
+            () {
           final ae = new guinness.AfterEach(() => throw "after", priority: 1);
           final describe = createDescribe()..addAfterEach(ae);
 

@@ -9,12 +9,12 @@ class Expect extends gns.Expect {
   void toHaveText(expected) => _m.toHaveText(actual, expected);
   void toContainText(expected) => _m.toContainText(actual, expected);
   void toHaveClass(cls) => _m.toHaveClass(actual, cls);
-  void toHaveAttribute(name, [value = null]) => _m.toHaveAttribute(actual, name, value);
+  void toHaveAttribute(name, [value = null]) =>
+      _m.toHaveAttribute(actual, name, value);
   void toEqualSelect(options) => _m.toEqualSelect(actual, options);
 
   HtmlMatchers get _m => gns.guinness.matchers;
 }
-
 
 class NotExpect extends gns.NotExpect {
   NotExpect(actual) : super(actual);

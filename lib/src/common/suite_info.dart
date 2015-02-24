@@ -1,6 +1,6 @@
 part of guinness;
 
-_suiteInfo(Suite suite){
+_suiteInfo(Suite suite) {
   final visitor = new _SuiteInfoVisitor();
   visitor.visitSuite(suite);
   return visitor.info;
@@ -21,7 +21,8 @@ class SuiteInfo {
 
   int get numberOfActiveIts => activeIts.length;
   bool get hasActiveIts => activeIts.isNotEmpty;
-  int get activeItsPercent => numberOfIts > 0 ? (activeIts.length / numberOfIts * 100).toInt() : 0;
+  int get activeItsPercent =>
+      numberOfIts > 0 ? (activeIts.length / numberOfIts * 100).toInt() : 0;
 
   @deprecated
   void printDetailedStats() {
@@ -30,11 +31,14 @@ class SuiteInfo {
     print("---- -------------- ----");
 
     print("Total: Describe (${numberOfDescribes}), It (${numberOfIts})");
-    print("Excluded: Describe (${excludedDescribes.length}), It (${excludedIts.length})");
-    print("Exclusive: Describe (${exclusiveDescribes.length}), It (${exclusiveIts.length})");
+    print(
+        "Excluded: Describe (${excludedDescribes.length}), It (${excludedIts.length})");
+    print(
+        "Exclusive: Describe (${exclusiveDescribes.length}), It (${exclusiveIts.length})");
 
-    if(exclusiveIts.isNotEmpty && exclusiveDescribes.isNotEmpty) {
-      print("WARNING: Exclusive It blocks have higher priority than exlusive Describe blocks");
+    if (exclusiveIts.isNotEmpty && exclusiveDescribes.isNotEmpty) {
+      print(
+          "WARNING: Exclusive It blocks have higher priority than exlusive Describe blocks");
     }
 
     print("---- Details ----");

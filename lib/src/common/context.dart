@@ -30,12 +30,14 @@ class Context {
   }
 
   void addIt(String name, Function fn, {bool excluded, bool exclusive}) {
-    final it = new It(name, currentDescribe, fn, excluded: excluded, exclusive: exclusive);
+    final it = new It(name, currentDescribe, fn,
+        excluded: excluded, exclusive: exclusive);
     currentDescribe.add(it);
   }
 
   void addDescribe(String name, Function fn, {bool excluded, bool exclusive}) {
-    final describe = new Describe(name, currentDescribe, this, fn, excluded: excluded, exclusive: exclusive);
+    final describe = new Describe(name, currentDescribe, this, fn,
+        excluded: excluded, exclusive: exclusive);
     currentDescribe.add(describe);
   }
 }

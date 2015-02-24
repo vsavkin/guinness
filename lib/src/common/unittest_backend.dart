@@ -43,7 +43,7 @@ class UnitTestVisitor implements SpecVisitor {
     _once(it, () {
       if (it.excluded) return;
 
-      if (it.exclusive){
+      if (it.exclusive) {
         unit.solo_test(it.name, it.withSetupAndTeardown);
       } else {
         unit.test(it.name, it.withSetupAndTeardown);
@@ -65,38 +65,49 @@ class UnitTestVisitor implements SpecVisitor {
 class UnitTestMatchers implements Matchers {
   get config => {};
 
-  void expect(actual, matcher, {String reason}) => unit.expect(actual, matcher, reason: reason);
+  void expect(actual, matcher, {String reason}) =>
+      unit.expect(actual, matcher, reason: reason);
 
   void toEqual(actual, expected) => unit.expect(actual, unit.equals(expected));
 
-  void toContain(actual, expected) => unit.expect(actual, unit.contains(expected));
+  void toContain(actual, expected) =>
+      unit.expect(actual, unit.contains(expected));
 
-  void toBe(actual, expected) =>
-      unit.expect(actual, unit.predicate((actual) => identical(expected, actual), '$expected'));
+  void toBe(actual, expected) => unit.expect(actual,
+      unit.predicate((actual) => identical(expected, actual), '$expected'));
 
-  void toBeLessThan(num actual, num expected) => unit.expect(actual, unit.lessThan(expected));
+  void toBeLessThan(num actual, num expected) =>
+      unit.expect(actual, unit.lessThan(expected));
 
-  void toBeGreaterThan(num actual, num expected) => unit.expect(actual, unit.greaterThan(expected));
+  void toBeGreaterThan(num actual, num expected) =>
+      unit.expect(actual, unit.greaterThan(expected));
 
   void toBeCloseTo(num actual, num expected, num precision) =>
       unit.expect(actual, unit.closeTo(expected, math.pow(10, -precision) / 2));
 
-  void toBeA(actual, expected) => unit.expect(actual, new IsSubtypeOf(expected));
+  void toBeA(actual, expected) =>
+      unit.expect(actual, new IsSubtypeOf(expected));
 
-  void toBeAnInstanceOf(actual, expected) => unit.expect(actual, new IsInstanceOf(expected));
+  void toBeAnInstanceOf(actual, expected) =>
+      unit.expect(actual, new IsInstanceOf(expected));
 
-  void toThrow(actual, [Pattern pattern]) => unit.expect(actual, pattern == null ?
-          unit.throws : unit.throwsA(new ExceptionMatcher(message: pattern)));
+  void toThrow(actual, [Pattern pattern]) => unit.expect(actual, pattern == null
+      ? unit.throws
+      : unit.throwsA(new ExceptionMatcher(message: pattern)));
 
-  void toThrowWith(actual, {Type anInstanceOf, Type type, Pattern message, Function where}) {
-    final matcher = new ExceptionMatcher(anInstanceOf: anInstanceOf, type: type, message: message, where: where);
-    unit.expect(actual, unit.throwsA(matcher), failureHandler: new NestedMatcherAwareFailureHandler());
+  void toThrowWith(actual,
+      {Type anInstanceOf, Type type, Pattern message, Function where}) {
+    final matcher = new ExceptionMatcher(
+        anInstanceOf: anInstanceOf, type: type, message: message, where: where);
+    unit.expect(actual, unit.throwsA(matcher),
+        failureHandler: new NestedMatcherAwareFailureHandler());
   }
 
-  void toBeFalsy(actual) => unit.expect(actual, _isFalsy, reason: '"$actual" is not Falsy');
+  void toBeFalsy(actual) =>
+      unit.expect(actual, _isFalsy, reason: '"$actual" is not Falsy');
 
-  void toBeTruthy(actual) =>
-      unit.expect(actual, (v) => !_isFalsy(v), reason: '"$actual" is not Truthy');
+  void toBeTruthy(actual) => unit.expect(actual, (v) => !_isFalsy(v),
+      reason: '"$actual" is not Truthy');
 
   void toBeFalse(actual) => unit.expect(actual, unit.isFalse);
 
@@ -108,31 +119,34 @@ class UnitTestMatchers implements Matchers {
 
   void toBeNotNull(actual) => unit.expect(actual, unit.isNotNull);
 
-  void toHaveBeenCalled(actual) => unit.expect(actual.called, true, reason: 'method not called');
+  void toHaveBeenCalled(actual) =>
+      unit.expect(actual.called, true, reason: 'method not called');
 
-  void toHaveBeenCalledOnce(actual) =>
-      unit.expect(actual.count, 1, reason: 'method invoked ${actual.count} expected once');
+  void toHaveBeenCalledOnce(actual) => unit.expect(actual.count, 1,
+      reason: 'method invoked ${actual.count} expected once');
 
-  void toHaveBeenCalledWith(actual, [a=_u,b=_u,c=_u,d=_u,e=_u,f=_u]) =>
-      unit.expect(actual.firstArgsMatch(a,b,c,d,e,f),
-                  true,
-                  reason: 'method invoked with correct arguments');
+  void toHaveBeenCalledWith(actual,
+      [a = _u, b = _u, c = _u, d = _u, e = _u, f = _u]) => unit.expect(
+          actual.firstArgsMatch(a, b, c, d, e, f), true,
+          reason: 'method invoked with correct arguments');
 
-  void toHaveBeenCalledOnceWith(actual, [a=_u,b=_u,c=_u,d=_u,e=_u,f=_u]) =>
-      unit.expect(actual.count == 1 && actual.firstArgsMatch(a,b,c,d,e,f),
-                  true,
-                  reason: 'method invoked once with correct arguments.'
-                  '(Called ${actual.count} times)');
+  void toHaveBeenCalledOnceWith(actual,
+      [a = _u, b = _u, c = _u, d = _u, e = _u, f = _u]) => unit.expect(
+          actual.count == 1 && actual.firstArgsMatch(a, b, c, d, e, f), true,
+          reason: 'method invoked once with correct arguments.'
+          '(Called ${actual.count} times)');
 
-  void toHaveSameProps(actual, expected) => unit.expect(actual, new SamePropsMatcher(expected));
+  void toHaveSameProps(actual, expected) =>
+      unit.expect(actual, new SamePropsMatcher(expected));
 
+  void notToEqual(actual, expected) =>
+      unit.expect(actual, unit.isNot(unit.equals(expected)));
 
-  void notToEqual(actual, expected) => unit.expect(actual, unit.isNot(unit.equals(expected)));
+  void notToContain(actual, expected) =>
+      unit.expect(actual, unit.isNot(unit.contains(expected)));
 
-  void notToContain(actual, expected) => unit.expect(actual, unit.isNot(unit.contains(expected)));
-
-  void notToBe(actual, expected) =>
-      unit.expect(actual, unit.predicate((actual) => !identical(expected, actual), 'not $expected'));
+  void notToBe(actual, expected) => unit.expect(actual, unit.predicate(
+      (actual) => !identical(expected, actual), 'not $expected'));
 
   void notToBeLessThan(num actual, num expected) =>
       unit.expect(actual, unit.isNot(unit.lessThan(expected)));
@@ -141,9 +155,11 @@ class UnitTestMatchers implements Matchers {
       unit.expect(actual, unit.isNot(unit.greaterThan(expected)));
 
   void notToBeCloseTo(num actual, num expected, num precision) =>
-      unit.expect(actual, unit.isNot(unit.closeTo(expected, math.pow(10, -precision) / 2)));
+      unit.expect(actual,
+          unit.isNot(unit.closeTo(expected, math.pow(10, -precision) / 2)));
 
-  void notToBeA(actual, expected) => unit.expect(actual, unit.isNot(new IsSubtypeOf(expected)));
+  void notToBeA(actual, expected) =>
+      unit.expect(actual, unit.isNot(new IsSubtypeOf(expected)));
 
   void notToBeAnInstanceOf(actual, expected) =>
       unit.expect(actual, unit.isNot(new IsInstanceOf(expected)));
@@ -152,25 +168,26 @@ class UnitTestMatchers implements Matchers {
 
   void toBeUndefined(actual) => unit.expect(actual, unit.isNull);
 
-  void notToHaveBeenCalled(actual) => unit.expect(actual.called, false, reason: 'method called');
+  void notToHaveBeenCalled(actual) =>
+      unit.expect(actual.called, false, reason: 'method called');
 
-  void notToHaveBeenCalledWith(actual, [a=_u,b=_u,c=_u,d=_u,e=_u,f=_u]) =>
-      unit.expect(actual.firstArgsMatch(a,b,c,d,e,f),
-                  false,
-                  reason: 'method invoked with correct arguments');
+  void notToHaveBeenCalledWith(actual,
+      [a = _u, b = _u, c = _u, d = _u, e = _u, f = _u]) => unit.expect(
+          actual.firstArgsMatch(a, b, c, d, e, f), false,
+          reason: 'method invoked with correct arguments');
 
   void notToHaveSameProps(actual, expected) =>
       unit.expect(actual, unit.isNot(new SamePropsMatcher(expected)));
 }
 
-bool _isFalsy(v) => v == null ? true: v is bool ? v == false : false;
-
+bool _isFalsy(v) => v == null ? true : v is bool ? v == false : false;
 
 /// Matches an exception against its type, class, and message
 class ExceptionMatcher extends unit.Matcher {
   final List<unit.Matcher> _matchers = [];
 
-  ExceptionMatcher({Type anInstanceOf, Type type, Pattern message, Function where}){
+  ExceptionMatcher(
+      {Type anInstanceOf, Type type, Pattern message, Function where}) {
     if (message != null) _matchers.add(new PatternMatcher(message));
     if (type != null) _matchers.add(new IsSubtypeOf(type));
     if (anInstanceOf != null) _matchers.add(new IsInstanceOf(anInstanceOf));
@@ -180,14 +197,13 @@ class ExceptionMatcher extends unit.Matcher {
   bool matches(item, Map matchState) =>
       _matchers.every((matcher) => matcher.matches(item, matchState));
 
-
   unit.Description describe(unit.Description description) {
     if (_matchers.isEmpty) return description;
 
     description.add('an exception, which ');
 
     _matchers.first.describe(description);
-    _matchers.skip(1).forEach((matcher){
+    _matchers.skip(1).forEach((matcher) {
       description.add(", and ");
       matcher.describe(description);
     });
@@ -203,14 +219,16 @@ class ExceptionMatcher extends unit.Matcher {
 class NestedMatcherAwareFailureHandler implements unit.FailureHandler {
   void fail(String reason) => _handler.fail(reason);
 
-  void failMatch(actual, unit.Matcher matcher, String reason, Map matchState, bool verbose) =>
-      _handler.failMatch(actual, matcher, _reason(matchState, reason), matchState, verbose);
+  void failMatch(actual, unit.Matcher matcher, String reason, Map matchState,
+      bool verbose) => _handler.failMatch(
+          actual, matcher, _reason(matchState, reason), matchState, verbose);
 
-  _reason(matchState, reason) =>
-      _hasNestedMatcherFailure(matchState) ? _formatNestedMatcherFailure(matchState) : reason;
+  _reason(matchState, reason) => _hasNestedMatcherFailure(matchState)
+      ? _formatNestedMatcherFailure(matchState)
+      : reason;
 
-  _hasNestedMatcherFailure(matchState) =>
-      matchState.containsKey("state") && matchState["state"].containsKey("nestedMatcherFailure");
+  _hasNestedMatcherFailure(matchState) => matchState.containsKey("state") &&
+      matchState["state"].containsKey("nestedMatcherFailure");
 
   _formatNestedMatcherFailure(matchState) =>
       "\nFailed Assertion:\n${matchState["state"]["nestedMatcherFailure"].message}";
@@ -249,7 +267,6 @@ class PatternMatcher extends unit.Matcher {
       description.add('matches $_pattern');
 }
 
-
 /// Matches when the object is a subtype of [_type]
 class IsSubtypeOf extends unit.Matcher {
   final Type _type;
@@ -284,8 +301,8 @@ class SamePropsMatcher extends unit.Matcher {
   }
 
   unit.Description describeMismatch(item, unit.Description mismatchDescription,
-      Map matchState, bool verbose) =>
-      mismatchDescription.add('is equal to ${toData(item)}. Expected: ${toData(_expected)}');
+      Map matchState, bool verbose) => mismatchDescription
+      .add('is equal to ${toData(item)}. Expected: ${toData(_expected)}');
 
   unit.Description describe(unit.Description description) =>
       description.add('has different properties');
@@ -293,7 +310,6 @@ class SamePropsMatcher extends unit.Matcher {
   toData(obj) => new _ObjToData().call(obj);
   compare(d1, d2) => new DeepCollectionEquality().equals(d1, d2);
 }
-
 
 class _ObjToData {
   final visitedObjects = new Set();
@@ -310,7 +326,7 @@ class _ObjToData {
 
   mapToData(obj) {
     var res = {};
-    obj.forEach((k,v) {
+    obj.forEach((k, v) {
       res[call(k)] = call(v);
     });
     return res;
@@ -331,7 +347,6 @@ class _ObjToData {
   }
 }
 
-
 /// Matches when the object is an instance of [_type]
 class IsInstanceOf extends unit.Matcher {
   final Type _type;
@@ -339,7 +354,7 @@ class IsInstanceOf extends unit.Matcher {
   const IsInstanceOf(this._type);
 
   bool matches(obj, Map matchState) =>
-      mirrors.reflect(obj).type.reflectedType  == _type;
+      mirrors.reflect(obj).type.reflectedType == _type;
 
   unit.Description describe(unit.Description description) =>
       description.add('an instance of $_type');

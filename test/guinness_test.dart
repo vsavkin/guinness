@@ -15,27 +15,24 @@ part 'src/exclusive_visitor_test.dart';
 part 'src/unittest_backend_test.dart';
 part 'src/suite_info_test.dart';
 
-
 class DummyContext implements guinness.Context {
-  withDescribe(guinness.Describe describe, Function definition){
-  }
+  withDescribe(guinness.Describe describe, Function definition) {}
 }
 
 final context = new DummyContext();
-noop(){}
-
+noop() {}
 
 createSuite() => new guinness.Suite(context);
 
-createDescribe({bool exclusive: false, bool excluded: false, parent, Function func: noop, String name: ""}) =>
-    new guinness.Describe(name, parent, context, func, exclusive: exclusive, excluded: excluded);
+createDescribe({bool exclusive: false, bool excluded: false, parent,
+    Function func: noop, String name: ""}) => new guinness.Describe(
+    name, parent, context, func, exclusive: exclusive, excluded: excluded);
 
-createIt({bool exclusive: false, bool excluded: false, parent, Function func: noop, String name: ""}) =>
-    new guinness.It(name, parent, func, exclusive: exclusive, excluded: excluded);
+createIt({bool exclusive: false, bool excluded: false, parent,
+    Function func: noop, String name: ""}) => new guinness.It(
+    name, parent, func, exclusive: exclusive, excluded: excluded);
 
-
-
-main(){
+main() {
   guinness.guinnessEnableHtmlMatchers();
   guinness.guinness.autoInit = false;
 
