@@ -1,3 +1,8 @@
+# v0.1.17 ()
+
+- Add `fit()` and `fdescribe()` to create focused specs and suite - introduced in Jasmine 2.1.
+  `fit()` / ` fdescribe()` are aliases for `iit()` / `ddescribe()`
+
 # v0.1.16 (2014-10-29)
 
 - Add `toHaveSameProps` matcher.

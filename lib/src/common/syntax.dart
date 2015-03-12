@@ -15,6 +15,7 @@ void xit(name, [Function fn]) =>
 void iit(name, [Function fn]) =>
     guinness._context.addIt(name.toString(), fn, excluded: false, exclusive: true);
 
+void fit(name, [Function fn]) => iit(name, fn);
 
 void describe(name, [Function fn]) =>
     guinness._context.addDescribe(name.toString(), fn, excluded: false, exclusive: false);
@@ -24,6 +25,8 @@ void xdescribe(name, [Function fn]) =>
 
 void ddescribe(name, [Function fn]) =>
     guinness._context.addDescribe(name.toString(), fn, excluded: false, exclusive: true);
+
+void fdescribe(name, [Function fn]) => ddescribe(name, fn);
 
 Expect expect(actual, [matcher]) {
   final expect = new Expect(actual);
