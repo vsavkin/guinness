@@ -321,7 +321,7 @@ class _ObjToData {
     final instance = mirrors.reflect(obj);
 
     return clazz.declarations.values.fold({}, (map, decl) {
-      if (decl is! mirrors.MethodMirror) {
+      if (decl is mirrors.VariableMirror && !decl.isPrivate && !decl.isStatic) {
         final field = instance.getField(decl.simpleName);
         final name = mirrors.MirrorSystem.getName(decl.simpleName);
         map[name] = call(field.reflectee);
