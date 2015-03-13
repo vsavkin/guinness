@@ -9,6 +9,13 @@ class TestClass {
   TestClass([this.prop]);
 }
 
+class TestClassWithPrivateField {
+  var prop;
+  var _private;
+
+  TestClassWithPrivateField([this.prop, this._private]);
+}
+
 testUnitTestBackend(){
   group("[UnitTestVisitor]", () {
     var visitor, unit;
@@ -443,6 +450,12 @@ testUnitTestBackend(){
 
         final falseActual = new TestClass(new TestClass([1,2,3]));
         assertFalse(() => matchers.toHaveSameProps(falseActual, expected));
+      });
+
+      test("should ignore private fields when comparing private objects", () {
+        final expected = new TestClass(new TestClassWithPrivateField([1,2], true));
+        final actual = new TestClass(new TestClassWithPrivateField([1,2], false));
+        assertTrue(() => matchers.toHaveSameProps(actual, expected));
       });
 
       test("should skip recursive properties", () {
