@@ -1,3 +1,7 @@
+# v0.1.17 (2015-03-13)
+
+- Change `toHaveSameProps` matcher to ignore private fields.
+
 # v0.1.16 (2014-10-29)
 
 - Add `toHaveSameProps` matcher.
