@@ -41,6 +41,17 @@ testSyntax(){
       });
     });
 
+    group("[fdescribe]", (){
+      test("adds a describe to the current describe block with exclusive set to true", (){
+        guinness.fdescribe("new fdescribe", (){});
+
+        final actualDescribe = context.suite.children.first;
+
+        expect(actualDescribe.name, equals("DDESCRIBE: new fdescribe"));
+        expect(actualDescribe.exclusive, isTrue);
+      });
+    });
+
     group("[it]", (){
       test("adds an `it` to the current describe block", (){
         guinness.it("new it", (){});
@@ -71,6 +82,17 @@ testSyntax(){
         final actualIt = context.suite.children.first;
 
         expect(actualIt.name, equals("new iit"));
+        expect(actualIt.exclusive, isTrue);
+      });
+    });
+
+    group("[fit]", (){
+      test("adds an `it` to the current describe block with exclusive set to true", (){
+        guinness.fit("new fit", (){});
+
+        final actualIt = context.suite.children.first;
+
+        expect(actualIt.name, equals("new fit"));
         expect(actualIt.exclusive, isTrue);
       });
     });
