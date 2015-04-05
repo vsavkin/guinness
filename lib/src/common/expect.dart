@@ -12,7 +12,8 @@ class Expect {
   void toBe(expected) => _m.toBe(actual, expected);
   void toBeLessThan(num expected) => _m.toBeLessThan(actual, expected);
   void toBeGreaterThan(num expected) => _m.toBeGreaterThan(actual, expected);
-  void toBeCloseTo(num expected, num precision) => _m.toBeCloseTo(actual, expected, precision);
+  void toBeCloseTo(num expected, num precision) =>
+      _m.toBeCloseTo(actual, expected, precision);
 
   /**
    * Checks that an object is a subtype of `expected`.
@@ -68,8 +69,13 @@ class Expect {
    *    });
    *   expect(()=> throw new InvalidArgument()).toThrowWith(where: (e) => e is InvalidArgument);
    */
-  void toThrowWith({Type anInstanceOf, Type type, Pattern message, Function where}) =>
-      _m.toThrowWith(actual, anInstanceOf: anInstanceOf, type: type, message: message, where: where);
+  void toThrowWith(
+      {Type anInstanceOf, Type type, Pattern message, Function where}) => _m
+      .toThrowWith(actual,
+          anInstanceOf: anInstanceOf,
+          type: type,
+          message: message,
+          where: where);
 
   void toBeFalsy() => _m.toBeFalsy(actual);
   void toBeTruthy() => _m.toBeTruthy(actual);
@@ -80,15 +86,15 @@ class Expect {
   void toBeNotNull() => _m.toBeNotNull(actual);
   void toHaveBeenCalled() => _m.toHaveBeenCalled(actual);
   void toHaveBeenCalledOnce() => _m.toHaveBeenCalledOnce(actual);
-  void toHaveBeenCalledWith([a=_u,b=_u,c=_u,d=_u,e=_u,f=_u]) =>
+  void toHaveBeenCalledWith([a = _u, b = _u, c = _u, d = _u, e = _u, f = _u]) =>
       _m.toHaveBeenCalledWith(actual, a, b, c, d, e, f);
-  void toHaveBeenCalledOnceWith([a=_u,b=_u,c=_u,d=_u,e=_u,f=_u]) =>
+  void toHaveBeenCalledOnceWith(
+          [a = _u, b = _u, c = _u, d = _u, e = _u, f = _u]) =>
       _m.toHaveBeenCalledOnceWith(actual, a, b, c, d, e, f);
 
   void toHaveSameProps(expected) => _m.toHaveSameProps(actual, expected);
   Matchers get _m => guinness.matchers;
 }
-
 
 class NotExpect {
   final actual;
@@ -99,13 +105,14 @@ class NotExpect {
   void toBe(expected) => _m.notToBe(actual, expected);
   void toBeLessThan(num expected) => _m.notToBeLessThan(actual, expected);
   void toBeGreaterThan(num expected) => _m.notToBeGreaterThan(actual, expected);
-  void toBeCloseTo(num expected, num precision) => _m.notToBeCloseTo(actual, expected, precision);
+  void toBeCloseTo(num expected, num precision) =>
+      _m.notToBeCloseTo(actual, expected, precision);
   void toBeA(expected) => _m.notToBeA(actual, expected);
   void toBeAnInstanceOf(expected) => _m.notToBeAnInstanceOf(actual, expected);
   void toThrow() => _m.toReturnNormally(actual);
   void toBeDefined() => _m.toBeUndefined(actual);
   void toHaveBeenCalled() => _m.notToHaveBeenCalled(actual);
-  void toHaveBeenCalledWith([a=_u,b=_u,c=_u,d=_u,e=_u,f=_u]) =>
+  void toHaveBeenCalledWith([a = _u, b = _u, c = _u, d = _u, e = _u, f = _u]) =>
       _m.notToHaveBeenCalledWith(actual, a, b, c, d, e, f);
   void toHaveSameProps(expected) => _m.notToHaveSameProps(actual, expected);
   Matchers get _m => guinness.matchers;

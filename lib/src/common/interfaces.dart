@@ -22,7 +22,8 @@ abstract class Matchers {
   void toBeAnInstanceOf(actual, expected);
   @Deprecated("toThrow() API is going to change to conform with toThrowWith()")
   void toThrow(actual, message);
-  void toThrowWith(actual, {Type anInstanceOf, Type type, Pattern message, Function where});
+  void toThrowWith(actual,
+      {Type anInstanceOf, Type type, Pattern message, Function where});
   void toBeFalsy(actual);
   void toBeTruthy(actual);
   void toBeFalse(actual);
@@ -32,8 +33,8 @@ abstract class Matchers {
   void toBeNotNull(actual);
   void toHaveBeenCalled(actual);
   void toHaveBeenCalledOnce(actual);
-  void toHaveBeenCalledWith(actual, [a,b,c,d,e,f]);
-  void toHaveBeenCalledOnceWith(actual, [a,b,c,d,e,f]);
+  void toHaveBeenCalledWith(actual, [a, b, c, d, e, f]);
+  void toHaveBeenCalledOnceWith(actual, [a, b, c, d, e, f]);
   void toHaveSameProps(actual, expected);
   void notToEqual(actual, expected);
   void notToContain(actual, expected);
@@ -46,6 +47,6 @@ abstract class Matchers {
   void toReturnNormally(actual);
   void toBeUndefined(actual);
   void notToHaveBeenCalled(actual);
-  void notToHaveBeenCalledWith(actual, [a,b,c,d,e,f]);
+  void notToHaveBeenCalledWith(actual, [a, b, c, d, e, f]);
   void notToHaveSameProps(actual, expected);
 }

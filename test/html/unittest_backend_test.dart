@@ -1,4 +1,12 @@
-part of guinness_test;
+library guinness.test.unittest_backend_test;
+
+import 'dart:html' as html;
+
+import 'package:dartmocks/dartmocks.dart';
+import 'package:guinness/guinness_html.dart' as guinness;
+import 'package:unittest/unittest.dart';
+
+import '../test_utils.dart';
 
 assertTrue(Function fn) => expect(fn, returnsNormally);
 assertFalse(Function fn) => expect(fn, throws);
@@ -16,7 +24,7 @@ class TestClassWithPrivateField {
   TestClassWithPrivateField([this.prop, this._private]);
 }
 
-testUnitTestBackend(){
+void main() {
   group("[UnitTestVisitor]", () {
     var visitor, unit;
 
@@ -32,8 +40,7 @@ testUnitTestBackend(){
     });
 
     test('uses group for describe', () {
-      final suite = createSuite()
-        ..add(createDescribe());
+      final suite = createSuite()..add(createDescribe());
 
       unit.shouldReceive("group");
 
@@ -41,8 +48,7 @@ testUnitTestBackend(){
     });
 
     test('uses solo_group for exclusive describe', () {
-      final suite = createSuite()
-        ..add(createDescribe(exclusive: true));
+      final suite = createSuite()..add(createDescribe(exclusive: true));
 
       unit.shouldReceive("solo_group");
 
@@ -50,15 +56,13 @@ testUnitTestBackend(){
     });
 
     test('skips excluded describes', () {
-      final suite = createSuite()
-        ..add(createDescribe(excluded: true));
+      final suite = createSuite()..add(createDescribe(excluded: true));
 
       visitor.visitSuite(suite);
     });
 
     test('uses test for it', () {
-      final suite = createSuite()
-        ..add(createIt());
+      final suite = createSuite()..add(createIt());
 
       unit.shouldReceive("test");
 
@@ -66,8 +70,7 @@ testUnitTestBackend(){
     });
 
     test('uses solo_test for exclusive it', () {
-      final suite = createSuite()
-        ..add(createIt(exclusive: true));
+      final suite = createSuite()..add(createIt(exclusive: true));
 
       unit.shouldReceive("solo_test");
 
@@ -75,8 +78,7 @@ testUnitTestBackend(){
     });
 
     test('skips excluded its', () {
-      final suite = createSuite()
-        ..add(createIt(excluded: true));
+      final suite = createSuite()..add(createIt(excluded: true));
 
       visitor.visitSuite(suite);
     });
@@ -109,9 +111,9 @@ testUnitTestBackend(){
   group("[UnitTestMatchers]", () {
     final matchers = new guinness.UnitTestMatchersWithHtml();
 
-    test("toBe", (){
-      var x = [1,2];
-      var y = [1,2];
+    test("toBe", () {
+      var x = [1, 2];
+      var y = [1, 2];
       assertFalse(() => matchers.toBe(x, y));
       assertTrue(() => matchers.toBe(x, x));
     });
@@ -134,40 +136,41 @@ testUnitTestBackend(){
       assertFalse(() => matchers.toBeCloseTo(9.123, 9.12, 3));
     });
 
-    test("toBeA", skipDart2Js((){
+    test("toBeA", skipDart2Js(() {
       assertFalse(() => matchers.toBeA(2, String));
       assertTrue(() => matchers.toBeA(2, num));
     }));
 
-    test("toBeAnInstanceOf", (){
+    test("toBeAnInstanceOf", () {
       assertFalse(() => matchers.toBeAnInstanceOf("blah", TestClass));
       assertTrue(() => matchers.toBeAnInstanceOf(new TestClass(), TestClass));
     });
 
-    test("toThrow", (){
+    test("toThrow", () {
       assertTrue(() => matchers.toThrow(() => throw "Wow!"));
-      assertFalse(() => matchers.toThrow((){}));
+      assertFalse(() => matchers.toThrow(() {}));
       assertTrue(() => matchers.toThrow(() => throw "Wow!", "Wow!"));
       assertFalse(() => matchers.toThrow(() => throw "Wow!", "Boom!"));
     });
 
-    test("toThrowWith", (){
+    test("toThrowWith", () {
       assertTrue(() => matchers.toThrowWith(() => throw "Wow!"));
-      assertFalse(() => matchers.toThrowWith((){}));
-      assertTrue(() => matchers.toThrowWith(() => throw "Wow!", message: "Wow!"));
-      assertFalse(() => matchers.toThrowWith(() => throw "Wow!", message: "Boom!"));
+      assertFalse(() => matchers.toThrowWith(() {}));
+      assertTrue(
+          () => matchers.toThrowWith(() => throw "Wow!", message: "Wow!"));
+      assertFalse(
+          () => matchers.toThrowWith(() => throw "Wow!", message: "Boom!"));
       assertTrue(() => matchers.toThrowWith(
-              () => throw new ArgumentError("123"),
+          () => throw new ArgumentError("123"),
           message: new RegExp(r"^.*[1-9]{3}$")));
       assertFalse(() => matchers.toThrowWith(
-              () => throw new ArgumentError("123"),
+          () => throw new ArgumentError("123"),
           message: new RegExp(r"^.*[a-zA-Z]{3}$")));
       assertFalse(() => matchers.toThrowWith(
-              () => throw new ArgumentError("123"),
+          () => throw new ArgumentError("123"),
           anInstanceOf: UnsupportedError));
       assertTrue(() => matchers.toThrowWith(
-              () => throw new ArgumentError("123"),
-          anInstanceOf: ArgumentError));
+          () => throw new ArgumentError("123"), anInstanceOf: ArgumentError));
       assertTrue(() {
         matchers.toThrowWith(() => throw new ArgumentError("123"), where: (e) {
           expect(e.message, equals("123"));
@@ -179,73 +182,69 @@ testUnitTestBackend(){
         });
       });
       assertTrue(() {
-        matchers.toThrowWith(
-            () => throw new ArgumentError("123"),
+        matchers.toThrowWith(() => throw new ArgumentError("123"),
             where: (e) => e.message == "123");
       });
       assertFalse(() {
-        matchers.toThrowWith(
-            () => throw new ArgumentError("123"),
+        matchers.toThrowWith(() => throw new ArgumentError("123"),
             where: (e) => e.message == "456");
       });
 
       skipDart2Js(() {
-        assertTrue(() => matchers.toThrowWith(
-            () => throw new ArgumentError(),
+        assertTrue(() => matchers.toThrowWith(() => throw new ArgumentError(),
             type: ArgumentError));
-        assertFalse(() => matchers.toThrowWith(
-            () => throw new ArgumentError(),
+        assertFalse(() => matchers.toThrowWith(() => throw new ArgumentError(),
             type: UnsupportedError));
       });
     });
 
-    test("toBeFalsy", (){
+    test("toBeFalsy", () {
       assertTrue(() => matchers.toBeFalsy(null));
       assertTrue(() => matchers.toBeFalsy(false));
       assertFalse(() => matchers.toBeFalsy("any object"));
       assertFalse(() => matchers.toBeFalsy(true));
     });
 
-    test("toBeTruthy", (){
+    test("toBeTruthy", () {
       assertFalse(() => matchers.toBeTruthy(null));
       assertFalse(() => matchers.toBeTruthy(false));
       assertTrue(() => matchers.toBeTruthy("any object"));
       assertTrue(() => matchers.toBeTruthy(true));
     });
 
-    test("toBeFalse", (){
+    test("toBeFalse", () {
       assertTrue(() => matchers.toBeFalse(false));
       assertFalse(() => matchers.toBeFalse(true));
       assertFalse(() => matchers.toBeFalse(null));
       assertFalse(() => matchers.toBeFalse("any object"));
     });
 
-    test("toBeTrue", (){
+    test("toBeTrue", () {
       assertTrue(() => matchers.toBeTrue(true));
       assertFalse(() => matchers.toBeTrue(null));
       assertFalse(() => matchers.toBeTrue(false));
       assertFalse(() => matchers.toBeTrue("any object"));
     });
 
-    test("toHaveHtml", (){
+    test("toHaveHtml", () {
       final div = new html.DivElement()..innerHtml = "<div>inner</div>";
       assertTrue(() => matchers.toHaveHtml(div, "<div>inner</div>"));
       assertFalse(() => matchers.toHaveHtml(div, "invalid"));
     });
 
-    test("toHaveText", (){
+    test("toHaveText", () {
       final div = new html.DivElement()..innerHtml = "expected";
       assertTrue(() => matchers.toHaveText(div, "expected"));
       assertFalse(() => matchers.toHaveText(div, "invalid"));
     });
 
-    test("toContainText", (){
+    test("toContainText", () {
       final div = new html.DivElement()..innerHtml = "some expected text";
       assertTrue(() => matchers.toContainText(div, "expected"));
       assertFalse(() => matchers.toContainText(div, "invalid"));
     });
 
-    test("toHaveClass", (){
+    test("toHaveClass", () {
       final div = new html.DivElement();
       div.classes.add("one");
 
@@ -253,7 +252,7 @@ testUnitTestBackend(){
       assertFalse(() => matchers.toHaveClass(div, "two"));
     });
 
-    test("toHaveAttribute", (){
+    test("toHaveAttribute", () {
       final div = new html.DivElement();
       div.attributes["one"] = "value";
 
@@ -263,7 +262,7 @@ testUnitTestBackend(){
       assertFalse(() => matchers.toHaveAttribute(div, "one", "invalid value"));
     });
 
-    test("toEqualSelect", (){
+    test("toEqualSelect", () {
       final select = new html.SelectElement();
       select.children.add(new html.OptionElement(value: "1"));
       select.children.add(new html.OptionElement(value: "2", selected: true));
@@ -273,7 +272,7 @@ testUnitTestBackend(){
       assertFalse(() => matchers.toEqualSelect(select, ["1", "2", "3"]));
     });
 
-    test("toHaveBeenCalled", (){
+    test("toHaveBeenCalled", () {
       final spy = new guinness.SpyFunction("");
 
       assertFalse(() => matchers.toHaveBeenCalled(spy));
@@ -283,7 +282,7 @@ testUnitTestBackend(){
       assertTrue(() => matchers.toHaveBeenCalled(spy));
     });
 
-    test("toHaveBeenCalledOnce", (){
+    test("toHaveBeenCalledOnce", () {
       final spy = new guinness.SpyFunction("");
 
       assertFalse(() => matchers.toHaveBeenCalledOnce(spy));
@@ -297,44 +296,44 @@ testUnitTestBackend(){
       assertFalse(() => matchers.toHaveBeenCalledOnce(spy));
     });
 
-    test("toHaveBeenCalledWith", (){
+    test("toHaveBeenCalledWith", () {
       final spy = new guinness.SpyFunction("");
 
       assertFalse(() => matchers.toHaveBeenCalledWith(spy, 1, 2));
 
-      spy(1,2);
+      spy(1, 2);
 
       assertTrue(() => matchers.toHaveBeenCalledWith(spy, 1, 2));
       assertFalse(() => matchers.toHaveBeenCalledWith(spy, 3, 4));
     });
 
-    test("toHaveBeenCalledOnceWith", (){
+    test("toHaveBeenCalledOnceWith", () {
       final spy = new guinness.SpyFunction("");
 
       assertFalse(() => matchers.toHaveBeenCalledOnceWith(spy, 1, 2));
 
-      spy(1,2);
+      spy(1, 2);
 
       assertTrue(() => matchers.toHaveBeenCalledOnceWith(spy, 1, 2));
 
-      spy(1,2);
+      spy(1, 2);
 
       assertFalse(() => matchers.toHaveBeenCalledOnceWith(spy, 1, 2));
     });
 
-    test("notToEqual", (){
+    test("notToEqual", () {
       assertTrue(() => matchers.notToEqual("one", "two"));
       assertFalse(() => matchers.notToEqual("one", "one"));
     });
 
-    test("notToContain", (){
+    test("notToContain", () {
       assertTrue(() => matchers.notToContain("one", "z"));
       assertFalse(() => matchers.notToContain("one", "o"));
     });
 
-    test("notToBe", (){
-      var x = [1,2];
-      var y = [1,2];
+    test("notToBe", () {
+      var x = [1, 2];
+      var y = [1, 2];
       assertTrue(() => matchers.notToBe(x, y));
       assertFalse(() => matchers.notToBe(x, x));
     });
@@ -357,40 +356,41 @@ testUnitTestBackend(){
       assertTrue(() => matchers.notToBeCloseTo(9.123, 9.12, 3));
     });
 
-    test("notToBeA", skipDart2Js((){
+    test("notToBeA", skipDart2Js(() {
       assertTrue(() => matchers.notToBeA(2, String));
       assertFalse(() => matchers.notToBeA(2, num));
     }));
 
-    test("notToBeAnInstanceOf", (){
+    test("notToBeAnInstanceOf", () {
       assertTrue(() => matchers.notToBeAnInstanceOf(2, TestClass));
-      assertFalse(() => matchers.notToBeAnInstanceOf(new TestClass(), TestClass));
+      assertFalse(
+          () => matchers.notToBeAnInstanceOf(new TestClass(), TestClass));
     });
 
-    test("toReturnNormally", (){
+    test("toReturnNormally", () {
       assertFalse(() => matchers.toReturnNormally(() => throw "Wow!"));
-      assertTrue(() => matchers.toReturnNormally((){}));
+      assertTrue(() => matchers.toReturnNormally(() {}));
     });
 
-    test("notToHaveHtml", (){
+    test("notToHaveHtml", () {
       final div = new html.DivElement()..innerHtml = "<div>inner</div>";
       assertFalse(() => matchers.notToHaveHtml(div, "<div>inner</div>"));
       assertTrue(() => matchers.notToHaveHtml(div, "invalid"));
     });
 
-    test("notToHaveText", (){
+    test("notToHaveText", () {
       final div = new html.DivElement()..innerHtml = "expected";
       assertFalse(() => matchers.notToHaveText(div, "expected"));
       assertTrue(() => matchers.notToHaveText(div, "invalid"));
     });
 
-    test("notToContainText", (){
+    test("notToContainText", () {
       final div = new html.DivElement()..innerHtml = "some expected test";
       assertFalse(() => matchers.notToContainText(div, "expected"));
       assertTrue(() => matchers.notToContainText(div, "invalid"));
     });
 
-    test("notToHaveClass", (){
+    test("notToHaveClass", () {
       final div = new html.DivElement();
       div.classes.add("one");
 
@@ -398,7 +398,7 @@ testUnitTestBackend(){
       assertTrue(() => matchers.notToHaveClass(div, "two"));
     });
 
-    test("notToHaveAttribute", (){
+    test("notToHaveAttribute", () {
       final div = new html.DivElement();
       div.attributes["one"] = "value";
 
@@ -406,7 +406,7 @@ testUnitTestBackend(){
       assertTrue(() => matchers.notToHaveAttribute(div, "two"));
     });
 
-    test("notToHaveBeenCalled", (){
+    test("notToHaveBeenCalled", () {
       final spy = new guinness.SpyFunction("");
 
       assertTrue(() => matchers.notToHaveBeenCalled(spy));
@@ -416,45 +416,49 @@ testUnitTestBackend(){
       assertFalse(() => matchers.notToHaveBeenCalled(spy));
     });
 
-    test("notToHaveBeenCalledWith", (){
+    test("notToHaveBeenCalledWith", () {
       final spy = new guinness.SpyFunction("");
 
       assertTrue(() => matchers.notToHaveBeenCalledWith(spy, 1, 2));
 
-      spy(1,2);
+      spy(1, 2);
 
       assertFalse(() => matchers.notToHaveBeenCalledWith(spy, 1, 2));
       assertTrue(() => matchers.notToHaveBeenCalledWith(spy, 3, 4));
     });
 
-    group("toHaveSameProps", (){
+    group("toHaveSameProps", () {
       test("should work for primitives", () {
         assertTrue(() => matchers.toHaveSameProps(1, 1));
         assertFalse(() => matchers.toHaveSameProps(1, 2));
       });
 
       test("should work for lists", () {
-        assertTrue(() => matchers.toHaveSameProps([1,2], [1,2]));
-        assertFalse(() => matchers.toHaveSameProps([1,2], [1,3]));
+        assertTrue(() => matchers.toHaveSameProps([1, 2], [1, 2]));
+        assertFalse(() => matchers.toHaveSameProps([1, 2], [1, 3]));
       });
 
       test("should work for maps", () {
-        assertTrue(() => matchers.toHaveSameProps({1: 100, 2:200}, {1: 100, 2:200}));
-        assertFalse(() => matchers.toHaveSameProps({1: 100, 2:200}, {1: 100, 2:300}));
+        assertTrue(
+            () => matchers.toHaveSameProps({1: 100, 2: 200}, {1: 100, 2: 200}));
+        assertFalse(
+            () => matchers.toHaveSameProps({1: 100, 2: 200}, {1: 100, 2: 300}));
       });
 
       test("should work for custom objects", () {
-        final expected = new TestClass(new TestClass([1,2]));
-        final actual = new TestClass(new TestClass([1,2]));
+        final expected = new TestClass(new TestClass([1, 2]));
+        final actual = new TestClass(new TestClass([1, 2]));
         assertTrue(() => matchers.toHaveSameProps(actual, expected));
 
-        final falseActual = new TestClass(new TestClass([1,2,3]));
+        final falseActual = new TestClass(new TestClass([1, 2, 3]));
         assertFalse(() => matchers.toHaveSameProps(falseActual, expected));
       });
 
       test("should ignore private fields when comparing private objects", () {
-        final expected = new TestClass(new TestClassWithPrivateField([1,2], true));
-        final actual = new TestClass(new TestClassWithPrivateField([1,2], false));
+        final expected =
+            new TestClass(new TestClassWithPrivateField([1, 2], true));
+        final actual =
+            new TestClass(new TestClassWithPrivateField([1, 2], false));
         assertTrue(() => matchers.toHaveSameProps(actual, expected));
       });
 
@@ -474,4 +478,4 @@ testUnitTestBackend(){
   });
 }
 
-Function skipDart2Js(Function fn) => !identical(1, 1.0) ?  fn : (){};
+Function skipDart2Js(Function fn) => !identical(1, 1.0) ? fn : () {};
