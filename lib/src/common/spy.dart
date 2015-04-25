@@ -19,7 +19,7 @@ class SpyFunction {
     return this;
   }
 
-  call([a0=_u, a1=_u, a2 =_u, a3=_u, a4=_u, a5=_u]) =>
+  call([a0 = _u, a1 = _u, a2 = _u, a3 = _u, a4 = _u, a5 = _u]) =>
       _processCall(_takeDefined([a0, a1, a2, a3, a4, a5]), {});
 
   void reset() => calls.clear();
@@ -33,9 +33,9 @@ class SpyFunction {
     return calls.last;
   }
 
-  firstArgsMatch([a0=_u, a1=_u, a2 =_u, a3=_u, a4=_u, a5=_u]) {
+  firstArgsMatch([a0 = _u, a1 = _u, a2 = _u, a3 = _u, a4 = _u, a5 = _u]) {
     final toMatch = _takeDefined([a0, a1, a2, a3, a4, a5]);
-    if(calls.isEmpty) {
+    if (calls.isEmpty) {
       return false;
     } else {
       Function eq = const ListEquality().equals;
@@ -45,15 +45,14 @@ class SpyFunction {
 
   _processCall(List posArgs, Map namedArgs) {
     calls.add(new SpyFunctionCall(posArgs, namedArgs));
-    if(_callFakeFn != null){
+    if (_callFakeFn != null) {
       return Function.apply(_callFakeFn, posArgs, namedArgs);
     }
   }
 
-  noSuchMethod(Invocation inv) =>
-      inv.memberName == #call ?
-        _processCall(inv.positionalArguments, _stringifyMap(inv.namedArguments)) :
-        super.noSuchMethod(inv);
+  noSuchMethod(Invocation inv) => inv.memberName == #call
+      ? _processCall(inv.positionalArguments, _stringifyMap(inv.namedArguments))
+      : super.noSuchMethod(inv);
 }
 
 @proxy
@@ -62,7 +61,8 @@ class SpyObject {
 
   noSuchMethod(Invocation inv) {
     final s = spy(_spyName(inv));
-    return s._processCall(inv.positionalArguments, _stringifyMap(inv.namedArguments));
+    return s._processCall(
+        inv.positionalArguments, _stringifyMap(inv.namedArguments));
   }
 
   SpyFunction spy(String funcName) =>
@@ -76,10 +76,9 @@ class SpyObject {
   }
 }
 
-_stringifyMap(Map map) =>
-    map.keys.fold({}, (res, c){
-      res.putIfAbsent(mirrors.MirrorSystem.getName(c), () => map[c]);
-      return res;
-    });
+_stringifyMap(Map map) => map.keys.fold({}, (res, c) {
+  res.putIfAbsent(mirrors.MirrorSystem.getName(c), () => map[c]);
+  return res;
+});
 
 List _takeDefined(List iter) => iter.takeWhile((_) => _ != _u).toList();

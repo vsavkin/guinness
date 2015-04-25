@@ -9,8 +9,8 @@ class Guinness {
   bool showStats = false;
 
   Guinness({this.matchers, SpecRunner runner, SpecRunner initSpecs})
-      : _runner = runner, _initSpecs = initSpecs {
-
+      : _runner = runner,
+        _initSpecs = initSpecs {
     _scheduleAutoInit();
   }
 
@@ -25,7 +25,7 @@ class Guinness {
   }
 
   void initSpecs() {
-    if(showStats) suiteInfo().printDetailedStats();
+    if (showStats) suiteInfo().printDetailedStats();
     _initSpecs(_context.suite);
   }
 
@@ -37,7 +37,7 @@ class Guinness {
 
   void _scheduleAutoInit() {
     async.scheduleMicrotask(() {
-      if(autoInit) initSpecs();
+      if (autoInit) initSpecs();
     });
   }
 }

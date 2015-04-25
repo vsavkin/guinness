@@ -1,10 +1,11 @@
-library html_utils_test;
+library guinness.test.html_utils_test;
+
+import 'dart:html';
 
 import 'package:guinness/src/html_utils.dart' as utils;
 import 'package:unittest/unittest.dart';
-import 'dart:html';
 
-main() {
+void main() {
   group("[toHtml]", () {
     test('handles comments', () {
       final c = new Comment("some data");
@@ -28,12 +29,12 @@ main() {
     });
 
     test('handles element when outer is false', () {
-      var el = new DivElement()..innerHtml="content";
+      var el = new DivElement()..innerHtml = "content";
       expect(utils.toHtml(el, outer: false), equals("content"));
     });
 
     test('handles element when outer is true', () {
-      var el = new DivElement()..innerHtml="content";
+      var el = new DivElement()..innerHtml = "content";
       expect(utils.toHtml(el, outer: true), equals("<div>content</div>"));
     });
 
@@ -46,7 +47,8 @@ main() {
       final d = new DivElement()..text = "input";
       final preprocessed = new DivElement()..text = "preprocessed";
 
-      expect(utils.toHtml(d, preprocess: (_) => preprocessed), equals("preprocessed"));
+      expect(utils.toHtml(d, preprocess: (_) => preprocessed),
+          equals("preprocessed"));
     });
   });
 
@@ -59,28 +61,27 @@ main() {
     test('handles shadow dom', () {
       final d = new DocumentFragment.html("<div><a>A</a><b>B</b></div>");
       final root = d.children[0].createShadowRoot();
-      root.innerHtml = "(<content select='a'></content>, <content select='b'></content>)";
+      root.innerHtml =
+          "(<content select='a'></content>, <content select='b'></content>)";
 
       expect(utils.elementText(d), equals("(A, B)"));
     });
 
     test('handles elements without children', () {
-      var el = new DivElement()
-        ..innerHtml = 'content';
+      var el = new DivElement()..innerHtml = 'content';
 
       expect(utils.elementText(el), equals('content'));
     });
 
     test('handles elements with children', () {
-      var el = new DivElement()
-        ..innerHtml = '<div>one</div><div>two</div>';
+      var el = new DivElement()..innerHtml = '<div>one</div><div>two</div>';
 
       expect(utils.elementText(el), equals('onetwo'));
     });
 
     test('handles lists', () {
-      var el1 = new DivElement()..innerHtml="one";
-      var el2 = new DivElement()..innerHtml="two";
+      var el1 = new DivElement()..innerHtml = "one";
+      var el2 = new DivElement()..innerHtml = "two";
 
       expect(utils.elementText([el1, el2]), equals('onetwo'));
     });

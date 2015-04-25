@@ -1,8 +1,11 @@
-part of guinness_test;
+library guinness.test.spy_test;
+
+import 'package:guinness/guinness.dart' as guinness;
+import 'package:unittest/unittest.dart';
 
 class _SpyObject extends guinness.SpyObject {}
 
-testSpy() {
+main() {
   group("[SpyObject]", () {
     test("records all the calls", () {
       final obj = new _SpyObject();
