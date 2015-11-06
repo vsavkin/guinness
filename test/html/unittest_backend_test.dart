@@ -438,6 +438,13 @@ void main() {
         assertFalse(() => matchers.toHaveSameProps([1, 2], [1, 3]));
       });
 
+      test("should work for nested lists", () {
+        assertTrue(() => matchers.toHaveSameProps([[1], [2]], [[1], [2]]));
+        var l = [1];
+        assertTrue(() => matchers.toHaveSameProps([l, l], [[1], [1]]));
+        assertFalse(() => matchers.toHaveSameProps([[1], [2]], [[1], [3]]));
+      });
+
       test("should work for maps", () {
         assertTrue(
             () => matchers.toHaveSameProps({1: 100, 2: 200}, {1: 100, 2: 200}));

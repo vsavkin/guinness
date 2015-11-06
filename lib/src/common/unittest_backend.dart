@@ -312,27 +312,38 @@ class SamePropsMatcher extends unit.Matcher {
 }
 
 class _ObjToData {
-  final visitedObjects = new Set();
-
-  call(obj) {
-    if (visitedObjects.contains(obj)) return null;
+  call(obj, [Set visitedObjects]) {
+    if (visitedObjects == null) {
+      visitedObjects = new Set();
+    }
+    if (visitedObjects.contains(obj)) {
+      return null;
+    }
     visitedObjects.add(obj);
 
-    if (obj is num || obj is String || obj is bool) return obj;
-    if (obj is Iterable) return obj.map(call).toList();
-    if (obj is Map) return mapToData(obj);
-    return toDataUsingReflection(obj);
+    var result;
+    if (obj is num || obj is String || obj is bool) {
+      result = obj;
+    } else if (obj is Iterable) {
+      result = obj.map((obj) => call(obj, visitedObjects)).toList();
+    } else if (obj is Map) {
+      result = mapToData(obj, visitedObjects);
+    } else {
+      result = toDataUsingReflection(obj, visitedObjects);
+    }
+    visitedObjects.remove(obj);
+    return result;
   }
 
-  mapToData(obj) {
+  mapToData(obj, Set visitedObjects) {
     var res = {};
-    obj.forEach((k, v) {
-      res[call(k)] = call(v);
+    obj.forEach((k,v) {
+      res[call(k, visitedObjects)] = call(v, visitedObjects);
     });
     return res;
   }
 
-  toDataUsingReflection(obj) {
+  toDataUsingReflection(obj, Set visitedObjects) {
     final clazz = mirrors.reflectClass(obj.runtimeType);
     final instance = mirrors.reflect(obj);
 
@@ -340,7 +351,7 @@ class _ObjToData {
       if (decl is mirrors.VariableMirror && !decl.isPrivate && !decl.isStatic) {
         final field = instance.getField(decl.simpleName);
         final name = mirrors.MirrorSystem.getName(decl.simpleName);
-        map[name] = call(field.reflectee);
+        map[name] = call(field.reflectee, visitedObjects);
       }
       return map;
     });
