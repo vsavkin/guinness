@@ -1,3 +1,7 @@
+# v0.1.18 (2015-11-06)
+
+- Fix `toHaveSameProps` matcher to handle the same instance being used multiple times.
+
 # v0.1.17 (2015-03-13)
 
 - Change `toHaveSameProps` matcher to ignore private fields.
