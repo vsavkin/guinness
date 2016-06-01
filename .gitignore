@@ -4,3 +4,4 @@ packages
 .packages
 node_modules
 *.iml
+.packages

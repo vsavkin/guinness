@@ -277,7 +277,7 @@ class IsSubtypeOf extends unit.Matcher {
     //Delete the try-catch when Dart2JS supports `isSubtypeOf`.
     try {
       return mirrors.reflect(obj).type.isSubtypeOf(mirrors.reflectClass(_type));
-    } on UnimplementedError catch (e) {
+    } on UnimplementedError {
       if (_isDart2js) {
         throw "The IsSubtypeOf matcher is not supported in Dart2JS";
       } else {
